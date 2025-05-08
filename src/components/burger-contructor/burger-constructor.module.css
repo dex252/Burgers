@@ -1,0 +1,7 @@
+.burger_constructor {
+	display: flex;
+	flex-direction: column;
+	width: 600px;
+	padding-bottom: 20px;
+	color: var(--text-primary-color);
+}
