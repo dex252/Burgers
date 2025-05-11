@@ -1,18 +1,20 @@
 import { IngredientCard } from '../ingredient-card/ingredient-card';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
+import styles from './ingredient-category.module.css';
 
 export const IngredientCategory = ({ title, ingredients, type }) => {
 	return (
-		<section className={`ingredient-category ingredient-category-${type}`}>
+		<section
+			className={`ingredient-category ingredient-category-${type} mb-10`}>
 			<h2
-				className={`ingredient-category-header ingredient-category-header-${type}`}>
+				className={`ingredient-category-header ingredient-category-header-${type} mb-6`}>
 				{title}
 			</h2>
 			<div
-				className={`ingredient-category-content ingredient-category-content-${type}`}>
+				className={`${styles.ingredient_category_content} ingredient-category-content-${type} ml-4`}>
 				{ingredients.map((ingredient) => (
-					<IngredientCard ingredient={ingredient} />
+					<IngredientCard key={ingredient._id} ingredient={ingredient} />
 				))}
 			</div>
 		</section>

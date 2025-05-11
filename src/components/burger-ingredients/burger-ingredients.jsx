@@ -23,9 +23,7 @@ export const BurgerIngredients = ({ ingredients }) => {
 					</Tab>
 				</ul>
 			</nav>
-			<div>
-				<IngredientsSection ingredients={ingredients}></IngredientsSection>
-			</div>
+			<IngredientsSection ingredients={ingredients}></IngredientsSection>
 		</section>
 	);
 };

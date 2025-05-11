@@ -2,6 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientCategory } from '@components/ingredient-category/ingredient-category.jsx';
+import styles from './ingredients-section.module.css';
 
 export const IngredientsSection = ({ ingredients }) => {
 	const groupedIngredients = ingredients.reduce(
@@ -13,7 +14,7 @@ export const IngredientsSection = ({ ingredients }) => {
 	);
 
 	return (
-		<div className='ingridients-section'>
+		<section className={styles.ingredients_section}>
 			<IngredientCategory
 				title='Булки'
 				ingredients={groupedIngredients.bun}
@@ -29,7 +30,7 @@ export const IngredientsSection = ({ ingredients }) => {
 				ingredients={groupedIngredients.main}
 				type='main'
 			/>
-		</div>
+		</section>
 	);
 };
 
