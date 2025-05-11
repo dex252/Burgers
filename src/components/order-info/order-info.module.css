@@ -1,0 +1,19 @@
+.order_content {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.price {
+	display: flex;
+	align-items: center;
+	align-self: center;
+}
+
+.price_text {
+	position: relative;
+}
+
+.currency_icon {
+	transform: scale(2);
+}

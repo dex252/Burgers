@@ -12,7 +12,7 @@ export const IngredientCard = ({ ingredient }) => {
 				<Counter
 					count={ingredient.__v}
 					size='default'
-					extraClass={styles.counter}></Counter>
+					extraClass={`${styles.counter} mr-1`}></Counter>
 			)}
 			<div className={styles.ingredient_card_content}>
 				<img

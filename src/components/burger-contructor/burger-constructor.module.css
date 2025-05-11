@@ -5,3 +5,8 @@
 	padding-bottom: 20px;
 	color: var(--text-primary-color);
 }
+
+.basket_content {
+	height: 80%;
+	overflow-y: auto;
+}
