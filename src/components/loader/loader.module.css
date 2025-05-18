@@ -1,0 +1,12 @@
+.loader_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: inherit;
+}
+
+.error_container {
+	flex-direction: column;
+	color: red;
+	text-align: center;
+}

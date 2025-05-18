@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import styles from './app.module.css';
 //import { ingredients } from '@utils/ingredients.js';
+import { Loader } from '../loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
@@ -8,12 +9,42 @@ import { getIngredients } from '../../services/yandex_api.jsx';
 
 export const App = () => {
 	const [ingredients, setIngredients] = useState([]);
+	const [loading, setLoading] = useState({
+		isError: false,
+		isErrorMessage: undefined,
+		isSpinner: false,
+	});
 
 	useEffect(() => {
 		const ingredients = async () => {
-			const response = await getIngredients();
+			try {
+				setLoading({ isError: false, isSpinner: true });
+				const response = await getIngredients();
+				if (!response.success) {
+					setLoading({
+						isError: true,
+						isSpinner: false,
+						isErrorMessage: response.data,
+					});
 
-			setIngredients(response.data);
+					setIngredients([]);
+					return;
+				}
+
+				setLoading({
+					isError: false,
+					isSpinner: false,
+					isErrorMessage: undefined,
+				});
+
+				setIngredients(response.data);
+			} catch (error) {
+				setLoading({
+					isError: true,
+					isSpinner: false,
+					isErrorMessage: error.message,
+				});
+			}
 		};
 
 		ingredients();
@@ -27,8 +58,10 @@ export const App = () => {
 				Соберите бургер
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
-				<BurgerIngredients ingredients={ingredients} />
-				<BurgerConstructor ingredients={ingredients} />
+				<Loader loading={loading}>
+					<BurgerIngredients ingredients={ingredients} />
+					<BurgerConstructor ingredients={ingredients} />
+				</Loader>
 			</main>
 		</div>
 	);
