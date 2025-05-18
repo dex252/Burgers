@@ -5,3 +5,13 @@
 	padding-bottom: 20px;
 	color: var(--text-primary-color);
 }
+
+.basket_content {
+	display: flex;
+	flex-direction: column;
+	height: 80%;
+}
+
+.scroll_content {
+	overflow-y: auto;
+}

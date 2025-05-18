@@ -1,0 +1,24 @@
+.ingredient_card {
+	position: relative;
+}
+
+.ingredient_card_content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.ingredient_card_price {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ingredient_name {
+	margin-top: 0;
+	text-align: center;
+}
+
+.counter {
+	border-radius: 50%;
+}
