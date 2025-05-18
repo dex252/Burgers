@@ -1,11 +1,24 @@
-import React from 'react';
+import { React, useState, useEffect } from 'react';
 import styles from './app.module.css';
-import { ingredients } from '@utils/ingredients.js';
+//import { ingredients } from '@utils/ingredients.js';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
+import { getIngredients } from '../../services/yandex_api.jsx';
 
 export const App = () => {
+	const [ingredients, setIngredients] = useState([]);
+
+	useEffect(() => {
+		const ingredients = async () => {
+			const response = await getIngredients();
+
+			setIngredients(response.data);
+		};
+
+		ingredients();
+	}, []);
+
 	return (
 		<div className={styles.app}>
 			<AppHeader />

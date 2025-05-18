@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './order-info.module.css';
+import * as PropTypes from 'prop-types';
 import {
 	CurrencyIcon,
 	Button,
@@ -21,4 +22,8 @@ export const OrderInfo = ({ price }) => {
 			</Button>
 		</section>
 	);
+};
+
+OrderInfo.propTypes = {
+	price: PropTypes.number.isRequired,
 };
