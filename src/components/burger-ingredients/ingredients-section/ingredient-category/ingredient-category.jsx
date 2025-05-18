@@ -1,4 +1,4 @@
-import { IngredientCard } from '../ingredient-card/ingredient-card';
+import { IngredientCard } from './ingredient-card/ingredient-card';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
 import styles from './ingredient-category.module.css';

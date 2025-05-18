@@ -6,7 +6,7 @@ import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredi
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
 import { getIngredients } from '../../services/yandex_api.jsx';
-import { Modal } from '../modals/modal.jsx';
+import { Modal } from '../modals/shared/modal.jsx';
 
 export const App = () => {
 	const ESCAPE_BUTTON = 'Escape';

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
-import { IngredientCategory } from '@components/ingredient-category/ingredient-category.jsx';
+import { IngredientCategory } from './ingredient-category/ingredient-category.jsx';
 import styles from './ingredients-section.module.css';
 
 export const IngredientsSection = ({ ingredients, openModal }) => {

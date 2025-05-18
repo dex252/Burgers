@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
-import { BurgerBasketCard } from '../burger-basket-card/burger-basket-card';
+import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from '../order-info/order-info';
 
 export const BurgerConstructor = ({ ingredients }) => {
