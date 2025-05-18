@@ -1,0 +1,38 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1000;
+	width: 60%;
+	padding: 40px;
+	background: #1c1c21;
+	border-radius: 40px;
+	transform: translate(-50%, -50%);
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+}
+
+.content {
+	background: green;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	width: 100vw;
+	height: 100vh;
+	background-color: #1c1c21c3;
+}
+
+.close {
+	background: none;
+	border: 0;
+	cursor: pointer;
+}
