@@ -4,7 +4,7 @@ import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientCategory } from '@components/ingredient-category/ingredient-category.jsx';
 import styles from './ingredients-section.module.css';
 
-export const IngredientsSection = ({ ingredients }) => {
+export const IngredientsSection = ({ ingredients, openModal }) => {
 	const groupedIngredients = ingredients.reduce(
 		(acc, ingredient) => {
 			acc[ingredient.type].push(ingredient);
@@ -19,16 +19,19 @@ export const IngredientsSection = ({ ingredients }) => {
 				title='Булки'
 				ingredients={groupedIngredients.bun}
 				type='bun'
+				openModal={openModal}
 			/>
 			<IngredientCategory
 				title='Соусы'
 				ingredients={groupedIngredients.sauce}
 				type='sauce'
+				openModal={openModal}
 			/>
 			<IngredientCategory
 				title='Начинки'
 				ingredients={groupedIngredients.main}
 				type='main'
+				openModal={openModal}
 			/>
 		</section>
 	);

@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
 import styles from './ingredient-category.module.css';
 
-export const IngredientCategory = ({ title, ingredients, type }) => {
+export const IngredientCategory = ({ title, ingredients, type, openModal }) => {
 	return (
 		<section
 			className={`ingredient-category ingredient-category-${type} mb-10`}>
@@ -14,7 +14,11 @@ export const IngredientCategory = ({ title, ingredients, type }) => {
 			<div
 				className={`${styles.ingredient_category_content} ingredient-category-content-${type} ml-4`}>
 				{ingredients.map((ingredient) => (
-					<IngredientCard key={ingredient._id} ingredient={ingredient} />
+					<IngredientCard
+						key={ingredient._id}
+						ingredient={ingredient}
+						openModal={openModal}
+					/>
 				))}
 			</div>
 		</section>

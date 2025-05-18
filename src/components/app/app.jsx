@@ -6,14 +6,41 @@ import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredi
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
 import { getIngredients } from '../../services/yandex_api.jsx';
+import { Modal } from '../modals/modal.jsx';
 
 export const App = () => {
+	const ESCAPE_BUTTON = 'Escape';
+
 	const [ingredients, setIngredients] = useState([]);
 	const [loading, setLoading] = useState({
 		isError: false,
 		isErrorMessage: undefined,
 		isSpinner: false,
 	});
+
+	const [modalContent, setModalContent] = useState({
+		header: null,
+		content: null,
+		isOpen: false,
+	});
+
+	const openIngredientsDetail = (ingredient) => {
+		console.info(ingredient);
+		setModalContent({
+			header: 'Детали ингредиента',
+			content: (
+				<div>
+					<h1>RRRRRRRRRRRRR</h1>
+				</div>
+			),
+			isOpen: true,
+		});
+	};
+
+	const closeModal = (e) => {
+		console.info(e);
+		setModalContent((prev) => ({ ...prev, isOpen: false }));
+	};
 
 	useEffect(() => {
 		const ingredients = async () => {
@@ -47,7 +74,19 @@ export const App = () => {
 			}
 		};
 
+		const handleKeyDown = (e) => {
+			if (e.key === ESCAPE_BUTTON) {
+				setModalContent((prev) => ({ ...prev, isOpen: false }));
+			}
+		};
+
 		ingredients();
+
+		window.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+		};
 	}, []);
 
 	return (
@@ -59,10 +98,19 @@ export const App = () => {
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
 				<Loader loading={loading}>
-					<BurgerIngredients ingredients={ingredients} />
+					<BurgerIngredients
+						ingredients={ingredients}
+						openModal={(ingredient) => openIngredientsDetail(ingredient)}
+					/>
 					<BurgerConstructor ingredients={ingredients} />
 				</Loader>
 			</main>
+
+			{modalContent.isOpen && (
+				<Modal header={modalContent.header} onClose={(e) => closeModal(e)}>
+					{modalContent.content}
+				</Modal>
+			)}
 		</div>
 	);
 };
