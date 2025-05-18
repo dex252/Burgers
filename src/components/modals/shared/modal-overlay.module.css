@@ -5,5 +5,6 @@
 	z-index: 999;
 	width: 100vw;
 	height: 100vh;
-	background-color: #1c1c21c3;
+	background-color: #000000;
+	opacity: 0.6;
 }

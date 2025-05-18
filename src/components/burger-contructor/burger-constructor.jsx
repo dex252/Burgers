@@ -3,9 +3,9 @@ import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { ingredientPropType } from '@utils/prop-types.js';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
-import { OrderInfo } from '../order-info/order-info';
+import { OrderInfo } from './order-info/order-info';
 
-export const BurgerConstructor = ({ ingredients }) => {
+export const BurgerConstructor = ({ ingredients, createOrder }) => {
 	const bun = ingredients.find((e) => e.type === 'bun');
 	const otherIngredients = ingredients.filter((e) => e.type !== 'bun');
 	const totalPrice =
@@ -26,11 +26,12 @@ export const BurgerConstructor = ({ ingredients }) => {
 				)}
 			</div>
 
-			<OrderInfo price={totalPrice}></OrderInfo>
+			<OrderInfo price={totalPrice} createOrder={createOrder}></OrderInfo>
 		</section>
 	);
 };
 
 BurgerConstructor.propTypes = {
 	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
+	createOrder: PropTypes.func,
 };

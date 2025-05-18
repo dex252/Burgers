@@ -16,8 +16,8 @@ export const Modal = (props) => {
 
 	return createPortal(
 		<section>
-			<div className={styles.modal}>
-				<div className={styles.header}>
+			<div className={`${styles.modal} p-10`}>
+				<div className={`${styles.header} pt-5 pb-5`}>
 					<div className='className="text text_type_main-large'>
 						{props.header}
 					</div>

@@ -6,7 +6,7 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-export const OrderInfo = ({ price }) => {
+export const OrderInfo = ({ price, createOrder }) => {
 	return (
 		<section className={`${styles.order_content} mr-5`}>
 			<div className={`${styles.price} ml-5 pr-10`}>
@@ -17,7 +17,11 @@ export const OrderInfo = ({ price }) => {
 					type='primary'
 					className={`${styles.currency_icon} text text_type_digits-medium ml-6`}></CurrencyIcon>
 			</div>
-			<Button htmlType='button' type='primary' size='medium'>
+			<Button
+				htmlType='button'
+				type='primary'
+				size='medium'
+				onClick={createOrder}>
 				Оформить заказ
 			</Button>
 		</section>

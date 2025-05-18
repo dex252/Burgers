@@ -3,8 +3,8 @@
 	top: 50%;
 	left: 50%;
 	z-index: 1000;
-	width: 60%;
-	padding: 40px;
+	width: 40%;
+	min-width: 480px;
 	background: #1c1c21;
 	border-radius: 40px;
 	transform: translate(-50%, -50%);
@@ -14,11 +14,14 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 24px;
+	height: 40px;
 }
 
 .content {
-	background: green;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .close {

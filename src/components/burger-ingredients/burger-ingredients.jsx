@@ -6,8 +6,6 @@ import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
 
 export const BurgerIngredients = ({ ingredients, openModal }) => {
-	console.log(ingredients);
-
 	return (
 		<section className={styles.burger_ingredients}>
 			<nav className='mb-10'>

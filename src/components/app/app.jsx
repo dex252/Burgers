@@ -7,6 +7,8 @@ import { BurgerConstructor } from '@components/burger-contructor/burger-construc
 import { AppHeader } from '@components/app-header/app-header.jsx';
 import { getIngredients } from '../../services/yandex_api.jsx';
 import { Modal } from '../modals/shared/modal.jsx';
+import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
+import { CreateOrder } from '../modals/create-order/create-order.jsx';
 
 export const App = () => {
 	const ESCAPE_BUTTON = 'Escape';
@@ -25,14 +27,17 @@ export const App = () => {
 	});
 
 	const openIngredientsDetail = (ingredient) => {
-		console.info(ingredient);
 		setModalContent({
 			header: 'Детали ингредиента',
-			content: (
-				<div>
-					<h1>RRRRRRRRRRRRR</h1>
-				</div>
-			),
+			content: <IngredientDetails ingredient={ingredient} />,
+			isOpen: true,
+		});
+	};
+
+	const createOrder = () => {
+		setModalContent({
+			header: '',
+			content: <CreateOrder orderNumber='034536' />,
 			isOpen: true,
 		});
 	};
@@ -93,7 +98,7 @@ export const App = () => {
 		<div className={styles.app}>
 			<AppHeader />
 			<h1
-				className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}>
+				className={`${styles.title} text text_type_main-large mt-10 mr-5 pl-5`}>
 				Соберите бургер
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
@@ -102,7 +107,10 @@ export const App = () => {
 						ingredients={ingredients}
 						openModal={(ingredient) => openIngredientsDetail(ingredient)}
 					/>
-					<BurgerConstructor ingredients={ingredients} />
+					<BurgerConstructor
+						ingredients={ingredients}
+						createOrder={() => createOrder()}
+					/>
 				</Loader>
 			</main>
 

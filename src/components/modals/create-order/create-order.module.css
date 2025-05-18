@@ -1,0 +1,17 @@
+.order_number {
+	text-shadow:
+		0 0 5px #00b4ff,
+		0 0 10px #0062ff;
+}
+
+.identifier {
+	text-align: center;
+}
+
+.success_container {
+	text-align: center;
+}
+
+.success {
+	transform: scale(2);
+}
