@@ -1,0 +1,31 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 1000;
+	width: 40%;
+	min-width: 480px;
+	background: #1c1c21;
+	border-radius: 40px;
+	transform: translate(-50%, -50%);
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 40px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.close {
+	background: none;
+	border: 0;
+	cursor: pointer;
+}

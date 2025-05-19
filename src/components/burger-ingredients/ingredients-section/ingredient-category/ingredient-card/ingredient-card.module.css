@@ -1,5 +1,6 @@
 .ingredient_card {
 	position: relative;
+	cursor: pointer;
 }
 
 .ingredient_card_content {

@@ -3,11 +3,9 @@ import styles from './burger-ingredients.module.css';
 import * as PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientPropType } from '@utils/prop-types.js';
-import { IngredientsSection } from '@components/ingredients-section/ingredients-section.jsx';
+import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
 
-export const BurgerIngredients = ({ ingredients }) => {
-	console.log(ingredients);
-
+export const BurgerIngredients = ({ ingredients, openModal }) => {
 	return (
 		<section className={styles.burger_ingredients}>
 			<nav className='mb-10'>
@@ -23,7 +21,9 @@ export const BurgerIngredients = ({ ingredients }) => {
 					</Tab>
 				</ul>
 			</nav>
-			<IngredientsSection ingredients={ingredients}></IngredientsSection>
+			<IngredientsSection
+				ingredients={ingredients}
+				openModal={(ingredient) => openModal(ingredient)}></IngredientsSection>
 		</section>
 	);
 };

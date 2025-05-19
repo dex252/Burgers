@@ -6,11 +6,10 @@ import * as PropTypes from 'prop-types';
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
 	const text =
-		ingredient.name + type === 'top'
-			? ' (верх)'
-			: type === 'bottom' && ' (низ)';
+		ingredient.name +
+		(type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '');
 
-	return (
+	return ingredient ? (
 		<section className={`${styles.card} mt-4 mb-4`}>
 			<ConstructorElement
 				type={type}
@@ -20,10 +19,10 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 				alt={text}
 				thumbnail={ingredient.image_mobile}></ConstructorElement>
 		</section>
-	);
+	) : null;
 };
 
 BurgerBasketCard.propTypes = {
 	ingredient: ingredientPropType.isRequired,
-	type: PropTypes.oneOf(['top', 'bottom']),
+	type: PropTypes.oneOf(['top', 'bottom', undefined]),
 };
