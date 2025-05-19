@@ -11,8 +11,6 @@ import { IngredientDetails } from '../modals/ingredient-details/ingredient-detai
 import { CreateOrder } from '../modals/create-order/create-order.jsx';
 
 export const App = () => {
-	const ESCAPE_BUTTON = 'Escape';
-
 	const [ingredients, setIngredients] = useState([]);
 	const [loading, setLoading] = useState({
 		isError: false,
@@ -78,20 +76,7 @@ export const App = () => {
 				});
 			}
 		};
-
-		const handleKeyDown = (e) => {
-			if (e.key === ESCAPE_BUTTON) {
-				setModalContent((prev) => ({ ...prev, isOpen: false }));
-			}
-		};
-
 		ingredients();
-
-		window.addEventListener('keydown', handleKeyDown);
-
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
-		};
 	}, []);
 
 	return (
