@@ -21,14 +21,20 @@
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.25.4",
+		"@reduxjs/toolkit": "^2.8.2",
 		"@ya.praktikum/react-developer-burger-ui-components": "1.14.2",
 		"axios": "^1.9.0",
 		"core-js": "^3.38.1",
 		"lodash-es": "^4.17.21",
 		"prop-types": "^15.8.1",
 		"react": "^18.2.0",
+		"react-dnd": "^16.0.1",
+		"react-dnd-html5-backend": "^16.0.1",
 		"react-dom": "^18.2.0",
-		"react-spinners": "^0.17.0"
+		"react-redux": "^9.2.0",
+		"react-spinners": "^0.17.0",
+		"redux": "^5.0.1",
+		"redux-thunk": "^3.1.0"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.6.3",
