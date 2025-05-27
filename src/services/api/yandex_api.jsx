@@ -1,14 +1,13 @@
 import axios from 'axios';
 
 const YANDEX_API = 'https://norma.nomoreparties.space';
-const GET_INGREDIENTS = '/api/ingredients';
+export const GET_INGREDIENTS = '/api/ingredients';
 
 const api = axios.create({ baseURL: YANDEX_API });
 
-export const getIngredients = async () => {
+export const request = async (method) => {
 	try {
-		const response = await api.get(GET_INGREDIENTS);
-
+		const response = await api.get(method);
 		if (response.status === 200) {
 			return response.data;
 		}

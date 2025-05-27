@@ -2,12 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 const initialState = {
+	bun: null,
 	ingredients: [],
 };
 
 const basketSlice = createSlice({
 	name: 'basket-store',
 	initialState,
+	// eslint-disable-next-line no-undef
+	devTools: process.env.NODE_ENV !== 'production',
 	reducers: {
 		addInBasket(state, action) {
 			state.ingredients = [...state.ingredients, action.payload];
