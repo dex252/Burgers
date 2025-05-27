@@ -1,17 +1,22 @@
 import { React, useState, useEffect } from 'react';
 import styles from './app.module.css';
-//import { ingredients } from '@utils/ingredients.js';
 import { Loader } from '../loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import { getIngredients } from '../../services/yandex_api.jsx';
+import { getIngredients } from '../../services/api/yandex_api.jsx';
 import { Modal } from '../modals/shared/modal.jsx';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
 import { CreateOrder } from '../modals/create-order/create-order.jsx';
+import { useSelector } from 'react-redux';
+import { useIngredientsActions } from '../../services/store/slices/ingredients-slice.jsx';
 
 export const App = () => {
-	const [ingredients, setIngredients] = useState([]);
+	const { setIngredients } = useIngredientsActions();
+	const ingredients = useSelector(
+		(state) => state.IngredientsReducer.ingredients
+	);
+
 	const [loading, setLoading] = useState({
 		isError: false,
 		isErrorMessage: undefined,
@@ -58,6 +63,7 @@ export const App = () => {
 					});
 
 					setIngredients([]);
+
 					return;
 				}
 
