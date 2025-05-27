@@ -9,21 +9,36 @@ import * as PropTypes from 'prop-types';
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
 	const text =
-		ingredient.name +
-		(type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '');
+		ingredient !== null
+			? ingredient.name +
+				(type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')
+			: type !== undefined
+				? 'Добавьте булки'
+				: 'Добавьте начинку';
 
-	return ingredient ? (
+	const standardType = type === undefined;
+	const hideDragIcon = !standardType && `${styles.hide_drag_icon}`;
+
+	return (
 		<section className={`${styles.card} mt-4 mb-4`}>
-			<DragIcon></DragIcon>
-			<ConstructorElement
-				type={type}
-				isLocked={type !== undefined && true}
-				text={text}
-				price={ingredient.price}
-				alt={text}
-				thumbnail={ingredient.image_mobile}></ConstructorElement>
+			<DragIcon className={hideDragIcon}></DragIcon>
+			{ingredient !== null ? (
+				<ConstructorElement
+					type={type}
+					isLocked={!standardType}
+					text={text}
+					price={ingredient.price}
+					alt={text}
+					thumbnail={ingredient.image_mobile}></ConstructorElement>
+			) : (
+				<div
+					className={`constructor-element constructor-element_pos_${type} ${styles.empty_card}`}
+					type={type}>
+					<span>{text}</span>
+				</div>
+			)}
 		</section>
-	) : null;
+	);
 };
 
 BurgerBasketCard.propTypes = {

@@ -95,6 +95,9 @@ export const App = () => {
 		console.info(Date.now());
 
 		dispatch(getIngredients);
+		return () => {
+			console.info('РАЗМОНТИРОВАНИЕ');
+		};
 	}, []);
 
 	return (
@@ -110,10 +113,7 @@ export const App = () => {
 						ingredients={ingredients}
 						openModal={(ingredient) => openIngredientsDetail(ingredient)}
 					/>
-					<BurgerConstructor
-						ingredients={ingredients}
-						createOrder={() => createOrder()}
-					/>
+					<BurgerConstructor createOrder={() => createOrder()} />
 				</Loader>
 			</main>
 

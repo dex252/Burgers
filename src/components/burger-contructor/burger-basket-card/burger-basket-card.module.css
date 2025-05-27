@@ -3,3 +3,12 @@
 	flex-direction: row;
 	align-items: center;
 }
+
+.empty_card {
+	align-content: center;
+	text-align: center;
+}
+
+.hide_drag_icon {
+	visibility: hidden;
+}
