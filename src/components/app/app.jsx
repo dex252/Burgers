@@ -92,11 +92,9 @@ export const App = () => {
 			}
 		};
 
-		console.info(Date.now());
-
 		dispatch(getIngredients);
 		return () => {
-			console.info('РАЗМОНТИРОВАНИЕ');
+			console.info('UNMOUNT App');
 		};
 	}, []);
 

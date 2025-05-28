@@ -17,7 +17,7 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 				: 'Добавьте начинку';
 
 	const standardType = type === undefined;
-	const hideDragIcon = !standardType && `${styles.hide_drag_icon}`;
+	const hideDragIcon = !standardType ? `${styles.hide_drag_icon}` : '';
 
 	return (
 		<section className={`${styles.card} mt-4 mb-4`}>
@@ -42,6 +42,6 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 };
 
 BurgerBasketCard.propTypes = {
-	ingredient: ingredientPropType.isRequired,
+	ingredient: ingredientPropType,
 	type: PropTypes.oneOf(['top', 'bottom', undefined]),
 };
