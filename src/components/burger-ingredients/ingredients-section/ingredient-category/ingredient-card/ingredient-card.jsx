@@ -5,8 +5,14 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 import * as PropTypes from 'prop-types';
+import { useDrag } from 'react-dnd';
 
 export const IngredientCard = ({ ingredient, openModal }) => {
+	const [, dragRef] = useDrag({
+		type: 'ingredient',
+		item: ingredient,
+	});
+
 	function handleClick() {
 		console.info(ingredient);
 		openModal(ingredient);
@@ -15,6 +21,7 @@ export const IngredientCard = ({ ingredient, openModal }) => {
 	return (
 		// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
 		<section
+			ref={dragRef}
 			className={styles.ingredient_card}
 			onClick={(ingredient) => handleClick(ingredient)}>
 			{ingredient.__v > 0 && (

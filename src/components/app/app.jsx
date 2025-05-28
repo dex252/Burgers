@@ -10,6 +10,8 @@ import { IngredientDetails } from '../modals/ingredient-details/ingredient-detai
 import { CreateOrder } from '../modals/create-order/create-order.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIngredientsActions } from '../../services/store/slices/ingredients-slice.jsx';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const App = () => {
 	const dispatch = useDispatch();
@@ -107,11 +109,13 @@ export const App = () => {
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
 				<Loader loading={loading}>
-					<BurgerIngredients
-						ingredients={ingredients}
-						openModal={(ingredient) => openIngredientsDetail(ingredient)}
-					/>
-					<BurgerConstructor createOrder={() => createOrder()} />
+					<DndProvider backend={HTML5Backend}>
+						<BurgerIngredients
+							ingredients={ingredients}
+							openModal={(ingredient) => openIngredientsDetail(ingredient)}
+						/>
+						<BurgerConstructor createOrder={() => createOrder()} />
+					</DndProvider>
 				</Loader>
 			</main>
 

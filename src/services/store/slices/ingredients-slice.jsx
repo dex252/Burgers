@@ -10,7 +10,11 @@ const ingredientsSlice = createSlice({
 	initialState,
 	reducers: {
 		setIngredients(state, action) {
-			state.ingredients = action.payload;
+			state.ingredients = action.payload.map((ingredient) => ({
+				...ingredient,
+				count: 0,
+				guid: ingredient._id,
+			}));
 		},
 	},
 });

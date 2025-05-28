@@ -13,12 +13,23 @@ const basketSlice = createSlice({
 	devTools: process.env.NODE_ENV !== 'production',
 	reducers: {
 		addInBasket(state, action) {
-			state.ingredients = [...state.ingredients, action.payload];
+			const guid =
+				Date.now().toString(36) + Math.random().toString(36).substring(2);
+			state.ingredients = [
+				...state.ingredients,
+				{ ...action.payload, guid: guid },
+			];
 		},
 		removeFromBasket(state, action) {
 			state.ingredients = state.ingredients.filter(
 				(item) => item.guid !== action.payload.guid
 			);
+		},
+		setBun(state, action) {
+			state.bun = action.payload;
+		},
+		unSetBun(state, action) {
+			state.bun = action.payload;
 		},
 	},
 });
@@ -30,6 +41,8 @@ export const useBasketActions = () => {
 			dispatch(basketSlice.actions.addInBasket(payload)),
 		removeFromBasket: (payload) =>
 			dispatch(basketSlice.actions.removeFromBasket(payload)),
+		setBun: (payload) => dispatch(basketSlice.actions.setBun(payload)),
+		unSetBun: (payload) => dispatch(basketSlice.actions.unSetBun(payload)),
 	};
 };
 

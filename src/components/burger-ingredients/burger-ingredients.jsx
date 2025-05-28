@@ -7,6 +7,7 @@ import { IngredientsSection } from './ingredients-section/ingredients-section.js
 
 export const BurgerIngredients = ({ ingredients, openModal }) => {
 	const [activeTab, setActiveTab] = useState('bun');
+
 	const setActiveCategory = (type) => {
 		setActiveTab(type);
 	};

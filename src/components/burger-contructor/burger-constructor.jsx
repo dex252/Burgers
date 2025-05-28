@@ -4,31 +4,58 @@ import * as PropTypes from 'prop-types';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from './order-info/order-info';
 import { useSelector } from 'react-redux';
+import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
+import { useDrop } from 'react-dnd';
 
 export const BurgerConstructor = ({ createOrder }) => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
+
+	const { addInBasket, setBun } = useBasketActions();
+	const [{ isHover, dragItem }, dropTarget] = useDrop({
+		accept: 'ingredient',
+		collect: (monitor) => ({
+			isHover: monitor.isOver(),
+			dragItem: monitor.getItem(),
+		}),
+		drop(ingredient) {
+			if (ingredient.type === 'bun') {
+				setBun(ingredient);
+				return;
+			}
+
+			addInBasket(ingredient);
+		},
+	});
 
 	const totalPrice =
 		(bun ? Number(bun.price) * 2 : 0) +
 		ingredients.reduce((sum, i) => sum + (Number(i.price) || 0), 0);
 	var isEmpty = ingredients.length === 0;
 
-	return (
-		<section className={`${styles.burger_constructor} ml-4`}>
-			<div className={`${styles.basket_content} mb-10`}>
-				<BurgerBasketCard ingredient={bun} type='top' />
-				{isEmpty ? (
-					<BurgerBasketCard ingredient={null} />
-				) : (
-					<div className={`${styles.scroll_content}`}>
-						{ingredients.map((ingredient) => (
-							<BurgerBasketCard key={ingredient._id} ingredient={ingredient} />
-						))}
-					</div>
-				)}
+	const onHoverBun =
+		isHover & (dragItem?.type === 'bun') ? `${styles.hovered}` : '';
+	const onHoverOther =
+		isHover & (dragItem?.type !== 'bun') ? `${styles.hovered}` : '';
 
-				<BurgerBasketCard ingredient={bun} type='bottom' />
+	return (
+		<section className={`${styles.burger_constructor} ml-4`} ref={dropTarget}>
+			<div className={`${styles.basket_content} mb-10`}>
+				<div className={onHoverBun}>
+					<BurgerBasketCard ingredient={bun} type='top' />
+				</div>
+				<div className={`${styles.scroll_content} ${onHoverOther}`}>
+					{isEmpty ? (
+						<BurgerBasketCard ingredient={null} />
+					) : (
+						ingredients.map((ingredient) => (
+							<BurgerBasketCard key={ingredient.guid} ingredient={ingredient} />
+						))
+					)}
+				</div>
+				<div className={onHoverBun}>
+					<BurgerBasketCard ingredient={bun} type='bottom' />
+				</div>
 			</div>
 
 			<OrderInfo price={totalPrice} createOrder={createOrder}></OrderInfo>

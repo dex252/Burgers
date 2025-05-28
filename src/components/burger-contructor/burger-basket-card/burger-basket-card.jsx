@@ -6,8 +6,10 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import * as PropTypes from 'prop-types';
+import { useBasketActions } from '../../../services/store/slices/basket-constructor-slice';
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
+	const { removeFromBasket } = useBasketActions();
 	const text =
 		ingredient !== null
 			? ingredient.name +
@@ -19,6 +21,8 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 	const standardType = type === undefined;
 	const hideDragIcon = !standardType ? `${styles.hide_drag_icon}` : '';
 
+	const handleRemove = () => removeFromBasket(ingredient);
+
 	return (
 		<section className={`${styles.card} mt-4 mb-4`}>
 			<DragIcon className={hideDragIcon}></DragIcon>
@@ -29,7 +33,8 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 					text={text}
 					price={ingredient.price}
 					alt={text}
-					thumbnail={ingredient.image_mobile}></ConstructorElement>
+					thumbnail={ingredient.image_mobile}
+					handleClose={handleRemove}></ConstructorElement>
 			) : (
 				<div
 					className={`constructor-element constructor-element_pos_${type} ${styles.empty_card}`}
