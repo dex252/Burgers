@@ -15,4 +15,5 @@ export const ingredientPropType = PropTypes.shape({
 	__v: PropTypes.number.isRequired,
 	count: PropTypes.number,
 	guid: PropTypes.string,
+	index: PropTypes.number,
 });

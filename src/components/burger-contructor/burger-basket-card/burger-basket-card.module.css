@@ -12,3 +12,9 @@
 .hide_drag_icon {
 	visibility: hidden;
 }
+
+.hovered {
+	border-style: dashed;
+	border-color: coral;
+	border-radius: 2rem;
+}

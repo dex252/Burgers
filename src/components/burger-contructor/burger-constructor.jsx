@@ -12,6 +12,7 @@ export const BurgerConstructor = ({ createOrder }) => {
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
 
 	const { addInBasket, setBun } = useBasketActions();
+
 	const [{ isHover, dragItem }, dropTarget] = useDrop({
 		accept: 'ingredient',
 		collect: (monitor) => ({

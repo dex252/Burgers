@@ -15,9 +15,10 @@ const basketSlice = createSlice({
 		addInBasket(state, action) {
 			const guid =
 				Date.now().toString(36) + Math.random().toString(36).substring(2);
+			const index = state.ingredients.length;
 			state.ingredients = [
 				...state.ingredients,
-				{ ...action.payload, guid: guid },
+				{ ...action.payload, guid: guid, index: index },
 			];
 		},
 		removeFromBasket(state, action) {
