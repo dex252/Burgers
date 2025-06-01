@@ -9,8 +9,6 @@ const initialState = {
 const basketSlice = createSlice({
 	name: 'basket-store',
 	initialState,
-	// eslint-disable-next-line no-undef
-	devTools: process.env.NODE_ENV !== 'production',
 	reducers: {
 		addInBasket(state, action) {
 			const guid =
@@ -32,6 +30,22 @@ const basketSlice = createSlice({
 		unSetBun(state, action) {
 			state.bun = action.payload;
 		},
+		sortIngredient(state, action) {
+			const { draggedGuid, targetGuid } = action.payload;
+			const draggedIndex = state.ingredients.findIndex(
+				(item) => item.guid === draggedGuid
+			);
+			const targetIndex = state.ingredients.findIndex(
+				(item) => item.guid === targetGuid
+			);
+
+			const [movedItem] = state.ingredients.splice(draggedIndex, 1);
+			state.ingredients.splice(targetIndex, 0, movedItem);
+
+			state.ingredients.forEach((item, index) => {
+				item.index = index;
+			});
+		},
 	},
 });
 
@@ -44,6 +58,8 @@ export const useBasketActions = () => {
 			dispatch(basketSlice.actions.removeFromBasket(payload)),
 		setBun: (payload) => dispatch(basketSlice.actions.setBun(payload)),
 		unSetBun: (payload) => dispatch(basketSlice.actions.unSetBun(payload)),
+		sortIngredient: (payload) =>
+			dispatch(basketSlice.actions.sortIngredient(payload)),
 	};
 };
 

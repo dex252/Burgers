@@ -12,7 +12,7 @@ import { useIngredientsActions } from '../../../services/store/slices/ingredient
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
 	const isBun = ingredient?.type === 'bun';
-	const { removeFromBasket } = useBasketActions();
+	const { removeFromBasket, sortIngredient } = useBasketActions();
 	const { updateCount } = useIngredientsActions();
 
 	const [, dragRef] = useDrag({
@@ -25,12 +25,13 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 		collect: (monitor) => ({
 			isHover: monitor.isOver(),
 			dragItem: monitor.getItem(),
+			clientOffset: monitor.getClientOffset(),
 		}),
-		drop(ingredient) {
-			//TODO: вычислить положение курсора и вставку
-			//если ведем вверх - над элементом
-			//если ведем вниз - под элементом
-			console.info(ingredient);
+		drop(item) {
+			sortIngredient({
+				draggedGuid: item.guid,
+				targetGuid: ingredient.guid,
+			});
 		},
 	});
 

@@ -16,4 +16,8 @@ export const store = configureStore({
 	reducer: rootReducer,
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({}).concat(apiMiddleware),
+	devTools: {
+		name: 'Burgers',
+		trace: true,
+	},
 });
