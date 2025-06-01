@@ -4,14 +4,9 @@ import { Loader } from '../loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import {
-	request,
-	GET_INGREDIENTS,
-	GET_ORDER,
-} from '../../services/api/yandex_api.jsx';
+import { request, GET_INGREDIENTS } from '../../services/api/yandex_api.jsx';
 import { Modal } from '../modals/shared/modal.jsx';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
-import { CreateOrder } from '../modals/create-order/create-order.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIngredientsActions } from '../../services/store/slices/ingredients-slice.jsx';
 import { DndProvider } from 'react-dnd';
@@ -42,51 +37,6 @@ export const App = () => {
 			content: <IngredientDetails ingredient={ingredient} />,
 			isOpen: true,
 		});
-	};
-
-	const createOrder = () => {
-		const getOrderNumber = async () => {
-			const basketContent = [];
-			ingredients.forEach((item) => {
-				if (item?.count > 0) {
-					for (let i = 0; i < item.count; i++) {
-						basketContent.push(item._id);
-					}
-				}
-			});
-			try {
-				var response = await request(GET_ORDER, 'post', {
-					ingredients: basketContent,
-				});
-				setModalContent({
-					header: '',
-					content: <CreateOrder orderNumber={response.order.number} />,
-					isOpen: true,
-				});
-			} catch (error) {
-				setModalContent({
-					header: '',
-					content: (
-						<Loader
-							loading={{
-								isSpinner: false,
-								isErrorMessage: error.message,
-								isError: true,
-							}}
-						/>
-					),
-					isOpen: true,
-				});
-			}
-		};
-
-		setModalContent({
-			header: '',
-			content: <Loader loading={{ isSpinner: true }} />,
-			isOpen: true,
-		});
-
-		dispatch(getOrderNumber);
 	};
 
 	const closeModal = (e) => {
@@ -155,7 +105,7 @@ export const App = () => {
 							ingredients={ingredients}
 							openModal={(ingredient) => openIngredientsDetail(ingredient)}
 						/>
-						<BurgerConstructor createOrder={() => createOrder()} />
+						<BurgerConstructor />
 					</DndProvider>
 				</Loader>
 			</main>

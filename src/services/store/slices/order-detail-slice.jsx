@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 const initialState = {
-	price: 0,
+	name: null,
 	orderId: 0,
 };
 
@@ -11,7 +11,7 @@ const orderSlice = createSlice({
 	initialState,
 	reducers: {
 		setOrder(state, action) {
-			state.price = action.payload.price;
+			state.name = action.payload.name;
 			state.orderId = action.payload.orderId;
 		},
 	},

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
-import * as PropTypes from 'prop-types';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from './order-info/order-info';
 import { useSelector } from 'react-redux';
@@ -8,7 +7,7 @@ import { useBasketActions } from '../../services/store/slices/basket-constructor
 import { useDrop } from 'react-dnd';
 import { useIngredientsActions } from '../../services/store/slices/ingredients-slice';
 
-export const BurgerConstructor = ({ createOrder }) => {
+export const BurgerConstructor = () => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
 
@@ -75,11 +74,7 @@ export const BurgerConstructor = ({ createOrder }) => {
 				</div>
 			</div>
 
-			<OrderInfo price={totalPrice} createOrder={createOrder}></OrderInfo>
+			<OrderInfo price={totalPrice}></OrderInfo>
 		</section>
 	);
-};
-
-BurgerConstructor.propTypes = {
-	createOrder: PropTypes.func,
 };
