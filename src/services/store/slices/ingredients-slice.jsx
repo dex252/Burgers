@@ -16,6 +16,14 @@ const ingredientsSlice = createSlice({
 				guid: ingredient._id,
 			}));
 		},
+		updateCount(state, action) {
+			const { id, delta } = action.payload;
+			const index = state.ingredients.findIndex((item) => item._id === id);
+			if (index !== -1) {
+				const ingredient = state.ingredients[index];
+				ingredient.count = ingredient.count + delta;
+			}
+		},
 	},
 });
 
@@ -24,6 +32,8 @@ export const useIngredientsActions = () => {
 	return {
 		setIngredients: (payload) =>
 			dispatch(ingredientsSlice.actions.setIngredients(payload)),
+		updateCount: (payload) =>
+			dispatch(ingredientsSlice.actions.updateCount(payload)),
 	};
 };
 

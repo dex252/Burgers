@@ -8,10 +8,13 @@ import {
 import * as PropTypes from 'prop-types';
 import { useBasketActions } from '../../../services/store/slices/basket-constructor-slice';
 import { useDrag, useDrop } from 'react-dnd';
+import { useIngredientsActions } from '../../../services/store/slices/ingredients-slice';
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
 	const isBun = ingredient?.type === 'bun';
 	const { removeFromBasket } = useBasketActions();
+	const { updateCount } = useIngredientsActions();
+
 	const [, dragRef] = useDrag({
 		type: 'basket',
 		item: ingredient,
@@ -42,9 +45,13 @@ export const BurgerBasketCard = ({ ingredient, type }) => {
 	const standardType = type === undefined;
 	const hideDragIcon = !standardType ? `${styles.hide_drag_icon}` : '';
 
-	const handleRemove = () => removeFromBasket(ingredient);
+	const handleRemove = () => {
+		updateCount({ id: ingredient._id, delta: -1 });
+		removeFromBasket(ingredient);
+	};
+
 	const onHover =
-		isHover & (dragItem?.type !== 'bun') & (dragItem?.guid !== ingredient.guid)
+		isHover & (dragItem?.type !== 'bun') & (dragItem?.guid !== ingredient?.guid)
 			? `${styles.hovered}`
 			: '';
 

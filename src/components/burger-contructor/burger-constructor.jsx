@@ -6,12 +6,14 @@ import { OrderInfo } from './order-info/order-info';
 import { useSelector } from 'react-redux';
 import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
 import { useDrop } from 'react-dnd';
+import { useIngredientsActions } from '../../services/store/slices/ingredients-slice';
 
 export const BurgerConstructor = ({ createOrder }) => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
 
 	const { addInBasket, setBun } = useBasketActions();
+	const { updateCount } = useIngredientsActions();
 
 	const [{ isHover, dragItem }, dropTarget] = useDrop({
 		accept: 'ingredient',
@@ -20,12 +22,23 @@ export const BurgerConstructor = ({ createOrder }) => {
 			dragItem: monitor.getItem(),
 		}),
 		drop(ingredient) {
-			if (ingredient.type === 'bun') {
-				setBun(ingredient);
+			if (ingredient.type !== 'bun') {
+				updateCount({ id: ingredient._id, delta: 1 });
+				addInBasket(ingredient);
 				return;
 			}
 
-			addInBasket(ingredient);
+			if (bun?._id == ingredient._id) {
+				return;
+			}
+
+			if (bun != undefined) {
+				updateCount({ id: bun._id, delta: -2 });
+			}
+
+			setBun(ingredient);
+			updateCount({ id: ingredient._id, delta: 2 });
+			return;
 		},
 	});
 

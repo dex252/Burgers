@@ -24,9 +24,9 @@ export const IngredientCard = ({ ingredient, openModal }) => {
 			ref={dragRef}
 			className={styles.ingredient_card}
 			onClick={(ingredient) => handleClick(ingredient)}>
-			{ingredient.__v > 0 && (
+			{ingredient.count > 0 && (
 				<Counter
-					count={ingredient.__v}
+					count={ingredient.count}
 					size='default'
 					extraClass={`${styles.counter} mr-1`}></Counter>
 			)}
