@@ -4,26 +4,18 @@ import { Loader } from '../loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import { request, GET_INGREDIENTS } from '../../services/api/yandex_api.jsx';
 import { Modal } from '../modals/shared/modal.jsx';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIngredientsActions } from '../../services/store/slices/ingredients-slice.jsx';
+import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const App = () => {
 	const dispatch = useDispatch();
-	const { setIngredients } = useIngredientsActions();
-	const ingredients = useSelector(
-		(state) => state.IngredientsReducer.ingredients
+	const { ingredients, loading } = useSelector(
+		(state) => state.IngredientsReducer
 	);
-
-	const [loading, setLoading] = useState({
-		isError: false,
-		isErrorMessage: undefined,
-		isSpinner: false,
-	});
 
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -45,47 +37,7 @@ export const App = () => {
 	};
 
 	useEffect(() => {
-		const failed = (error) => {
-			setLoading({
-				isError: true,
-				isSpinner: false,
-				isErrorMessage: error.message,
-			});
-		};
-
-		const success = (response) => {
-			if (!response.success) {
-				setLoading({
-					isError: true,
-					isSpinner: false,
-					isErrorMessage: response.data,
-				});
-
-				setIngredients([]);
-
-				return;
-			}
-
-			setLoading({
-				isError: false,
-				isSpinner: false,
-				isErrorMessage: undefined,
-			});
-
-			setIngredients(response.data);
-		};
-
-		const getIngredients = async () => {
-			setLoading({ isError: false, isSpinner: true });
-			try {
-				var response = await request(GET_INGREDIENTS);
-				success(response);
-			} catch (error) {
-				failed(error);
-			}
-		};
-
-		dispatch(getIngredients);
+		dispatch(setIngredients());
 		return () => {
 			console.info('UNMOUNT App');
 		};

@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+export const _REQUEST = '_REQUEST';
+export const _SUCCESS = '_SUCCESS';
+export const _ERROR = '_ERROR';
+
 const YANDEX_API = 'https://norma.nomoreparties.space';
 export const GET_INGREDIENTS = '/api/ingredients';
 export const GET_ORDER = '/api/orders';
