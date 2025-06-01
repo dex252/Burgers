@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './order-info.module.css';
 import * as PropTypes from 'prop-types';
 import {
@@ -9,16 +9,14 @@ import { Modal } from '../../modals/shared/modal.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { CreateOrder } from '../../modals/create-order/create-order.jsx';
 import { Loader } from '../../loader/loader.jsx';
-import { request, GET_ORDER } from '../../../services/api/yandex_api.jsx';
-import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
+import { getOrder } from '../../../services/store/slices/order-detail-slice.jsx';
 
 export const OrderInfo = ({ price }) => {
 	const dispatch = useDispatch();
 	const ingredients = useSelector(
 		(state) => state.IngredientsReducer.ingredients
 	);
-
-	const { setOrder } = useOrderActions();
+	const { orderId, loading } = useSelector((state) => state.OrderReducer);
 	const [modalContent, setModalContent] = useState({
 		header: null,
 		content: null,
@@ -30,51 +28,56 @@ export const OrderInfo = ({ price }) => {
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
 
-	const createOrder = () => {
-		const getOrderNumber = async () => {
-			const basketContent = [];
-			ingredients.forEach((item) => {
-				if (item?.count > 0) {
-					for (let i = 0; i < item.count; i++) {
-						basketContent.push(item._id);
-					}
-				}
-			});
-			try {
-				var response = await request(GET_ORDER, 'post', {
-					ingredients: basketContent,
-				});
-				setModalContent({
-					header: '',
-					content: <CreateOrder orderNumber={response.order.number} />,
-					isOpen: true,
-				});
-				setOrder({ name: response?.name, orderId: response?.order?.number });
-			} catch (error) {
-				setModalContent({
-					header: '',
-					content: (
-						<Loader
-							loading={{
-								isSpinner: false,
-								isErrorMessage: error.message,
-								isError: true,
-							}}
-						/>
-					),
-					isOpen: true,
-				});
-				setOrder({ name: null, orderId: 0 });
-			}
-		};
+	useEffect(() => {
+		if (loading.isRequested) {
+			return;
+		}
 
+		if (loading.isError === true) {
+			setModalContent({
+				header: '',
+				content: (
+					<Loader
+						loading={{
+							isSpinner: false,
+							isErrorMessage: loading.isErrorMessage,
+							isError: true,
+						}}
+					/>
+				),
+				isOpen: true,
+			});
+
+			return;
+		}
+
+		setModalContent({
+			header: '',
+			content: <CreateOrder orderNumber={orderId} />,
+			isOpen: true,
+		});
+
+		return () => {
+			console.info('UNMOUNT OrderInfo');
+		};
+	}, [loading, orderId]);
+
+	const createOrder = () => {
 		setModalContent({
 			header: '',
 			content: <Loader loading={{ isSpinner: true }} />,
 			isOpen: true,
 		});
 
-		dispatch(getOrderNumber);
+		const basketContent = [];
+		ingredients.forEach((item) => {
+			if (item?.count > 0) {
+				for (let i = 0; i < item.count; i++) {
+					basketContent.push(item._id);
+				}
+			}
+		});
+		dispatch(getOrder(basketContent));
 	};
 
 	return (
