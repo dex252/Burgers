@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import * as PropTypes from 'prop-types';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
@@ -42,9 +42,12 @@ export const BurgerConstructor = ({ createOrder }) => {
 		},
 	});
 
-	const totalPrice =
-		(bun ? Number(bun.price) * 2 : 0) +
-		ingredients.reduce((sum, i) => sum + (Number(i.price) || 0), 0);
+	const totalPrice = useMemo(() => {
+		return (
+			(bun ? Number(bun.price) * 2 : 0) +
+			ingredients.reduce((sum, i) => sum + (Number(i.price) || 0), 0)
+		);
+	}, [bun, ingredients]);
 	var isEmpty = ingredients.length === 0;
 
 	const onHoverBun =
