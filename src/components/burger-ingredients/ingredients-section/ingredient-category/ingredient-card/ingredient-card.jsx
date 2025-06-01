@@ -1,3 +1,4 @@
+import { useDetailsActions } from '../../../../../services/store/slices/ingredient-details-slice';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	CurrencyIcon,
@@ -8,6 +9,8 @@ import * as PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 
 export const IngredientCard = ({ ingredient, openModal }) => {
+	const { setIngredient } = useDetailsActions();
+
 	const [, dragRef] = useDrag({
 		type: 'ingredient',
 		item: ingredient,
@@ -16,6 +19,7 @@ export const IngredientCard = ({ ingredient, openModal }) => {
 	function handleClick() {
 		console.info(ingredient);
 		openModal(ingredient);
+		setIngredient(ingredient);
 	}
 
 	return (

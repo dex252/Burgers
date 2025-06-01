@@ -13,7 +13,7 @@ const ingredientsSlice = createSlice({
 			state.ingredients = action.payload.map((ingredient) => ({
 				...ingredient,
 				count: 0,
-				guid: ingredient._id,
+				guid: '',
 			}));
 		},
 		updateCount(state, action) {

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
 const initialState = {
-	ingredient: {},
+	ingredient: null,
 };
 
 const detailSlice = createSlice({
