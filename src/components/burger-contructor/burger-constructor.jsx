@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from './order-info/order-info';
@@ -10,9 +10,10 @@ import { useIngredientsActions } from '../../services/store/slices/ingredients-s
 export const BurgerConstructor = () => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
+	const isChange = useSelector((state) => state.OrderReducer.isChange);
 
-	const { addInBasket, setBun } = useBasketActions();
-	const { updateCount } = useIngredientsActions();
+	const { addInBasket, setBun, clearBasket } = useBasketActions();
+	const { updateCount, clearCounts } = useIngredientsActions();
 
 	const [{ isHover, dragItem }, dropTarget] = useDrop({
 		accept: 'ingredient',
@@ -43,6 +44,11 @@ export const BurgerConstructor = () => {
 			return;
 		},
 	});
+
+	useEffect(() => {
+		clearBasket();
+		clearCounts();
+	}, [isChange]);
 
 	const totalPrice = useMemo(() => {
 		return (

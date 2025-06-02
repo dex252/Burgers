@@ -22,6 +22,10 @@ const basketSlice = createSlice({
 				(item) => item.guid !== action.payload.guid
 			);
 		},
+		clearBasket(state) {
+			state.ingredients = [];
+			state.bun = null;
+		},
 		setBun(state, action) {
 			state.bun = action.payload;
 		},
@@ -61,6 +65,8 @@ export const useBasketActions = () => {
 		unSetBun: (payload) => dispatch(basketSlice.actions.unSetBun(payload)),
 		sortIngredient: (payload) =>
 			dispatch(basketSlice.actions.sortIngredient(payload)),
+		clearBasket: (payload) =>
+			dispatch(basketSlice.actions.clearBasket(payload)),
 	};
 };
 

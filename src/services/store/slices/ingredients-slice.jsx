@@ -30,6 +30,12 @@ const ingredientsSlice = createSlice({
 				),
 			};
 		},
+		clearCounts(state) {
+			return {
+				...state,
+				ingredients: state.ingredients.map((item) => ({ ...item, count: 0 })),
+			};
+		},
 		[_REQUEST]: (state) => {
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
@@ -72,6 +78,8 @@ export const useIngredientsActions = () => {
 	return {
 		updateCount: (payload) =>
 			dispatch(ingredientsSlice.actions.updateCount(payload)),
+		clearCounts: (payload) =>
+			dispatch(ingredientsSlice.actions.clearCounts(payload)),
 	};
 };
 

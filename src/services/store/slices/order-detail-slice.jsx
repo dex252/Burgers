@@ -16,6 +16,7 @@ const initialState = {
 		isErrorMessage: undefined,
 		isRequested: true,
 	},
+	isChange: false,
 };
 
 const orderSlice = createSlice({
@@ -34,6 +35,7 @@ const orderSlice = createSlice({
 			state.name = action.payload.name;
 			state.orderId = action.payload.order.number;
 			state.loading.isRequested = false;
+			state.isChange = !state.isChange;
 		},
 		[_ERROR]: (state, action) => {
 			state.loading.isErrorMessage = action.payload;
