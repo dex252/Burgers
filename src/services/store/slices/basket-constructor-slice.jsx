@@ -30,19 +30,22 @@ const basketSlice = createSlice({
 		},
 		sortIngredient(state, action) {
 			const { draggedGuid, targetGuid } = action.payload;
-			const draggedIndex = state.ingredients.findIndex(
-				(item) => item.guid === draggedGuid
-			);
-			const targetIndex = state.ingredients.findIndex(
-				(item) => item.guid === targetGuid
-			);
+			const сopy = [...state.ingredients];
 
-			const [movedItem] = state.ingredients.splice(draggedIndex, 1);
-			state.ingredients.splice(targetIndex, 0, movedItem);
+			const draggedIndex = сopy.findIndex((item) => item.guid === draggedGuid);
+			const targetIndex = сopy.findIndex((item) => item.guid === targetGuid);
 
-			state.ingredients.forEach((item, index) => {
-				item.index = index;
-			});
+			const [movedItem] = сopy.splice(draggedIndex, 1);
+			const updated = [
+				...сopy.slice(0, targetIndex),
+				movedItem,
+				...сopy.slice(targetIndex),
+			];
+
+			state.ingredients = updated.map((item, index) => ({
+				...item,
+				index: index,
+			}));
 		},
 	},
 });
