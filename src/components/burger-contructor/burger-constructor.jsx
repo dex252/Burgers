@@ -23,7 +23,10 @@ export const BurgerConstructor = () => {
 		drop(ingredient) {
 			if (ingredient.type !== 'bun') {
 				updateCount({ id: ingredient._id, delta: 1 });
-				addInBasket(ingredient);
+				const guid =
+					Date.now().toString(36) + Math.random().toString(36).substring(2);
+				const index = ingredients.length;
+				addInBasket({ ingredient, guid, index });
 				return;
 			}
 
