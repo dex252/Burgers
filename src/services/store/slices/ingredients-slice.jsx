@@ -35,11 +35,7 @@ const ingredientsSlice = createSlice({
 		},
 		[_SUCCESS]: (state, action) => {
 			state.loading.isSpinner = false;
-			state.ingredients = action.payload.map((ingredient) => ({
-				...ingredient,
-				count: 0,
-				guid: '',
-			}));
+			state.ingredients = action.payload;
 		},
 		[_ERROR]: (state, action) => {
 			state.loading.isSpinner = false;
@@ -58,7 +54,12 @@ export const setIngredients = () => (dispatch) => {
 				dispatch(ingredientsSlice.actions[_ERROR](response.data));
 				return;
 			}
-			dispatch(ingredientsSlice.actions[_SUCCESS](response.data));
+			const ingredients = response.data.map((ingredient) => ({
+				...ingredient,
+				count: 0,
+				guid: '',
+			}));
+			dispatch(ingredientsSlice.actions[_SUCCESS](ingredients));
 		})
 		.catch((error) => {
 			dispatch(ingredientsSlice.actions[_ERROR](error.message));
