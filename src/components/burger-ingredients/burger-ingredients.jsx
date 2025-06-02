@@ -1,13 +1,12 @@
 import { React, useState } from 'react';
 import styles from './burger-ingredients.module.css';
-import * as PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
+import { useSelector } from 'react-redux';
 
-export const BurgerIngredients = ({ ingredients, openModal }) => {
+export const BurgerIngredients = ({ openModal }) => {
 	const [activeTab, setActiveTab] = useState('bun');
-
+	const { ingredients } = useSelector((state) => state.IngredientsReducer);
 	const setActiveCategory = (type) => {
 		setActiveTab(type);
 	};
@@ -35,8 +34,4 @@ export const BurgerIngredients = ({ ingredients, openModal }) => {
 				}></IngredientsSection>
 		</section>
 	);
-};
-
-BurgerIngredients.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

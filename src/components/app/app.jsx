@@ -13,9 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const App = () => {
 	const dispatch = useDispatch();
-	const { ingredients, loading } = useSelector(
-		(state) => state.IngredientsReducer
-	);
+	const { loading } = useSelector((state) => state.IngredientsReducer);
 
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -54,7 +52,6 @@ export const App = () => {
 				<Loader loading={loading}>
 					<DndProvider backend={HTML5Backend}>
 						<BurgerIngredients
-							ingredients={ingredients}
 							openModal={(ingredient) => openIngredientsDetail(ingredient)}
 						/>
 						<BurgerConstructor />
