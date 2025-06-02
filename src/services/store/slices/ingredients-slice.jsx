@@ -23,11 +23,12 @@ const ingredientsSlice = createSlice({
 	reducers: {
 		updateCount(state, action) {
 			const { id, delta } = action.payload;
-			const index = state.ingredients.findIndex((item) => item._id === id);
-			if (index !== -1) {
-				const ingredient = state.ingredients[index];
-				ingredient.count = ingredient.count + delta;
-			}
+			return {
+				...state,
+				ingredients: state.ingredients.map((item) =>
+					item._id === id ? { ...item, count: item.count + delta } : item
+				),
+			};
 		},
 		[_REQUEST]: (state) => {
 			state.loading.isSpinner = true;
