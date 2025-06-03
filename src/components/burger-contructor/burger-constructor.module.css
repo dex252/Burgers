@@ -15,3 +15,9 @@
 .scroll_content {
 	overflow-y: auto;
 }
+
+.hovered {
+	border-style: dashed;
+	border-color: darkseagreen;
+	border-radius: 2rem;
+}

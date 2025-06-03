@@ -1,3 +1,4 @@
+import { useDetailsActions } from '../../../../../services/store/slices/ingredient-details-slice';
 import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	CurrencyIcon,
@@ -5,21 +6,31 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 import * as PropTypes from 'prop-types';
+import { useDrag } from 'react-dnd';
 
 export const IngredientCard = ({ ingredient, openModal }) => {
+	const { setIngredient } = useDetailsActions();
+
+	const [, dragRef] = useDrag({
+		type: 'ingredient',
+		item: ingredient,
+	});
+
 	function handleClick() {
 		console.info(ingredient);
 		openModal(ingredient);
+		setIngredient(ingredient);
 	}
 
 	return (
 		// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
 		<section
+			ref={dragRef}
 			className={styles.ingredient_card}
 			onClick={(ingredient) => handleClick(ingredient)}>
-			{ingredient.__v > 0 && (
+			{ingredient.count > 0 && (
 				<Counter
-					count={ingredient.__v}
+					count={ingredient.count}
 					size='default'
 					extraClass={`${styles.counter} mr-1`}></Counter>
 			)}

@@ -1,22 +1,19 @@
 import { React, useState, useEffect } from 'react';
 import styles from './app.module.css';
-//import { ingredients } from '@utils/ingredients.js';
 import { Loader } from '../loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import { getIngredients } from '../../services/yandex_api.jsx';
 import { Modal } from '../modals/shared/modal.jsx';
 import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
-import { CreateOrder } from '../modals/create-order/create-order.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export const App = () => {
-	const [ingredients, setIngredients] = useState([]);
-	const [loading, setLoading] = useState({
-		isError: false,
-		isErrorMessage: undefined,
-		isSpinner: false,
-	});
+	const dispatch = useDispatch();
+	const { loading } = useSelector((state) => state.IngredientsReducer);
 
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -32,51 +29,16 @@ export const App = () => {
 		});
 	};
 
-	const createOrder = () => {
-		setModalContent({
-			header: '',
-			content: <CreateOrder orderNumber='034536' />,
-			isOpen: true,
-		});
-	};
-
 	const closeModal = (e) => {
 		console.info(e);
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
 
 	useEffect(() => {
-		const ingredients = async () => {
-			try {
-				setLoading({ isError: false, isSpinner: true });
-				const response = await getIngredients();
-				if (!response.success) {
-					setLoading({
-						isError: true,
-						isSpinner: false,
-						isErrorMessage: response.data,
-					});
-
-					setIngredients([]);
-					return;
-				}
-
-				setLoading({
-					isError: false,
-					isSpinner: false,
-					isErrorMessage: undefined,
-				});
-
-				setIngredients(response.data);
-			} catch (error) {
-				setLoading({
-					isError: true,
-					isSpinner: false,
-					isErrorMessage: error.message,
-				});
-			}
+		dispatch(setIngredients());
+		return () => {
+			console.info('UNMOUNT App');
 		};
-		ingredients();
 	}, []);
 
 	return (
@@ -88,14 +50,12 @@ export const App = () => {
 			</h1>
 			<main className={`${styles.main} pl-5 pr-5`}>
 				<Loader loading={loading}>
-					<BurgerIngredients
-						ingredients={ingredients}
-						openModal={(ingredient) => openIngredientsDetail(ingredient)}
-					/>
-					<BurgerConstructor
-						ingredients={ingredients}
-						createOrder={() => createOrder()}
-					/>
+					<DndProvider backend={HTML5Backend}>
+						<BurgerIngredients
+							openModal={(ingredient) => openIngredientsDetail(ingredient)}
+						/>
+						<BurgerConstructor />
+					</DndProvider>
 				</Loader>
 			</main>
 
