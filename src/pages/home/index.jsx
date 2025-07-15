@@ -3,7 +3,6 @@ import styles from './index.module.css';
 import { Loader } from '../../components/loader/loader.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
 import { Modal } from '../../components/modals/shared/modal.jsx';
 import { IngredientDetails } from '../../components/modals/ingredient-details/ingredient-details.jsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,23 +41,23 @@ export function HomePage() {
 	}, []);
 
 	return (
-		<div className={styles.app}>
-			<AppHeader />
+		<div className={styles.container}>
 			<h1
 				className={`${styles.title} text text_type_main-large mt-10 mr-5 pl-5`}>
 				Соберите бургер
 			</h1>
-			<main className={`${styles.main} pl-5 pr-5`}>
-				<Loader loading={loading}>
-					<DndProvider backend={HTML5Backend}>
-						<BurgerIngredients
-							openModal={(ingredient) => openIngredientsDetail(ingredient)}
-						/>
-						<BurgerConstructor />
-					</DndProvider>
-				</Loader>
-			</main>
-
+			<div className={styles.content_wrapper}>
+				<main className={`${styles.main} pl-5 pr-5`}>
+					<Loader loading={loading}>
+						<DndProvider backend={HTML5Backend}>
+							<BurgerIngredients
+								openModal={(ingredient) => openIngredientsDetail(ingredient)}
+							/>
+							<BurgerConstructor />
+						</DndProvider>
+					</Loader>
+				</main>
+			</div>
 			{modalContent.isOpen && (
 				<Modal header={modalContent.header} onClose={(e) => closeModal(e)}>
 					{modalContent.content}
