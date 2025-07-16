@@ -17,3 +17,10 @@ export const ingredientPropType = PropTypes.shape({
 	guid: PropTypes.string,
 	index: PropTypes.number,
 });
+
+export const loadingPropType = PropTypes.shape({
+	isSpinner: PropTypes.bool.isRequired,
+	isError: PropTypes.bool.isRequired,
+	withContent: PropTypes.bool,
+	isErrorMessage: PropTypes.string,
+});
