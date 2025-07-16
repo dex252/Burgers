@@ -54,8 +54,32 @@ const authSlice = createSlice({
 const login = (email, password) => async (dispatch) => {
 	dispatch(authSlice.actions[_REQUEST]());
 	return await Auth.login(email, password)
-		.then((e) => {
-			console.info(e); //сохранить токены
+		.then((data) => {
+			const { accessToken, refreshToken, success, user } = data;
+			console.info(accessToken);
+			console.info(refreshToken);
+			console.info(success);
+			console.info(user);
+			console.info(data); //сохранить токены
+			dispatch(authSlice.actions[_SUCCESS]());
+			return true;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return false;
+		});
+};
+
+const register = (email, password, name) => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.register(email, password, name)
+		.then((data) => {
+			const { accessToken, refreshToken, success, user } = data;
+			console.info(accessToken);
+			console.info(refreshToken);
+			console.info(success);
+			console.info(user);
+
 			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
 		})
@@ -69,6 +93,8 @@ export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
 		login: (email, password) => dispatch(login(email, password)),
+		register: (email, password, name) =>
+			dispatch(register(email, password, name)),
 		// updateCount: (payload) => dispatch(authSlice.actions.updateCount(payload)),
 		// clearCounts: (payload) => dispatch(authSlice.actions.clearCounts(payload)),
 	};
