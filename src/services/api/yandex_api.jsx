@@ -8,13 +8,18 @@ const YANDEX_API = 'https://norma.nomoreparties.space';
 
 export const GET_INGREDIENTS = '/api/ingredients';
 export const GET_ORDER = '/api/orders';
-export const LOGIN = '/api/orders';
-export const REGISTER = '/api/orders';
-export const LOGOUT = '/api/orders';
-export const GET_TOKEN = '/api/orders';
+export const LOGIN = '/api/auth/login';
+export const REGISTER = '/api/auth/register';
+export const LOGOUT = '/api/auth/logout';
+export const GET_TOKEN = '/api/auth/token';
 export const GET_USER_DATA = '/api/auth/user';
+export const REFRESH_USER_DATA = '/api/auth/user';
 
 const api = axios.create({ baseURL: YANDEX_API });
+
+export const Auth = {
+	login: async (email, password) => login(email, password),
+};
 
 export const request = async (
 	url,
@@ -98,6 +103,30 @@ const getAuth = async (
 		.catch((e) => {
 			if (e.response && e.response.data && e.response.data.message) {
 				throw new Error(e.response.data.message);
+			}
+
+			throw new Error(e.message);
+		});
+};
+
+const login = async (email, password) => {
+	await api
+		.request({
+			method: 'post',
+			url: LOGIN,
+			data: {
+				email: email,
+				password: password,
+			},
+		})
+		.catch((e) => {
+			if (
+				e.response &&
+				e.response.status &&
+				e.response.data &&
+				e.response.data.message
+			) {
+				throw new Error(`${e.status} - ${e.response.data.message}`);
 			}
 
 			throw new Error(e.message);

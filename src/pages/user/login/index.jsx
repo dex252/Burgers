@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
 	EmailInput,
 	PasswordInput,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../../components/loader/loader';
+import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function LoginPage() {
+	const navigate = useNavigate();
+	const { login } = useAuthActions();
+	const { loading } = useSelector((state) => state.AuthReducer);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 
@@ -18,48 +25,76 @@ export function LoginPage() {
 		setPassword(e.target.value);
 	};
 
+	const onEnter = async () => {
+		let isSuccess = await login(emailValue, passwordValue);
+		if (!isSuccess) {
+			return;
+		}
+
+		navigate('/');
+	};
+
+	const onRegistration = () => {
+		navigate('/register');
+	};
+
+	const onForgotPassword = () => {
+		navigate('/forgot-password');
+	};
+
 	return (
 		<section className={styles.content}>
-			<div style={{ display: 'flex', flexDirection: 'column' }}>
-				<h1 className={`${styles.title} text text_type_main-medium pb-6`}>
-					Вход
-				</h1>
-				<EmailInput
-					onChange={onChangeEmail}
-					value={emailValue}
-					name={'email'}
-					placeholder='Email'
-					isIcon={false}
-					extraClass='pb-6'
-				/>
-				<PasswordInput
-					onChange={onChangePassword}
-					value={passwordValue}
-					name={'password'}
-					extraClass='pb-6'
-				/>
-				<Button
-					htmlType='button'
-					type='primary'
-					size='large'
-					extraClass={`${styles.enter_button} mb-20`}>
-					Войти
-				</Button>
-				<div className={`${styles.content_action} mb-4`}>
-					<p className='text text_type_main-default'>
-						Вы - новый пользователь?
-					</p>
-					<Button htmlType='button' type='secondary' size='medium'>
-						Зарегестрироваться
+			<Loader loading={loading}>
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<h1 className={`${styles.title} text text_type_main-medium pb-6`}>
+						Вход
+					</h1>
+					<EmailInput
+						onChange={onChangeEmail}
+						value={emailValue}
+						name={'email'}
+						placeholder='Email'
+						isIcon={false}
+						extraClass='pb-6'
+					/>
+					<PasswordInput
+						onChange={onChangePassword}
+						value={passwordValue}
+						name={'password'}
+						extraClass='pb-6'
+					/>
+					<Button
+						htmlType='button'
+						type='primary'
+						size='large'
+						onClick={onEnter}
+						extraClass={`${styles.enter_button} mb-20`}>
+						Войти
 					</Button>
+					<div className={`${styles.content_action} mb-4`}>
+						<p className='text text_type_main-default'>
+							Вы - новый пользователь?
+						</p>
+						<Button
+							htmlType='button'
+							type='secondary'
+							size='medium'
+							onClick={onRegistration}>
+							Зарегестрироваться
+						</Button>
+					</div>
+					<div className={styles.content_action}>
+						<p className='text text_type_main-default'>Забыли пароль?</p>
+						<Button
+							htmlType='button'
+							type='secondary'
+							size='medium'
+							onClick={onForgotPassword}>
+							Восстановить пароль
+						</Button>
+					</div>
 				</div>
-				<div className={styles.content_action}>
-					<p className='text text_type_main-default'>Забыли пароль?</p>
-					<Button htmlType='button' type='secondary' size='medium'>
-						Восстановить пароль
-					</Button>
-				</div>
-			</div>
+			</Loader>
 		</section>
 	);
 }
