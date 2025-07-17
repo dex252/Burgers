@@ -64,7 +64,7 @@ export function RegisterPage() {
 						onChange={onChangeEmail}
 						value={emailValue}
 						name={'email'}
-						placeholder='Email'
+						placeholder='E-mail'
 						isIcon={false}
 						extraClass='pb-6'
 					/>
@@ -79,7 +79,7 @@ export function RegisterPage() {
 						type='primary'
 						size='large'
 						onClick={onRegistration}
-						extraClass={`${styles.enter_button} mb-20`}>
+						extraClass={`${styles.register_button} mb-20`}>
 						Зарегестрироваться
 					</Button>
 					<div className={`${styles.content_action} mb-4`}>
