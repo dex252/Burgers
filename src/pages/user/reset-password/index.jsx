@@ -63,7 +63,9 @@ export function ResetPasswordPage() {
 						Сохранить
 					</Button>
 					<div className={styles.content_action}>
-						<p className='text text_type_main-default'>Вспомнили пароль?</p>
+						<p className='text text_type_main-default text_color_inactive'>
+							Вспомнили пароль?
+						</p>
 						<Button
 							htmlType='button'
 							type='secondary'

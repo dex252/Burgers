@@ -72,7 +72,7 @@ export function LoginPage() {
 						Войти
 					</Button>
 					<div className={`${styles.content_action} mb-4`}>
-						<p className='text text_type_main-default'>
+						<p className='text text_type_main-default text_color_inactive'>
 							Вы - новый пользователь?
 						</p>
 						<Button
@@ -84,7 +84,9 @@ export function LoginPage() {
 						</Button>
 					</div>
 					<div className={styles.content_action}>
-						<p className='text text_type_main-default'>Забыли пароль?</p>
+						<p className='text text_type_main-default text_color_inactive'>
+							Забыли пароль?
+						</p>
 						<Button
 							htmlType='button'
 							type='secondary'

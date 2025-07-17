@@ -49,7 +49,9 @@ export function ForgotPasswordPage() {
 						Восстановить
 					</Button>
 					<div className={`${styles.content_action} mb-4`}>
-						<p className='text text_type_main-default'>Вспомнили пароль?</p>
+						<p className='text text_type_main-default text_color_inactive'>
+							Вспомнили пароль?
+						</p>
 						<Button
 							htmlType='button'
 							type='secondary'

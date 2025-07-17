@@ -83,7 +83,9 @@ export function RegisterPage() {
 						Зарегестрироваться
 					</Button>
 					<div className={`${styles.content_action} mb-4`}>
-						<p className='text text_type_main-default'>Уже зарегестрированы?</p>
+						<p className='text text_type_main-default text_color_inactive'>
+							Уже зарегестрированы?
+						</p>
 						<Button
 							htmlType='button'
 							type='secondary'
