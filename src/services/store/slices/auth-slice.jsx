@@ -49,6 +49,8 @@ const login = (email, password) => async (dispatch) => {
 			const { accessToken, refreshToken, success, user } = data;
 
 			if (success !== true) {
+				localStorage.clear('accessToken');
+				localStorage.clear('refreshToken');
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
@@ -61,6 +63,8 @@ const login = (email, password) => async (dispatch) => {
 			return true;
 		})
 		.catch((e) => {
+			localStorage.clear('accessToken');
+			localStorage.clear('refreshToken');
 			dispatch(authSlice.actions[_ERROR](e.message));
 			return false;
 		});
@@ -73,6 +77,8 @@ const register = (email, password, name) => async (dispatch) => {
 			const { accessToken, refreshToken, success, user } = data;
 
 			if (success !== true) {
+				localStorage.clear('accessToken');
+				localStorage.clear('refreshToken');
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
@@ -86,7 +92,10 @@ const register = (email, password, name) => async (dispatch) => {
 			return true;
 		})
 		.catch((e) => {
+			localStorage.clear('accessToken');
+			localStorage.clear('refreshToken');
 			dispatch(authSlice.actions[_ERROR](e.message));
+
 			return false;
 		});
 };
@@ -133,6 +142,27 @@ const resetPassword = (password, code) => async (dispatch) => {
 		});
 };
 
+const changeUserData = (name, email, password) => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.changeUserData(name, email, password)
+		.then((data) => {
+			const { success, user } = data;
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return false;
+			}
+
+			dispatch(authSlice.actions.setUser(user));
+			dispatch(authSlice.actions[_SUCCESS]());
+			return true;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return false;
+		});
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -141,6 +171,8 @@ export const useAuthActions = () => {
 			dispatch(register(email, password, name)),
 		forgotPassword: (email) => dispatch(forgotPassword(email)),
 		resetPassword: (password, code) => dispatch(resetPassword(password, code)),
+		changeUserData: (name, email, password) =>
+			dispatch(changeUserData(name, email, password)),
 	};
 };
 

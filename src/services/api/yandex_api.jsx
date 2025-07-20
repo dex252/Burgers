@@ -3,6 +3,7 @@ import axios from 'axios';
 export const _REQUEST = '_REQUEST';
 export const _SUCCESS = '_SUCCESS';
 export const _ERROR = '_ERROR';
+export const _LOGOUT = '_LOGOUT';
 
 const YANDEX_API = 'https://norma.nomoreparties.space';
 
@@ -33,7 +34,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		if (error.message === 'jwt expired') {
+		if (error.message === 'jwt expired' || error.status === 403) {
 			return await refreshToken();
 		}
 
@@ -46,13 +47,16 @@ export const Auth = {
 	register: async (email, password, name) => register(email, password, name),
 	forgotPassword: async (email) => forgotPassword(email),
 	resetPassword: async (password, code) => resetPassword(password, code),
+	changeUserData: async (name, email, password) =>
+		changeUserData(name, email, password),
 };
 
 export const request = async (
 	url,
 	method = 'get',
 	data = null,
-	isToken = true
+	isToken = false,
+	navigate = undefined
 ) => {
 	const executeRequest = async () => {
 		const config = {
@@ -76,13 +80,19 @@ export const request = async (
 	try {
 		return await executeRequest();
 	} catch (error) {
-		if (error.message !== 'jwt expired') {
-			throw new Error(
-				`${error.response.status} ${error.response.data.message}`
-			);
+		if (error.message === 'jwt expired') {
+			return await executeRequest();
 		}
 
-		return await executeRequest();
+		if (error.response && error.response.data && error.response.data.message) {
+			throw new Error(error.response.data.message);
+		}
+
+		if (isToken === true && navigate) {
+			navigate('/login');
+		}
+
+		throw error;
 	}
 };
 
@@ -94,7 +104,6 @@ const refreshToken = async () => {
 			data: {
 				token: localStorage.getItem('refreshToken'),
 			},
-			isToken: false,
 		})
 		.then((data) => {
 			const { accessToken, refreshToken, success } = data;
@@ -115,49 +124,37 @@ const refreshToken = async () => {
 };
 
 const login = async (email, password) => {
-	return request(
-		LOGIN,
-		'post',
-		{
-			email: email,
-			password: password,
-		},
-		false
-	);
+	return request(LOGIN, 'post', {
+		email: email,
+		password: password,
+	});
 };
 
 const register = async (email, password, name) => {
-	return request(
-		REGISTER,
-		'post',
-		{
-			email: email,
-			password: password,
-			name: name,
-		},
-		false
-	);
+	return request(REGISTER, 'post', {
+		email: email,
+		password: password,
+		name: name,
+	});
 };
 
 const forgotPassword = async (email) => {
-	return request(
-		FORGOT_PASSWORD,
-		'post',
-		{
-			email: email,
-		},
-		false
-	);
+	return request(FORGOT_PASSWORD, 'post', {
+		email: email,
+	});
 };
 
 const resetPassword = async (password, code) => {
-	return request(
-		FORGOT_PASSWORD,
-		'post',
-		{
-			password: password,
-			token: code,
-		},
-		false
-	);
+	return request(FORGOT_PASSWORD, 'post', {
+		password: password,
+		token: code,
+	});
+};
+
+const changeUserData = async (name, email, password) => {
+	return request(REFRESH_USER_DATA, 'patch', {
+		name: name,
+		password: password,
+		email: email,
+	});
 };

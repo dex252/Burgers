@@ -64,3 +64,9 @@
 	color: #56566b;
 	font-size: 22px;
 }
+
+.content_buttons_container {
+	display: flex;
+	align-items: center;
+	align-self: flex-end;
+}

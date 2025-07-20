@@ -4,6 +4,7 @@ import {
 	_REQUEST,
 	_SUCCESS,
 	_ERROR,
+	_LOGOUT,
 	request,
 	GET_ORDER,
 } from '../../api/yandex_api';
@@ -17,6 +18,7 @@ const initialState = {
 		isRequested: true,
 	},
 	isChange: false,
+	isLogout: false,
 };
 
 const orderSlice = createSlice({
@@ -27,20 +29,28 @@ const orderSlice = createSlice({
 			state.name = action.payload.name;
 			state.orderId = action.payload.order.number;
 		},
+		[_LOGOUT]: (state) => {
+			state.loading.isError = false;
+			state.loading.isRequested = true;
+			state.loading.isLogout = true;
+		},
 		[_REQUEST]: (state) => {
 			state.loading.isError = false;
 			state.loading.isRequested = true;
+			state.loading.isLogout = false;
 		},
 		[_SUCCESS]: (state, action) => {
 			state.name = action.payload.name;
 			state.orderId = action.payload.order.number;
 			state.loading.isRequested = false;
+			state.loading.isLogout = false;
 			state.isChange = !state.isChange;
 		},
 		[_ERROR]: (state, action) => {
 			state.loading.isErrorMessage = action.payload;
 			state.loading.isError = true;
 			state.loading.isRequested = false;
+			state.loading.isLogout = false;
 		},
 	},
 });
@@ -52,11 +62,17 @@ export const useOrderActions = () => {
 	};
 };
 
-export const getOrder = (basketContent) => (dispatch) => {
+export const getOrder = (basketContent, navigate) => (dispatch) => {
 	dispatch(orderSlice.actions[_REQUEST]());
-	return request(GET_ORDER, 'post', {
-		ingredients: basketContent,
-	})
+	return request(
+		GET_ORDER,
+		'post',
+		{
+			ingredients: basketContent,
+		},
+		true,
+		navigate
+	)
 		.then((response) => {
 			if (!response.success) {
 				dispatch(orderSlice.actions[_ERROR](response.data));
@@ -65,6 +81,10 @@ export const getOrder = (basketContent) => (dispatch) => {
 			dispatch(orderSlice.actions[_SUCCESS](response));
 		})
 		.catch((error) => {
+			if (error.message === 'Token is invalid') {
+				dispatch(orderSlice.actions[_LOGOUT](error.message));
+				return;
+			}
 			dispatch(orderSlice.actions[_ERROR](error.message));
 		});
 };

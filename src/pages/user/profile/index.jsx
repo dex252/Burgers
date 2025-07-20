@@ -96,6 +96,22 @@ export function ProfilePage() {
 								name={'password'}
 								icon='EditIcon'
 							/>
+							<div className={`${styles.content_buttons_container} pt-6`}>
+								<Button
+									htmlType='button'
+									size='medium'
+									type='secondary'
+									extraClass='mr-8'
+									onClick={(e) => onNavButtonClick(e)}>
+									<p className='text text_type_main-medium'>Отмена</p>
+								</Button>
+								<Button
+									htmlType='button'
+									size='medium'
+									onClick={(e) => onNavButtonClick(e)}>
+									<p className='text text_type_main-medium'>Сохранить</p>
+								</Button>
+							</div>
 						</div>
 					</div>
 				</main>

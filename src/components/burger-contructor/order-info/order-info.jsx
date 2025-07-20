@@ -10,9 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CreateOrder } from '../../modals/create-order/create-order.jsx';
 import { Loader } from '../../loader/loader.jsx';
 import { getOrder } from '../../../services/store/slices/order-detail-slice.jsx';
+import { useNavigate } from 'react-router-dom';
 
 export const OrderInfo = ({ price }) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const ingredients = useSelector(
 		(state) => state.IngredientsReducer.ingredients
 	);
@@ -29,6 +31,10 @@ export const OrderInfo = ({ price }) => {
 	};
 
 	useEffect(() => {
+		if (loading.isLogout) {
+			return;
+		}
+
 		if (loading.isRequested) {
 			return;
 		}
@@ -77,7 +83,7 @@ export const OrderInfo = ({ price }) => {
 				}
 			}
 		});
-		dispatch(getOrder(basketContent));
+		dispatch(getOrder(basketContent, navigate));
 	};
 
 	return (
