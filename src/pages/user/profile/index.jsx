@@ -8,9 +8,20 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export function ProfilePage() {
+	const navButtons = {
+		profile: 'profile',
+		history: 'ordersHistory',
+		exit: 'exit',
+	};
+
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	const [nameValue, setName] = useState('');
+	const [activeButton] = useState('profile');
+
+	const onNavButtonClick = (e) => {
+		console.info(e);
+	};
 
 	const onChangeEmail = (e) => {
 		setEmail(e.target.value);
@@ -34,21 +45,24 @@ export function ProfilePage() {
 								htmlType='button'
 								type='secondary'
 								size='large'
-								extraClass={styles.content_button}>
+								onClick={(e) => onNavButtonClick(e)}
+								extraClass={`${styles.content_button} ${activeButton === navButtons.profile && styles.content_button_active}`}>
 								<p className='text text_type_main-medium'>Профиль</p>
 							</Button>
 							<Button
 								htmlType='button'
 								type='secondary'
 								size='large'
-								extraClass={styles.content_button}>
+								onClick={(e) => onNavButtonClick(e)}
+								extraClass={`${styles.content_button} ${activeButton === navButtons.history && styles.content_button_active}`}>
 								<p className='text text_type_main-medium'>История заказов</p>
 							</Button>
 							<Button
 								htmlType='button'
 								type='secondary'
 								size='large'
-								extraClass={styles.content_button}>
+								onClick={(e) => onNavButtonClick(e)}
+								extraClass={`${styles.content_button} ${activeButton === navButtons.exit && styles.content_button_active}`}>
 								<p className='text text_type_main-medium'>Выход</p>
 							</Button>
 							<p
