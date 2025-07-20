@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
@@ -16,8 +16,8 @@ export function ProfilePage() {
 		history: 'ordersHistory',
 		exit: 'exit',
 	};
-	const { changeUserData } = useAuthActions();
-	const { loading } = useSelector((state) => state.AuthReducer);
+	const { changeUserData, getUserData } = useAuthActions();
+	const { loading, user } = useSelector((state) => state.AuthReducer);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	const [nameValue, setName] = useState('');
@@ -27,8 +27,37 @@ export function ProfilePage() {
 		await changeUserData(nameValue, emailValue, passwordValue);
 	};
 
-	const onCancel = (e) => {
-		console.info(e);
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const user = await getUserData(); // Ждем завершения запроса
+
+				// После успешного получения данных обновляем состояние формы
+				if (user?.email) {
+					setEmail(user.email);
+				}
+				if (user?.name) {
+					setName(user.name);
+				}
+			} catch (error) {
+				console.error('Ошибка при загрузке данных пользователя:', error);
+			}
+		};
+
+		fetchUserData();
+
+		return () => {
+			console.info('UNMOUNT Profile');
+		};
+	}, []);
+
+	const onCancel = () => {
+		if (user?.email) {
+			setEmail(user.email);
+		}
+		if (user?.name) {
+			setName(user.name);
+		}
 	};
 
 	const onNavButtonClick = (e) => {

@@ -26,10 +26,9 @@ const authSlice = createSlice({
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
 		},
-		[_SUCCESS]: (state, action) => {
+		[_SUCCESS]: (state) => {
 			state.isAuthenticated = true;
 			state.loading.isSpinner = false;
-			state.user = action.payload;
 		},
 		[_ERROR]: (state, action) => {
 			state.isAuthenticated = true;
@@ -168,6 +167,27 @@ const changeUserData = (name, email, password) => async (dispatch) => {
 		});
 };
 
+const getUserData = () => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.getUserData()
+		.then((data) => {
+			const { success, user } = data;
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return null;
+			}
+
+			dispatch(authSlice.actions.setUser(user));
+			dispatch(authSlice.actions[_SUCCESS]());
+			return user;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return null;
+		});
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -178,6 +198,7 @@ export const useAuthActions = () => {
 		resetPassword: (password, code) => dispatch(resetPassword(password, code)),
 		changeUserData: (name, email, password) =>
 			dispatch(changeUserData(name, email, password)),
+		getUserData: () => dispatch(getUserData()),
 	};
 };
 

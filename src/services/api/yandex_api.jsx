@@ -53,6 +53,7 @@ export const Auth = {
 	resetPassword: async (password, code) => resetPassword(password, code),
 	changeUserData: async (name, email, password) =>
 		changeUserData(name, email, password),
+	getUserData: async () => getUserData(),
 };
 
 export const request = async (
@@ -175,4 +176,8 @@ const changeUserData = async (name, email, password) => {
 		},
 		true
 	);
+};
+
+const getUserData = async () => {
+	return request(GET_USER_DATA, 'get', null, true);
 };
