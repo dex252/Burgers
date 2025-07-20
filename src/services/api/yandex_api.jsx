@@ -111,61 +111,16 @@ const getAuth = async (
 };
 
 const login = async (email, password) => {
-	try {
-		const response = await api.request({
-			method: 'post',
-			url: LOGIN,
-			data: {
-				email: email,
-				password: password,
-			},
-		});
-		if (response.status === 200) {
-			return response.data;
-		}
-
-		throw new Error(`${response.status} ${response.statusText}`);
-	} catch (e) {
-		if (
-			e.response &&
-			e.response.status &&
-			e.response.data &&
-			e.response.data.message
-		) {
-			throw new Error(`${e.status} - ${e.response.data.message}`);
-		}
-
-		throw new Error(e.message);
-	}
+	return request(LOGIN, 'post', {
+		email: email,
+		password: password,
+	});
 };
 
 const register = async (email, password, name) => {
-	try {
-		const response = await api.request({
-			method: 'post',
-			url: REGISTER,
-			data: {
-				email: email,
-				password: password,
-				name: name,
-			},
-		});
-
-		if (response.status === 200) {
-			return response.data;
-		}
-
-		throw new Error(`${response.status} ${response.statusText}`);
-	} catch (e) {
-		if (
-			e.response &&
-			e.response.status &&
-			e.response.data &&
-			e.response.data.message
-		) {
-			throw new Error(`${e.status} - ${e.response.data.message}`);
-		}
-
-		throw new Error(e.message);
-	}
+	return request(REGISTER, 'post', {
+		email: email,
+		password: password,
+		name: name,
+	});
 };
