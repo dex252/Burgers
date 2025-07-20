@@ -5,6 +5,8 @@ import { _SUCCESS, _ERROR, _REQUEST, Auth } from '../../api/yandex_api';
 
 const initialState = {
 	isAuthenticated: false,
+	//isLogout задается при ошибке авторизации, отвечает за очистку элементов в корзине (true - не чистим, false - чистим)
+	isLogout: false,
 	user: undefined,
 	loading: {
 		isError: false,
@@ -18,6 +20,9 @@ const authSlice = createSlice({
 	name: 'auth-store',
 	initialState,
 	reducers: {
+		setLogout(state, action) {
+			state.isLogout = action.payload;
+		},
 		setUser(state, action) {
 			state.user = action.payload;
 		},
@@ -57,6 +62,7 @@ const login = (email, password) => async (dispatch) => {
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
 
+			dispatch(authSlice.actions.setLogout(true));
 			dispatch(authSlice.actions.setUser(user));
 			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
@@ -85,6 +91,7 @@ const register = (email, password, name) => async (dispatch) => {
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
 
+			dispatch(authSlice.actions.setLogout(true));
 			dispatch(authSlice.actions.setUser(user));
 			dispatch(authSlice.actions[_SUCCESS]());
 
@@ -199,6 +206,7 @@ export const useAuthActions = () => {
 		changeUserData: (name, email, password) =>
 			dispatch(changeUserData(name, email, password)),
 		getUserData: () => dispatch(getUserData()),
+		setLogout: (payload) => dispatch(authSlice.actions.setLogout(payload)),
 	};
 };
 

@@ -12,7 +12,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export function HomePage() {
 	const dispatch = useDispatch();
-	const { loading } = useSelector((state) => state.IngredientsReducer);
+	const { loading, ingredients } = useSelector(
+		(state) => state.IngredientsReducer
+	);
 
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -34,6 +36,10 @@ export function HomePage() {
 	};
 
 	useEffect(() => {
+		if (ingredients && ingredients.length > 0) {
+			return;
+		}
+
 		dispatch(setIngredients());
 		return () => {
 			console.info('UNMOUNT App');

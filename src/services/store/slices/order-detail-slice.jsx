@@ -80,7 +80,12 @@ export const getOrder = (basketContent, navigate) => (dispatch) => {
 			dispatch(orderSlice.actions[_SUCCESS](response));
 		})
 		.catch((error) => {
-			if (error.message === 'Token is invalid') {
+			//Здесь приходит что попало...как минимум 2 разных вараинта уже есть, так делать не надо
+			if (
+				error.message === 'Token is invalid' ||
+				error.message === 'invalid token' ||
+				error.message === 'jwt malformed'
+			) {
 				navigate('/login');
 				dispatch(orderSlice.actions[_LOGOUT](error.message));
 				return;
