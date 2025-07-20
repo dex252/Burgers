@@ -41,7 +41,7 @@ export function RegisterPage() {
 			return;
 		}
 
-		navigate('/login');
+		navigate('/');
 	};
 
 	return (

@@ -5,6 +5,7 @@ import { _SUCCESS, _ERROR, _REQUEST, Auth } from '../../api/yandex_api';
 
 const initialState = {
 	isAuthenticated: false,
+	user: undefined,
 	loading: {
 		isError: false,
 		isErrorMessage: undefined,
@@ -17,29 +18,15 @@ const authSlice = createSlice({
 	name: 'auth-store',
 	initialState,
 	reducers: {
-		// updateCount(state, action) {
-		// 	const { id, delta } = action.payload;
-		// 	return {
-		// 		...state,
-		// 		ingredients: state.ingredients.map((item) =>
-		// 			item._id === id ? { ...item, count: item.count + delta } : item
-		// 		),
-		// 	};
-		// },
-		// clearCounts(state) {
-		// 	return {
-		// 		...state,
-		// 		ingredients: state.ingredients.map((item) => ({ ...item, count: 0 })),
-		// 	};
-		// },
 		[_REQUEST]: (state) => {
 			state.isAuthenticated = false;
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
 		},
-		[_SUCCESS]: (state) => {
+		[_SUCCESS]: (state, action) => {
 			state.isAuthenticated = true;
 			state.loading.isSpinner = false;
+			state.user = action.payload;
 		},
 		[_ERROR]: (state, action) => {
 			state.isAuthenticated = true;
@@ -47,6 +34,7 @@ const authSlice = createSlice({
 			state.loading.isErrorMessage = action.payload;
 			state.loading.isError = true;
 			state.loading.withContent = true;
+			state.user = undefined;
 		},
 	},
 });
@@ -56,12 +44,16 @@ const login = (email, password) => async (dispatch) => {
 	return await Auth.login(email, password)
 		.then((data) => {
 			const { accessToken, refreshToken, success, user } = data;
-			console.info(accessToken);
-			console.info(refreshToken);
-			console.info(success);
-			console.info(user);
-			console.info(data); //сохранить токены
-			dispatch(authSlice.actions[_SUCCESS]());
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return false;
+			}
+
+			localStorage.setItem('accessToken', accessToken);
+			localStorage.setItem('refreshToken', refreshToken);
+
+			dispatch(authSlice.actions[_SUCCESS](user));
 			return true;
 		})
 		.catch((e) => {
@@ -75,12 +67,16 @@ const register = (email, password, name) => async (dispatch) => {
 	return await Auth.register(email, password, name)
 		.then((data) => {
 			const { accessToken, refreshToken, success, user } = data;
-			console.info(accessToken);
-			console.info(refreshToken);
-			console.info(success);
-			console.info(user);
 
-			dispatch(authSlice.actions[_SUCCESS]());
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return false;
+			}
+
+			localStorage.setItem('accessToken', accessToken);
+			localStorage.setItem('refreshToken', refreshToken);
+
+			dispatch(authSlice.actions[_SUCCESS](user));
 			return true;
 		})
 		.catch((e) => {
@@ -95,8 +91,6 @@ export const useAuthActions = () => {
 		login: (email, password) => dispatch(login(email, password)),
 		register: (email, password, name) =>
 			dispatch(register(email, password, name)),
-		// updateCount: (payload) => dispatch(authSlice.actions.updateCount(payload)),
-		// clearCounts: (payload) => dispatch(authSlice.actions.clearCounts(payload)),
 	};
 };
 

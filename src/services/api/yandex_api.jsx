@@ -16,6 +16,28 @@ export const GET_USER_DATA = '/api/auth/user';
 export const REFRESH_USER_DATA = '/api/auth/user';
 
 const api = axios.create({ baseURL: YANDEX_API });
+api.interceptors.request.use((config) => {
+	if (!config.isToken) {
+		return config;
+	}
+
+	config.headers = {
+		Authorization: `${localStorage.getItem('accessToken')}`,
+	};
+
+	return config;
+});
+
+api.interceptors.response.use(
+	(response) => response,
+	async (error) => {
+		if (error.message === 'jwt expired') {
+			return await refreshToken();
+		}
+
+		return Promise.reject(error);
+	}
+);
 
 export const Auth = {
 	login: async (email, password) => login(email, password),
@@ -26,81 +48,59 @@ export const request = async (
 	url,
 	method = 'get',
 	data = null,
-	isToken = false
+	isToken = true
 ) => {
 	const executeRequest = async () => {
-		try {
-			const config = {
-				method: method.toLowerCase(),
-				url,
-			};
+		const config = {
+			method: method.toLowerCase(),
+			url,
+			isToken: isToken,
+		};
 
-			if (data) {
-				config.data = data;
-			}
-
-			if (isToken) {
-				config.headers = {
-					Authorization:
-						'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_h5sfm_0',
-				};
-			}
-
-			const response = await api.request(config);
-			if (response.status === 200) {
-				return response.data;
-			}
-
-			if (response.status === 401 || response.status === 403) {
-				throw new Error(response.status);
-			}
-
-			throw new Error(`${response.status} ${response.statusText}`);
-		} catch (error) {
-			if (
-				error.response &&
-				(error.response.status == 401 || error.response.status == 403)
-			) {
-				throw new Error(error.response.status);
-			}
-
-			if (
-				error.response &&
-				error.response.data &&
-				error.response.data.message
-			) {
-				throw new Error(error.response.data.message);
-			}
-
-			throw new Error(error.message);
+		if (data) {
+			config.data = data;
 		}
+
+		const response = await api.request(config);
+		if (response.status === 200) {
+			return response.data;
+		}
+
+		throw new Error(`${response.status} ${response.statusText}`);
 	};
 
 	try {
 		return await executeRequest();
 	} catch (error) {
-		//Нестрогое неравенство
-		if (error.message != 401 && error.message != 403) {
-			throw new Error(error);
+		if (error.message !== 'jwt expired') {
+			throw new Error(
+				`${error.response.status} ${error.response.data.message}`
+			);
 		}
 
-		await getAuth();
 		return await executeRequest();
 	}
 };
 
-const getAuth = async (
-	token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE1MTYyNDI2MjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_h5sfm_0'
-) => {
+const refreshToken = async () => {
 	await api
 		.request({
 			method: 'post',
 			url: GET_TOKEN,
-			headers: {
-				Authorization: `Bearer ${token}`,
+			data: {
+				token: localStorage.getItem('refreshToken'),
 			},
+			isToken: false,
 		})
-		.then((e) => console.info(e))
+		.then((data) => {
+			const { accessToken, refreshToken, success } = data;
+			if (success !== true) {
+				return Promise.reject(data);
+			}
+
+			localStorage.setItem('accessToken', accessToken);
+			localStorage.setItem('refreshToken', refreshToken);
+		})
 		.catch((e) => {
 			if (e.response && e.response.data && e.response.data.message) {
 				throw new Error(e.response.data.message);
@@ -111,16 +111,26 @@ const getAuth = async (
 };
 
 const login = async (email, password) => {
-	return request(LOGIN, 'post', {
-		email: email,
-		password: password,
-	});
+	return request(
+		LOGIN,
+		'post',
+		{
+			email: email,
+			password: password,
+		},
+		false
+	);
 };
 
 const register = async (email, password, name) => {
-	return request(REGISTER, 'post', {
-		email: email,
-		password: password,
-		name: name,
-	});
+	return request(
+		REGISTER,
+		'post',
+		{
+			email: email,
+			password: password,
+			name: name,
+		},
+		false
+	);
 };
