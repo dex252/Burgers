@@ -18,6 +18,9 @@ const authSlice = createSlice({
 	name: 'auth-store',
 	initialState,
 	reducers: {
+		setUser(state, action) {
+			state.user = action.payload;
+		},
 		[_REQUEST]: (state) => {
 			state.isAuthenticated = false;
 			state.loading.isSpinner = true;
@@ -53,7 +56,8 @@ const login = (email, password) => async (dispatch) => {
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
 
-			dispatch(authSlice.actions[_SUCCESS](user));
+			dispatch(authSlice.actions.setUser(user));
+			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
 		})
 		.catch((e) => {
@@ -76,7 +80,30 @@ const register = (email, password, name) => async (dispatch) => {
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
 
-			dispatch(authSlice.actions[_SUCCESS](user));
+			dispatch(authSlice.actions.setUser(user));
+			dispatch(authSlice.actions[_SUCCESS]());
+
+			return true;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return false;
+		});
+};
+
+const forgotPassword = (email) => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.forgotPassword(email)
+		.then((data) => {
+			const { success, message } = data;
+
+			console.info(message);
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return false;
+			}
+			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
 		})
 		.catch((e) => {
@@ -91,6 +118,7 @@ export const useAuthActions = () => {
 		login: (email, password) => dispatch(login(email, password)),
 		register: (email, password, name) =>
 			dispatch(register(email, password, name)),
+		forgotPassword: (email) => dispatch(forgotPassword(email)),
 	};
 };
 

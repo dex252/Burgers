@@ -7,9 +7,11 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../../components/loader/loader';
+import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function ForgotPasswordPage() {
 	const navigate = useNavigate();
+	const { forgotPassword } = useAuthActions();
 	const [emailValue, setEmail] = useState('');
 	const { loading } = useSelector((state) => state.AuthReducer);
 
@@ -17,8 +19,13 @@ export function ForgotPasswordPage() {
 		setEmail(e.target.value);
 	};
 
-	const onRestore = (e) => {
-		console.info('Логика восстановления пароля: ' + e);
+	const onRestore = async () => {
+		let isSuccess = await forgotPassword(emailValue);
+		if (!isSuccess) {
+			return;
+		}
+
+		navigate('/reset-password');
 	};
 
 	const onEnter = () => {
