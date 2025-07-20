@@ -55,8 +55,7 @@ export const request = async (
 	url,
 	method = 'get',
 	data = null,
-	isToken = false,
-	navigate = undefined
+	isToken = false
 ) => {
 	const executeRequest = async () => {
 		const config = {
@@ -80,16 +79,16 @@ export const request = async (
 	try {
 		return await executeRequest();
 	} catch (error) {
-		if (error.message === 'jwt expired') {
+		//В reject 200 может попасть только при успешной проверке токена
+		if (
+			(error.status && error.status == 200) ||
+			error.message === 'jwt expired'
+		) {
 			return await executeRequest();
 		}
 
 		if (error.response && error.response.data && error.response.data.message) {
 			throw new Error(error.response.data.message);
-		}
-
-		if (isToken === true && navigate) {
-			navigate('/login');
 		}
 
 		throw error;
@@ -105,21 +104,31 @@ const refreshToken = async () => {
 				token: localStorage.getItem('refreshToken'),
 			},
 		})
-		.then((data) => {
-			const { accessToken, refreshToken, success } = data;
+		.then((response) => {
+			const { accessToken, refreshToken, success } = response.data;
 			if (success !== true) {
-				return Promise.reject(data);
+				return Promise.reject(response.data);
 			}
 
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
+			return Promise.reject(response);
 		})
 		.catch((e) => {
+			//Не проверяем текст ошибки, нам и так известно, что это проверка токена
+			if (e.status && e.status === 200) {
+				throw e;
+			}
+
 			if (e.response && e.response.data && e.response.data.message) {
 				throw new Error(e.response.data.message);
 			}
 
-			throw new Error(e.message);
+			if (e.message) {
+				throw new Error(e.message);
+			}
+
+			throw e;
 		});
 };
 

@@ -70,8 +70,7 @@ export const getOrder = (basketContent, navigate) => (dispatch) => {
 		{
 			ingredients: basketContent,
 		},
-		true,
-		navigate
+		true
 	)
 		.then((response) => {
 			if (!response.success) {
@@ -82,9 +81,20 @@ export const getOrder = (basketContent, navigate) => (dispatch) => {
 		})
 		.catch((error) => {
 			if (error.message === 'Token is invalid') {
+				navigate('/login');
 				dispatch(orderSlice.actions[_LOGOUT](error.message));
 				return;
 			}
+
+			if (
+				error.response &&
+				error.response.data &&
+				error.response.data.message
+			) {
+				dispatch(orderSlice.actions[_ERROR](error.response.data.message));
+				return;
+			}
+
 			dispatch(orderSlice.actions[_ERROR](error.message));
 		});
 };
