@@ -15,6 +15,7 @@ export const GET_TOKEN = '/api/auth/token';
 export const GET_USER_DATA = '/api/auth/user';
 export const REFRESH_USER_DATA = '/api/auth/user';
 export const FORGOT_PASSWORD = '/api/password-reset';
+export const RESET_PASSWORD = '/api/password-reset/reset';
 
 const api = axios.create({ baseURL: YANDEX_API });
 api.interceptors.request.use((config) => {
@@ -44,6 +45,7 @@ export const Auth = {
 	login: async (email, password) => login(email, password),
 	register: async (email, password, name) => register(email, password, name),
 	forgotPassword: async (email) => forgotPassword(email),
+	resetPassword: async (password, code) => resetPassword(password, code),
 };
 
 export const request = async (
@@ -143,6 +145,18 @@ const forgotPassword = async (email) => {
 		'post',
 		{
 			email: email,
+		},
+		false
+	);
+};
+
+const resetPassword = async (password, code) => {
+	return request(
+		FORGOT_PASSWORD,
+		'post',
+		{
+			password: password,
+			token: code,
 		},
 		false
 	);

@@ -112,6 +112,27 @@ const forgotPassword = (email) => async (dispatch) => {
 		});
 };
 
+const resetPassword = (password, code) => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.resetPassword(password, code)
+		.then((data) => {
+			const { success, message } = data;
+
+			console.info(message);
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](data));
+				return false;
+			}
+			dispatch(authSlice.actions[_SUCCESS]());
+			return true;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return false;
+		});
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -119,6 +140,7 @@ export const useAuthActions = () => {
 		register: (email, password, name) =>
 			dispatch(register(email, password, name)),
 		forgotPassword: (email) => dispatch(forgotPassword(email)),
+		resetPassword: (password, code) => dispatch(resetPassword(password, code)),
 	};
 };
 

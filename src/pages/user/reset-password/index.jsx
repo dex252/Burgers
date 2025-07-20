@@ -8,9 +8,11 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../../components/loader/loader';
+import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function ResetPasswordPage() {
 	const navigate = useNavigate();
+	const { resetPassword } = useAuthActions();
 	const { loading } = useSelector((state) => state.AuthReducer);
 	const [codeValue, setCode] = useState('');
 	const [passwordValue, setPassword] = useState('');
@@ -24,7 +26,12 @@ export function ResetPasswordPage() {
 	};
 
 	const onSave = async () => {
-		console.info('Подтверждение пароля');
+		let isSuccess = await resetPassword(passwordValue, codeValue);
+		if (!isSuccess) {
+			return;
+		}
+
+		navigate('/profile');
 	};
 
 	const onEnter = () => {
