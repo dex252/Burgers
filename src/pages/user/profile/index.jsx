@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
 	Input,
@@ -6,6 +7,8 @@ import {
 	Button,
 	PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Loader } from '../../../components/loader/loader';
+import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function ProfilePage() {
 	const navButtons = {
@@ -13,11 +16,20 @@ export function ProfilePage() {
 		history: 'ordersHistory',
 		exit: 'exit',
 	};
-
+	const { changeUserData } = useAuthActions();
+	const { loading } = useSelector((state) => state.AuthReducer);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	const [nameValue, setName] = useState('');
 	const [activeButton] = useState('profile');
+
+	const onSave = async () => {
+		await changeUserData(nameValue, emailValue, passwordValue);
+	};
+
+	const onCancel = (e) => {
+		console.info(e);
+	};
 
 	const onNavButtonClick = (e) => {
 		console.info(e);
@@ -39,81 +51,83 @@ export function ProfilePage() {
 		<div className={styles.container}>
 			<div className={styles.content_wrapper}>
 				<main className={`${styles.main} pl-5 pr-5`}>
-					<div className={`${styles.content} pt-30`}>
-						<div className={`${styles.content_column} pr-15`}>
-							<Button
-								htmlType='button'
-								type='secondary'
-								size='large'
-								onClick={(e) => onNavButtonClick(e)}
-								extraClass={`${styles.content_button} ${activeButton === navButtons.profile && styles.content_button_active}`}>
-								<p className='text text_type_main-medium'>Профиль</p>
-							</Button>
-							<Button
-								htmlType='button'
-								type='secondary'
-								size='large'
-								onClick={(e) => onNavButtonClick(e)}
-								extraClass={`${styles.content_button} ${activeButton === navButtons.history && styles.content_button_active}`}>
-								<p className='text text_type_main-medium'>История заказов</p>
-							</Button>
-							<Button
-								htmlType='button'
-								type='secondary'
-								size='large'
-								onClick={(e) => onNavButtonClick(e)}
-								extraClass={`${styles.content_button} ${activeButton === navButtons.exit && styles.content_button_active}`}>
-								<p className='text text_type_main-medium'>Выход</p>
-							</Button>
-							<p
-								className={`${styles.content_text} text text_type_main-default pt-20`}>
-								В этом разделе вы можете изменить свои персональные данные
-							</p>
-						</div>
-						<div className={styles.content_column}>
-							<Input
-								type={'text'}
-								placeholder={'Имя'}
-								onChange={onChangeName}
-								value={nameValue}
-								name={'name'}
-								size={'default'}
-								icon='EditIcon'
-								extraClass='pb-6'
-							/>
-							<EmailInput
-								onChange={onChangeEmail}
-								value={emailValue}
-								name={'email'}
-								placeholder='Логин'
-								isIcon={true}
-								extraClass='pb-6'
-							/>
-							<PasswordInput
-								onChange={onChangePassword}
-								placeholder='Пароль'
-								value={passwordValue}
-								name={'password'}
-								icon='EditIcon'
-							/>
-							<div className={`${styles.content_buttons_container} pt-6`}>
+					<Loader loading={loading}>
+						<div className={`${styles.content} pt-30`}>
+							<div className={`${styles.content_column} pr-15`}>
 								<Button
 									htmlType='button'
-									size='medium'
 									type='secondary'
-									extraClass='mr-8'
-									onClick={(e) => onNavButtonClick(e)}>
-									<p className='text text_type_main-medium'>Отмена</p>
+									size='large'
+									onClick={(e) => onNavButtonClick(e)}
+									extraClass={`${styles.content_button} ${activeButton === navButtons.profile && styles.content_button_active}`}>
+									<p className='text text_type_main-medium'>Профиль</p>
 								</Button>
 								<Button
 									htmlType='button'
-									size='medium'
-									onClick={(e) => onNavButtonClick(e)}>
-									<p className='text text_type_main-medium'>Сохранить</p>
+									type='secondary'
+									size='large'
+									onClick={(e) => onNavButtonClick(e)}
+									extraClass={`${styles.content_button} ${activeButton === navButtons.history && styles.content_button_active}`}>
+									<p className='text text_type_main-medium'>История заказов</p>
 								</Button>
+								<Button
+									htmlType='button'
+									type='secondary'
+									size='large'
+									onClick={(e) => onNavButtonClick(e)}
+									extraClass={`${styles.content_button} ${activeButton === navButtons.exit && styles.content_button_active}`}>
+									<p className='text text_type_main-medium'>Выход</p>
+								</Button>
+								<p
+									className={`${styles.content_text} text text_type_main-default pt-20`}>
+									В этом разделе вы можете изменить свои персональные данные
+								</p>
+							</div>
+							<div className={styles.content_column}>
+								<Input
+									type={'text'}
+									placeholder={'Имя'}
+									onChange={onChangeName}
+									value={nameValue}
+									name={'name'}
+									size={'default'}
+									icon='EditIcon'
+									extraClass='pb-6'
+								/>
+								<EmailInput
+									onChange={onChangeEmail}
+									value={emailValue}
+									name={'email'}
+									placeholder='Логин'
+									isIcon={true}
+									extraClass='pb-6'
+								/>
+								<PasswordInput
+									onChange={onChangePassword}
+									placeholder='Пароль'
+									value={passwordValue}
+									name={'password'}
+									icon='EditIcon'
+								/>
+								<div className={`${styles.content_buttons_container} pt-6`}>
+									<Button
+										htmlType='button'
+										size='medium'
+										type='secondary'
+										extraClass='mr-8'
+										onClick={(e) => onCancel(e)}>
+										<p className='text text_type_main-medium'>Отмена</p>
+									</Button>
+									<Button
+										htmlType='button'
+										size='medium'
+										onClick={(e) => onSave(e)}>
+										<p className='text text_type_main-medium'>Сохранить</p>
+									</Button>
+								</div>
 							</div>
 						</div>
-					</div>
+					</Loader>
 				</main>
 			</div>
 		</div>

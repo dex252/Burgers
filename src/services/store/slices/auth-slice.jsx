@@ -158,7 +158,12 @@ const changeUserData = (name, email, password) => async (dispatch) => {
 			return true;
 		})
 		.catch((e) => {
-			dispatch(authSlice.actions[_ERROR](e.message));
+			var message = e.message;
+			if (e.response && e.response.data && e.response.data.message) {
+				message = e.response.data.message;
+			}
+
+			dispatch(authSlice.actions[_ERROR](message));
 			return false;
 		});
 };

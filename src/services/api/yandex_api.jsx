@@ -34,7 +34,11 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
 	(response) => response,
 	async (error) => {
-		if (error.message === 'jwt expired' || error.status === 403) {
+		if (
+			error.response &&
+			error.response.data &&
+			error.response.data.message === 'jwt expired'
+		) {
 			return await refreshToken();
 		}
 
@@ -161,9 +165,14 @@ const resetPassword = async (password, code) => {
 };
 
 const changeUserData = async (name, email, password) => {
-	return request(REFRESH_USER_DATA, 'patch', {
-		name: name,
-		password: password,
-		email: email,
-	});
+	return request(
+		REFRESH_USER_DATA,
+		'patch',
+		{
+			name: name,
+			password: password,
+			email: email,
+		},
+		true
+	);
 };
