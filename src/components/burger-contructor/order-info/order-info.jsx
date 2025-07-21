@@ -23,6 +23,7 @@ export const OrderInfo = ({ price }) => {
 		header: null,
 		content: null,
 		isOpen: false,
+		canClose: false,
 	});
 
 	const closeModal = (e) => {
@@ -52,6 +53,7 @@ export const OrderInfo = ({ price }) => {
 					/>
 				),
 				isOpen: true,
+				canClose: true,
 			});
 
 			return;
@@ -61,6 +63,7 @@ export const OrderInfo = ({ price }) => {
 			header: '',
 			content: <CreateOrder orderNumber={orderId} />,
 			isOpen: true,
+			canClose: true,
 		});
 
 		return () => {
@@ -73,6 +76,7 @@ export const OrderInfo = ({ price }) => {
 			header: '',
 			content: <Loader loading={{ isSpinner: true }} />,
 			isOpen: true,
+			canClose: false,
 		});
 
 		const basketContent = [];
@@ -89,7 +93,10 @@ export const OrderInfo = ({ price }) => {
 	return (
 		<section>
 			{modalContent.isOpen ? (
-				<Modal header={modalContent.header} onClose={(e) => closeModal(e)}>
+				<Modal
+					header={modalContent.header}
+					onClose={(e) => closeModal(e)}
+					canCloseModal={modalContent.canClose}>
 					{modalContent.content}
 				</Modal>
 			) : (
