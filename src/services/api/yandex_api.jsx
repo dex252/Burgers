@@ -11,7 +11,7 @@ export const GET_INGREDIENTS = '/api/ingredients';
 export const GET_ORDER = '/api/orders';
 export const LOGIN = '/api/auth/login';
 export const REGISTER = '/api/auth/register';
-export const LOGOUT = '/api/auth/logout';
+export const USER_LOGOUT = '/api/auth/logout';
 export const GET_TOKEN = '/api/auth/token';
 export const GET_USER_DATA = '/api/auth/user';
 export const REFRESH_USER_DATA = '/api/auth/user';
@@ -24,8 +24,10 @@ api.interceptors.request.use((config) => {
 		return config;
 	}
 
+	//небольшой костыль, т.к. запрос getOrder принимает запросы без токена, а нам нужно искусственно получить ошибку
+	const token = localStorage.getItem('accessToken') ?? 'Bearer 1';
 	config.headers = {
-		Authorization: `${localStorage.getItem('accessToken')}`,
+		Authorization: token,
 	};
 
 	return config;
@@ -54,6 +56,7 @@ export const Auth = {
 	changeUserData: async (name, email, password) =>
 		changeUserData(name, email, password),
 	getUserData: async () => getUserData(),
+	userLogout: async () => userLogout(),
 };
 
 export const request = async (
@@ -138,14 +141,14 @@ const refreshToken = async () => {
 };
 
 const login = async (email, password) => {
-	return request(LOGIN, 'post', {
+	return await request(LOGIN, 'post', {
 		email: email,
 		password: password,
 	});
 };
 
 const register = async (email, password, name) => {
-	return request(REGISTER, 'post', {
+	return await request(REGISTER, 'post', {
 		email: email,
 		password: password,
 		name: name,
@@ -153,20 +156,20 @@ const register = async (email, password, name) => {
 };
 
 const forgotPassword = async (email) => {
-	return request(FORGOT_PASSWORD, 'post', {
+	return await request(FORGOT_PASSWORD, 'post', {
 		email: email,
 	});
 };
 
 const resetPassword = async (password, code) => {
-	return request(FORGOT_PASSWORD, 'post', {
+	return await request(FORGOT_PASSWORD, 'post', {
 		password: password,
 		token: code,
 	});
 };
 
 const changeUserData = async (name, email, password) => {
-	return request(
+	return await request(
 		REFRESH_USER_DATA,
 		'patch',
 		{
@@ -179,5 +182,11 @@ const changeUserData = async (name, email, password) => {
 };
 
 const getUserData = async () => {
-	return request(GET_USER_DATA, 'get', null, true);
+	return await request(GET_USER_DATA, 'get', null, true);
+};
+
+const userLogout = async () => {
+	return await request(USER_LOGOUT, 'post', {
+		token: localStorage.getItem('refreshToken'),
+	});
 };

@@ -16,7 +16,7 @@ export function ProfilePage() {
 		history: 'ordersHistory',
 		exit: 'exit',
 	};
-	const { changeUserData, getUserData } = useAuthActions();
+	const { changeUserData, getUserData, userLogout } = useAuthActions();
 	const { loading, user } = useSelector((state) => state.AuthReducer);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
@@ -51,6 +51,10 @@ export function ProfilePage() {
 		};
 	}, []);
 
+	const onUserLogout = async () => {
+		await userLogout();
+	};
+
 	const onCancel = () => {
 		if (user?.email) {
 			setEmail(user.email);
@@ -82,6 +86,7 @@ export function ProfilePage() {
 				<main className={`${styles.main} pl-5 pr-5`}>
 					<Loader loading={loading}>
 						<div className={`${styles.content} pt-30`}>
+							{/* TODO: вынести в отдельный компонент в след спринте во время реализации истории заказов */}
 							<div className={`${styles.content_column} pr-15`}>
 								<Button
 									htmlType='button'
@@ -103,7 +108,7 @@ export function ProfilePage() {
 									htmlType='button'
 									type='secondary'
 									size='large'
-									onClick={(e) => onNavButtonClick(e)}
+									onClick={() => onUserLogout()}
 									extraClass={`${styles.content_button} ${activeButton === navButtons.exit && styles.content_button_active}`}>
 									<p className='text text_type_main-medium'>Выход</p>
 								</Button>

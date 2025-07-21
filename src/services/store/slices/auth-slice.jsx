@@ -221,6 +221,32 @@ const setAuthorization = () => async (dispatch) => {
 	return false;
 };
 
+const userLogout = () => async (dispatch) => {
+	dispatch(authSlice.actions[_REQUEST]());
+	return await Auth.userLogout()
+		.then((data) => {
+			const { success, message } = data;
+
+			if (success !== true) {
+				dispatch(authSlice.actions[_ERROR](message));
+				return null;
+			}
+
+			//Удачный выход - обновляем токены
+			localStorage.clear('accessToken');
+			localStorage.clear('refreshToken');
+			//Выключаем спиннер
+			dispatch(authSlice.actions[_SUCCESS]());
+			//Убираем авторизацию с пользователя
+			dispatch(setAuthorization(false));
+			return null;
+		})
+		.catch((e) => {
+			dispatch(authSlice.actions[_ERROR](e.message));
+			return null;
+		});
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -234,6 +260,7 @@ export const useAuthActions = () => {
 		getUserData: () => dispatch(getUserData()),
 		setLogout: (payload) => dispatch(authSlice.actions.setLogout(payload)),
 		setAuthorization: (payload) => dispatch(setAuthorization(payload)),
+		userLogout: () => dispatch(userLogout()),
 	};
 };
 
