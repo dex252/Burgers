@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
@@ -12,6 +12,8 @@ import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function LoginPage() {
 	const navigate = useNavigate();
+	const location = useLocation();
+
 	const { login } = useAuthActions();
 	const { loading } = useSelector((state) => state.AuthReducer);
 	const [emailValue, setEmail] = useState('');
@@ -31,7 +33,10 @@ export function LoginPage() {
 			return;
 		}
 
-		navigate('/');
+		const from = location.state?.from || { pathname: '/' };
+		console.info(`Page login redirected to ${location.pathname}`);
+
+		navigate(from, { replace: true });
 	};
 
 	const onRegistration = () => {

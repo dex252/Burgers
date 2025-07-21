@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { _SUCCESS, _ERROR, _REQUEST, Auth } from '../../api/yandex_api';
 
 const initialState = {
-	isAuthenticated: false,
-	//isLogout задается при ошибке авторизации, отвечает за очистку элементов в корзине (true - не чистим, false - чистим)
+	isAuthorization: false,
+	/**
+	 * Задается только при ошибке авторизации, отвечает за очистку элементов в корзине (true - не чистим, false - чистим)
+	 */
 	isLogout: false,
 	user: undefined,
 	loading: {
@@ -20,28 +22,41 @@ const authSlice = createSlice({
 	name: 'auth-store',
 	initialState,
 	reducers: {
+		/**
+		 * Задается только при ошибке авторизации во время выполнения какого-либо запроса
+		 * @param {*} state
+		 * @param {*} action
+		 */
+		setAuthorization(state, action) {
+			state.isAuthorization = action.payload;
+		},
 		setLogout(state, action) {
+			//Не управляет состоянием авторизации пользователя
+			console.info('%cLogout', 'background-color: white; color: purple');
 			state.isLogout = action.payload;
 		},
 		setUser(state, action) {
 			state.user = action.payload;
 		},
 		[_REQUEST]: (state) => {
-			state.isAuthenticated = false;
+			//state.isAuthorization = false;
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
+			console.info('%cREQUEST', 'background-color: white; color: blue');
 		},
 		[_SUCCESS]: (state) => {
-			state.isAuthenticated = true;
+			console.info('%cSUCCESS', 'background-color: white; color: green');
+			state.isAuthorization = true;
 			state.loading.isSpinner = false;
 		},
 		[_ERROR]: (state, action) => {
-			state.isAuthenticated = true;
+			state.isAuthorization = false;
 			state.loading.isSpinner = false;
 			state.loading.isErrorMessage = action.payload;
 			state.loading.isError = true;
 			state.loading.withContent = true;
 			state.user = undefined;
+			console.info('%cERROR', 'background-color: white; color: red');
 		},
 	},
 });
@@ -195,6 +210,17 @@ const getUserData = () => async (dispatch) => {
 		});
 };
 
+const setAuthorization = () => async (dispatch) => {
+	const isTokenExist = localStorage.getItem('accessToken');
+	if (isTokenExist) {
+		dispatch(authSlice.actions.setAuthorization(true));
+		return true;
+	}
+
+	dispatch(authSlice.actions.setAuthorization(false));
+	return false;
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -207,6 +233,7 @@ export const useAuthActions = () => {
 			dispatch(changeUserData(name, email, password)),
 		getUserData: () => dispatch(getUserData()),
 		setLogout: (payload) => dispatch(authSlice.actions.setLogout(payload)),
+		setAuthorization: (payload) => dispatch(setAuthorization(payload)),
 	};
 };
 
