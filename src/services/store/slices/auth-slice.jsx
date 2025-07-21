@@ -6,7 +6,8 @@ import { _SUCCESS, _ERROR, _REQUEST, Auth } from '../../api/yandex_api';
 const initialState = {
 	isAuthorization: false,
 	/**
-	 * Задается только при ошибке авторизации, отвечает за очистку элементов в корзине (true - не чистим, false - чистим)
+	 * Сообщает о том, что пользователь вынужденно разлогинился
+	 * Управляет отображением модального окна с заказом при возникновении ошибки, чтобы не очищать состав заказа
 	 */
 	isLogout: false,
 	user: undefined,
@@ -46,7 +47,6 @@ const authSlice = createSlice({
 		},
 		[_SUCCESS]: (state) => {
 			console.info('%cSUCCESS', 'background-color: white; color: green');
-			state.isAuthorization = true;
 			state.loading.isSpinner = false;
 		},
 		[_ERROR]: (state, action) => {
@@ -78,6 +78,7 @@ const login = (email, password) => async (dispatch) => {
 			localStorage.setItem('refreshToken', refreshToken);
 
 			dispatch(authSlice.actions.setLogout(true));
+			dispatch(authSlice.actions.setAuthorization(true));
 			dispatch(authSlice.actions.setUser(user));
 			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
@@ -108,6 +109,7 @@ const register = (email, password, name) => async (dispatch) => {
 
 			dispatch(authSlice.actions.setLogout(true));
 			dispatch(authSlice.actions.setUser(user));
+			dispatch(authSlice.actions.setAuthorization(true));
 			dispatch(authSlice.actions[_SUCCESS]());
 
 			return true;
@@ -133,6 +135,7 @@ const forgotPassword = (email) => async (dispatch) => {
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
+
 			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
 		})
@@ -154,6 +157,7 @@ const resetPassword = (password, code) => async (dispatch) => {
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
+
 			dispatch(authSlice.actions[_SUCCESS]());
 			return true;
 		})
