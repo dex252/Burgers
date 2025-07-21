@@ -9,10 +9,12 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
+import { useRouterRulesActions } from '../../../services/store/slices/router-slice';
 
 export function ResetPasswordPage() {
 	const navigate = useNavigate();
 	const { resetPassword } = useAuthActions();
+	const { clearCurrentRoute } = useRouterRulesActions();
 	const { loading } = useSelector((state) => state.AuthReducer);
 	const [codeValue, setCode] = useState('');
 	const [passwordValue, setPassword] = useState('');
@@ -26,6 +28,7 @@ export function ResetPasswordPage() {
 	};
 
 	const onSave = async () => {
+		clearCurrentRoute();
 		let isSuccess = await resetPassword(passwordValue, codeValue);
 		if (!isSuccess) {
 			return;

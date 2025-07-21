@@ -11,6 +11,10 @@ const ProtectedRouteElement = ({
 		(state) => state.AuthReducer.isAuthorization
 	);
 
+	const { protectedRules, currentPath, currentValue } = useSelector(
+		(state) => state.RouterRulesReducer
+	);
+
 	console.log('Защищенный маршрут:', {
 		path: location.pathname,
 		isAuthorization,
@@ -19,6 +23,15 @@ const ProtectedRouteElement = ({
 	});
 
 	const from = location.state?.pathname || { pathname: '/' };
+
+	const isRuleExist = protectedRules[location.pathname];
+	console.info(isRuleExist);
+	console.info(currentValue);
+	console.info(currentPath);
+	console.info(location.state?.pathname !== currentPath);
+	if (isRuleExist && (!currentValue || isRuleExist !== currentPath)) {
+		return <Navigate to={from} replace />;
+	}
 
 	//Требует авторизации и пользователь не авторизован
 	if (onlyAuth && !isAuthorization) {
