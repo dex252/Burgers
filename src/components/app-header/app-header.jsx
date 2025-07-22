@@ -6,8 +6,11 @@ import {
 	ProfileIcon,
 	Logo,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
 
 export const AppHeader = () => {
+	const user = useSelector((state) => state.AuthReducer.user);
+
 	return (
 		<header className={styles.header}>
 			<nav className={`${styles.menu} p-4`}>
@@ -29,7 +32,9 @@ export const AppHeader = () => {
 					to='/profile'
 					className={`${styles.link} ${styles.link_position_last}`}>
 					<ProfileIcon type='secondary' />
-					<p className='text text_type_main-default ml-2'>Личный кабинет</p>
+					<p className='text text_type_main-default ml-2'>
+						{user?.name ? `${user.name}` : 'Личный кабинет'}
+					</p>
 				</Link>
 			</nav>
 		</header>
