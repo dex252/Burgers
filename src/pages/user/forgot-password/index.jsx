@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
@@ -8,12 +8,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
-import { useRouterRulesActions } from '../../../services/store/slices/router-slice';
 
 export function ForgotPasswordPage() {
 	const navigate = useNavigate();
-	const location = useLocation();
-	const { setCurrentRoute } = useRouterRulesActions();
 	const { forgotPassword } = useAuthActions();
 	const [emailValue, setEmail] = useState('');
 	const { loading } = useSelector((state) => state.AuthReducer);
@@ -26,8 +23,6 @@ export function ForgotPasswordPage() {
 		if (!emailValue) {
 			return;
 		}
-
-		setCurrentRoute(location.pathname, emailValue);
 
 		let isSuccess = await forgotPassword(emailValue);
 		if (!isSuccess) {
