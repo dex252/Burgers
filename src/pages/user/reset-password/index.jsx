@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './index.module.css';
 import {
@@ -12,10 +12,19 @@ import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
 export function ResetPasswordPage() {
 	const navigate = useNavigate();
+	const location = useLocation();
 	const { resetPassword } = useAuthActions();
 	const { loading } = useSelector((state) => state.AuthReducer);
 	const [codeValue, setCode] = useState('');
 	const [passwordValue, setPassword] = useState('');
+	//Доступ осуществляется со страницы forgot-password через передачу состояния в navigate
+	const isAccess = location.state?.isAccess;
+
+	useEffect(() => {
+		if (!isAccess) {
+			navigate('/');
+		}
+	}, []);
 
 	const onChangeCode = (e) => {
 		setCode(e.target.value);

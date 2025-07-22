@@ -29,7 +29,7 @@ export function ForgotPasswordPage() {
 			return;
 		}
 
-		navigate('/reset-password', { replace: true });
+		navigate('/reset-password', { replace: true, state: { isAccess: true } });
 	};
 
 	const onEnter = () => {

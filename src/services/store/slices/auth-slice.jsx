@@ -222,6 +222,7 @@ const setAuthorization = () => async (dispatch) => {
 	}
 
 	dispatch(authSlice.actions.setAuthorization(false));
+	dispatch(authSlice.actions.setUser(undefined));
 	return false;
 };
 
@@ -251,6 +252,17 @@ const userLogout = () => async (dispatch) => {
 		});
 };
 
+const isAuthorization = () => async (dispatch) => {
+	const isTokenExist = localStorage.getItem('accessToken');
+	if (isTokenExist) {
+		dispatch(authSlice.actions.setAuthorization(true));
+		return true;
+	}
+
+	dispatch(authSlice.actions.setAuthorization(false));
+	return false;
+};
+
 export const useAuthActions = () => {
 	const dispatch = useDispatch();
 	return {
@@ -265,6 +277,7 @@ export const useAuthActions = () => {
 		setLogout: (payload) => dispatch(authSlice.actions.setLogout(payload)),
 		setAuthorization: (payload) => dispatch(setAuthorization(payload)),
 		userLogout: () => dispatch(userLogout()),
+		isAuthorization: () => dispatch(isAuthorization()),
 	};
 };
 
