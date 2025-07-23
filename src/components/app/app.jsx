@@ -27,7 +27,11 @@ export const App = () => {
 				<AppHeader />
 				<div className={styles.content}>
 					<Routes>
-						<Route path='/' element={<Protected>{<HomePage />}</Protected>} />
+						<Route
+							path='/'
+							element={<Protected>{<HomePage></HomePage>}</Protected>}>
+							<Route path='ingredient/:id' element={<IngedientsPage />} />
+						</Route>
 						<Route
 							path='/login'
 							element={<Protected onlyUnAuth={true}>{<LoginPage />}</Protected>}
@@ -56,11 +60,6 @@ export const App = () => {
 								<Protected onlyUnAuth={true}>{<ResetPasswordPage />}</Protected>
 							}
 						/>
-						<Route
-							path='/ingredients/:id'
-							element={<Protected>{<IngedientsPage />}</Protected>}
-						/>
-
 						<Route path='*' element={<ErrorPage404 />} />
 					</Routes>
 				</div>

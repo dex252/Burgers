@@ -4,7 +4,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
 import { useSelector } from 'react-redux';
 
-export const BurgerIngredients = ({ openModal }) => {
+export const BurgerIngredients = () => {
 	const [activeTab, setActiveTab] = useState('bun');
 	const { ingredients } = useSelector((state) => state.IngredientsReducer);
 	const setActiveCategory = (type) => {
@@ -28,7 +28,6 @@ export const BurgerIngredients = ({ openModal }) => {
 			</nav>
 			<IngredientsSection
 				ingredients={ingredients}
-				openModal={(ingredient) => openModal(ingredient)}
 				setActiveCategory={(type) =>
 					setActiveCategory(type)
 				}></IngredientsSection>
