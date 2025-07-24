@@ -1,4 +1,3 @@
-import { React } from 'react';
 import { ingredientPropType } from '@utils/prop-types.js';
 import styles from '../ingredient-details/ingredient-details.module.css';
 import { StateCard } from './state-card/state-card.jsx';

@@ -5,7 +5,7 @@ import { ingredientPropType } from '@utils/prop-types.js';
 import styles from './ingredient-category.module.css';
 
 export const IngredientCategory = forwardRef(
-	({ title, ingredients, type, openModal }, ref) => {
+	({ title, ingredients, type }, ref) => {
 		return (
 			<section
 				ref={ref}
@@ -17,11 +17,7 @@ export const IngredientCategory = forwardRef(
 				<div
 					className={`${styles.ingredient_category_content} ingredient-category-content-${type} ml-4`}>
 					{ingredients.map((ingredient) => (
-						<IngredientCard
-							key={ingredient._id}
-							ingredient={ingredient}
-							openModal={openModal}
-						/>
+						<IngredientCard key={ingredient._id} ingredient={ingredient} />
 					))}
 				</div>
 			</section>

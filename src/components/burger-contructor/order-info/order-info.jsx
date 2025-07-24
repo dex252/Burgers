@@ -6,29 +6,37 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '../../modals/shared/modal.jsx';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CreateOrder } from '../../modals/create-order/create-order.jsx';
 import { Loader } from '../../loader/loader.jsx';
-import { getOrder } from '../../../services/store/slices/order-detail-slice.jsx';
+import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
+import { useNavigate } from 'react-router-dom';
+import { useAuthActions } from '../../../services/store/slices/auth-slice.jsx';
 
 export const OrderInfo = ({ price }) => {
-	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { setAuthorization } = useAuthActions();
 	const ingredients = useSelector(
 		(state) => state.IngredientsReducer.ingredients
 	);
+	const { getOrder } = useOrderActions();
 	const { orderId, loading } = useSelector((state) => state.OrderReducer);
 	const [modalContent, setModalContent] = useState({
 		header: null,
 		content: null,
 		isOpen: false,
+		canClose: false,
 	});
 
-	const closeModal = (e) => {
-		console.info(e);
+	const closeModal = () => {
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
 
 	useEffect(() => {
+		if (loading.isLogout) {
+			return;
+		}
+
 		if (loading.isRequested) {
 			return;
 		}
@@ -46,6 +54,7 @@ export const OrderInfo = ({ price }) => {
 					/>
 				),
 				isOpen: true,
+				canClose: true,
 			});
 
 			return;
@@ -55,18 +64,20 @@ export const OrderInfo = ({ price }) => {
 			header: '',
 			content: <CreateOrder orderNumber={orderId} />,
 			isOpen: true,
+			canClose: true,
 		});
 
 		return () => {
-			console.info('UNMOUNT OrderInfo');
+			//console.info('UNMOUNT OrderInfo');
 		};
 	}, [loading, orderId]);
 
-	const createOrder = () => {
+	const createOrder = async () => {
 		setModalContent({
 			header: '',
-			content: <Loader loading={{ isSpinner: true }} />,
+			content: <Loader loading={{ isSpinner: true, isError: false }} />,
 			isOpen: true,
+			canClose: false,
 		});
 
 		const basketContent = [];
@@ -77,13 +88,21 @@ export const OrderInfo = ({ price }) => {
 				}
 			}
 		});
-		dispatch(getOrder(basketContent));
+
+		let isSuccess = await getOrder(basketContent);
+		setAuthorization();
+		if (!isSuccess) {
+			navigate('/login');
+		}
 	};
 
 	return (
 		<section>
 			{modalContent.isOpen ? (
-				<Modal header={modalContent.header} onClose={(e) => closeModal(e)}>
+				<Modal
+					header={modalContent.header}
+					onClose={(e) => closeModal(e)}
+					canCloseModal={modalContent.canClose}>
 					{modalContent.content}
 				</Modal>
 			) : (

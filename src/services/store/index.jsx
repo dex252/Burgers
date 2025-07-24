@@ -3,6 +3,7 @@ import IngredientsReducer from './slices/ingredients-slice.jsx';
 import BasketReducer from './slices/basket-constructor-slice.jsx';
 import DetailsReducer from './slices/ingredient-details-slice.jsx';
 import OrderReducer from './slices/order-detail-slice.jsx';
+import AuthReducer from './slices/auth-slice.jsx';
 import apiMiddleware from '../middlewares/api-middleware.jsx';
 
 const rootReducer = combineSlices({
@@ -10,6 +11,7 @@ const rootReducer = combineSlices({
 	BasketReducer,
 	DetailsReducer,
 	OrderReducer,
+	AuthReducer,
 });
 
 export const store = configureStore({

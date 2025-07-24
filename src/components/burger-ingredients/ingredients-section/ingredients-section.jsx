@@ -4,11 +4,7 @@ import { ingredientPropType } from '@utils/prop-types.js';
 import { IngredientCategory } from './ingredient-category/ingredient-category.jsx';
 import styles from './ingredients-section.module.css';
 
-export const IngredientsSection = ({
-	ingredients,
-	openModal,
-	setActiveCategory,
-}) => {
+export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 	const sectionRef = useRef(null);
 	const categoryRefs = {
 		bun: useRef(null),
@@ -68,7 +64,7 @@ export const IngredientsSection = ({
 			if (animationFrame) {
 				cancelAnimationFrame(animationFrame);
 			}
-			console.info('UNMOUNT ingredients-section');
+			//console.info('UNMOUNT ingredients-section');
 		};
 	}, []);
 
@@ -78,21 +74,18 @@ export const IngredientsSection = ({
 				title='Булки'
 				ingredients={groupedIngredients.bun}
 				type='bun'
-				openModal={openModal}
 				ref={categoryRefs.bun}
 			/>
 			<IngredientCategory
 				title='Соусы'
 				ingredients={groupedIngredients.sauce}
 				type='sauce'
-				openModal={openModal}
 				ref={categoryRefs.sauce}
 			/>
 			<IngredientCategory
 				title='Начинки'
 				ingredients={groupedIngredients.main}
 				type='main'
-				openModal={openModal}
 				ref={categoryRefs.main}
 			/>
 		</section>

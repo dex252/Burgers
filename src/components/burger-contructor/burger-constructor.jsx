@@ -6,14 +6,17 @@ import { useSelector } from 'react-redux';
 import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
 import { useDrop } from 'react-dnd';
 import { useIngredientsActions } from '../../services/store/slices/ingredients-slice';
+import { useAuthActions } from '../../services/store/slices/auth-slice';
 
 export const BurgerConstructor = () => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
 	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
 	const isChange = useSelector((state) => state.OrderReducer.isChange);
+	const isLogout = useSelector((state) => state.AuthReducer.isLogout);
 
 	const { addInBasket, setBun, clearBasket } = useBasketActions();
 	const { updateCount, clearCounts } = useIngredientsActions();
+	const { setLogout } = useAuthActions();
 
 	const [{ isHover, dragItem }, dropTarget] = useDrop({
 		accept: 'ingredient',
@@ -46,6 +49,13 @@ export const BurgerConstructor = () => {
 	});
 
 	useEffect(() => {
+		//Если случилось разлогирование, то не чистим корзину
+		if (isLogout === true) {
+			//После первой попытки - можно чистить
+			setLogout(false);
+			return;
+		}
+
 		clearBasket();
 		clearCounts();
 	}, [isChange]);

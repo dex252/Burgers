@@ -1,69 +1,63 @@
-import { React, useState, useEffect } from 'react';
-import styles from './app.module.css';
-import { Loader } from '../loader/loader.jsx';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { HomePage } from '../../pages/home/index.jsx';
+import { LoginPage } from '../../pages/user/login/index.jsx';
+import { ForgotPasswordPage } from '../../pages/user/forgot-password/index.jsx';
+import { ProfilePage } from '../../pages/user/profile/index.jsx';
+import { RegisterPage } from '../../pages/user/register/index.jsx';
+import { ResetPasswordPage } from '../../pages/user/reset-password/index.jsx';
+import { IngedientsPage } from '../../pages/ingredients/index.jsx';
+import { ErrorPage404 } from '../../pages/errors/404/index.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
-import { Modal } from '../modals/shared/modal.jsx';
-import { IngredientDetails } from '../modals/ingredient-details/ingredient-details.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Protected } from '../router/protected-router.jsx';
+import { useAuthActions } from '../../services/store/slices/auth-slice.jsx';
+
+import styles from './app.module.css';
 
 export const App = () => {
-	const dispatch = useDispatch();
-	const { loading } = useSelector((state) => state.IngredientsReducer);
-
-	const [modalContent, setModalContent] = useState({
-		header: null,
-		content: null,
-		isOpen: false,
-	});
-
-	const openIngredientsDetail = (ingredient) => {
-		setModalContent({
-			header: 'Детали ингредиента',
-			content: <IngredientDetails ingredient={ingredient} />,
-			isOpen: true,
-		});
-	};
-
-	const closeModal = (e) => {
-		console.info(e);
-		setModalContent((prev) => ({ ...prev, isOpen: false }));
-	};
+	const { setAuthorization } = useAuthActions();
 
 	useEffect(() => {
-		dispatch(setIngredients());
-		return () => {
-			console.info('UNMOUNT App');
-		};
+		setAuthorization();
 	}, []);
 
 	return (
-		<div className={styles.app}>
-			<AppHeader />
-			<h1
-				className={`${styles.title} text text_type_main-large mt-10 mr-5 pl-5`}>
-				Соберите бургер
-			</h1>
-			<main className={`${styles.main} pl-5 pr-5`}>
-				<Loader loading={loading}>
-					<DndProvider backend={HTML5Backend}>
-						<BurgerIngredients
-							openModal={(ingredient) => openIngredientsDetail(ingredient)}
+		<BrowserRouter>
+			<div className={styles.app}>
+				<AppHeader />
+				<div className={styles.content}>
+					<Routes>
+						<Route path='/' element={<Protected>{<HomePage />}</Protected>}>
+							<Route path='ingredient/:id' element={<IngedientsPage />} />
+						</Route>
+						<Route
+							path='/login'
+							element={<Protected onlyUnAuth>{<LoginPage />}</Protected>}
 						/>
-						<BurgerConstructor />
-					</DndProvider>
-				</Loader>
-			</main>
-
-			{modalContent.isOpen && (
-				<Modal header={modalContent.header} onClose={(e) => closeModal(e)}>
-					{modalContent.content}
-				</Modal>
-			)}
-		</div>
+						<Route
+							path='/forgot-password'
+							element={
+								<Protected onlyUnAuth>{<ForgotPasswordPage />}</Protected>
+							}
+						/>
+						<Route
+							path='/profile'
+							element={<Protected onlyAuth>{<ProfilePage />}</Protected>}
+						/>
+						<Route
+							path='/register'
+							element={<Protected onlyUnAuth>{<RegisterPage />}</Protected>}
+						/>
+						<Route
+							path='/reset-password'
+							element={
+								<Protected onlyUnAuth>{<ResetPasswordPage />}</Protected>
+							}
+						/>
+						<Route path='*' element={<ErrorPage404 />} />
+					</Routes>
+				</div>
+			</div>
+		</BrowserRouter>
 	);
 };

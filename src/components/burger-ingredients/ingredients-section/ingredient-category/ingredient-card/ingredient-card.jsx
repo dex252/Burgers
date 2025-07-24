@@ -7,19 +7,22 @@ import {
 import styles from './ingredient-card.module.css';
 import * as PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export const IngredientCard = ({ ingredient, openModal }) => {
+export const IngredientCard = ({ ingredient }) => {
 	const { setIngredient } = useDetailsActions();
-
+	const navigate = useNavigate();
+	const location = useLocation();
 	const [, dragRef] = useDrag({
 		type: 'ingredient',
 		item: ingredient,
 	});
 
 	function handleClick() {
-		console.info(ingredient);
-		openModal(ingredient);
 		setIngredient(ingredient);
+		navigate(`/ingredient/${ingredient._id}`, {
+			state: { backgroundLocation: location },
+		});
 	}
 
 	return (
