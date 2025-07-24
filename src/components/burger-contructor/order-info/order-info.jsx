@@ -28,8 +28,7 @@ export const OrderInfo = ({ price }) => {
 		canClose: false,
 	});
 
-	const closeModal = (e) => {
-		console.info(e);
+	const closeModal = () => {
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
 
@@ -69,7 +68,7 @@ export const OrderInfo = ({ price }) => {
 		});
 
 		return () => {
-			console.info('UNMOUNT OrderInfo');
+			//console.info('UNMOUNT OrderInfo');
 		};
 	}, [loading, orderId]);
 

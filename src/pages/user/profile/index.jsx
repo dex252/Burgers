@@ -52,7 +52,7 @@ export function ProfilePage() {
 		fetchUserData();
 
 		return () => {
-			console.info('UNMOUNT Profile');
+			//console.info('UNMOUNT Profile');
 		};
 	}, []);
 

@@ -19,7 +19,6 @@ export const IngredientCard = ({ ingredient }) => {
 	});
 
 	function handleClick() {
-		console.info(ingredient);
 		setIngredient(ingredient);
 		navigate(`/ingredient/${ingredient._id}`, {
 			state: { backgroundLocation: location },

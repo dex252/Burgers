@@ -39,7 +39,6 @@ export function LoginPage() {
 		}
 
 		const from = location.state?.from || { pathname: '/' };
-		console.info(`Page login redirected to ${location.pathname}`);
 
 		navigate(from, { replace: true });
 	};

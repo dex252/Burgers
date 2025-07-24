@@ -26,7 +26,7 @@ export function HomePage() {
 
 		dispatch(setIngredients());
 		return () => {
-			console.info('UNMOUNT App');
+			//console.info('UNMOUNT App');
 		};
 	}, []);
 

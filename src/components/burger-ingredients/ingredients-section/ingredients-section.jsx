@@ -64,7 +64,7 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 			if (animationFrame) {
 				cancelAnimationFrame(animationFrame);
 			}
-			console.info('UNMOUNT ingredients-section');
+			//console.info('UNMOUNT ingredients-section');
 		};
 	}, []);
 

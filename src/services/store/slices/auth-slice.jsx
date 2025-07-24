@@ -33,7 +33,7 @@ const authSlice = createSlice({
 		},
 		setLogout(state, action) {
 			//Не управляет состоянием авторизации пользователя
-			console.info('%cLogout', 'background-color: white; color: purple');
+			// console.info('%cLogout', 'background-color: white; color: purple');
 			state.isLogout = action.payload;
 		},
 		setUser(state, action) {
@@ -43,10 +43,10 @@ const authSlice = createSlice({
 			//state.isAuthorization = false;
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
-			console.info('%cREQUEST', 'background-color: white; color: blue');
+			// console.info('%cREQUEST', 'background-color: white; color: blue');
 		},
 		[_SUCCESS]: (state) => {
-			console.info('%cSUCCESS', 'background-color: white; color: green');
+			// console.info('%cSUCCESS', 'background-color: white; color: green');
 			state.loading.isSpinner = false;
 		},
 		[_ERROR]: (state, action) => {
@@ -127,9 +127,7 @@ const forgotPassword = (email) => async (dispatch) => {
 	dispatch(authSlice.actions[_REQUEST]());
 	return await Auth.forgotPassword(email)
 		.then((data) => {
-			const { success, message } = data;
-
-			console.info(message);
+			const { success /*message*/ } = data;
 
 			if (success !== true) {
 				dispatch(authSlice.actions[_ERROR](data));
@@ -149,9 +147,7 @@ const resetPassword = (password, code) => async (dispatch) => {
 	dispatch(authSlice.actions[_REQUEST]());
 	return await Auth.resetPassword(password, code)
 		.then((data) => {
-			const { success, message } = data;
-
-			console.info(message);
+			const { success /*message*/ } = data;
 
 			if (success !== true) {
 				dispatch(authSlice.actions[_ERROR](data));
