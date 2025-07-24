@@ -35,6 +35,11 @@ export function RegisterPage() {
 		navigate('/login');
 	};
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await onRegistration();
+	};
+
 	const onRegistration = async () => {
 		let isSuccess = await register(emailValue, passwordValue, nameValue);
 		if (!isSuccess) {
@@ -47,7 +52,7 @@ export function RegisterPage() {
 	return (
 		<section className={styles.content}>
 			<Loader loading={loading}>
-				<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<form onSubmit={handleSubmit} className={styles.content_form}>
 					<h1 className={`${styles.title} text text_type_main-medium pb-6`}>
 						Регистрация
 					</h1>
@@ -75,10 +80,9 @@ export function RegisterPage() {
 						extraClass='pb-6'
 					/>
 					<Button
-						htmlType='button'
+						htmlType='submit'
 						type='primary'
 						size='large'
-						onClick={onRegistration}
 						extraClass={`${styles.register_button} mb-20`}>
 						Зарегестрироваться
 					</Button>
@@ -94,7 +98,7 @@ export function RegisterPage() {
 							Войти
 						</Button>
 					</div>
-				</div>
+				</form>
 			</Loader>
 		</section>
 	);

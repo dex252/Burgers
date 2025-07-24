@@ -23,6 +23,11 @@ export function ProfilePage() {
 	const [nameValue, setName] = useState('');
 	const [activeButton] = useState('profile');
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await onSave();
+	};
+
 	const onSave = async () => {
 		await changeUserData(nameValue, emailValue, passwordValue);
 	};
@@ -117,7 +122,7 @@ export function ProfilePage() {
 									В этом разделе вы можете изменить свои персональные данные
 								</p>
 							</div>
-							<div className={styles.content_column}>
+							<form onSubmit={handleSubmit} className={styles.content_column}>
 								<Input
 									type={'text'}
 									placeholder={'Имя'}
@@ -152,14 +157,11 @@ export function ProfilePage() {
 										onClick={(e) => onCancel(e)}>
 										<p className='text text_type_main-medium'>Отмена</p>
 									</Button>
-									<Button
-										htmlType='button'
-										size='medium'
-										onClick={(e) => onSave(e)}>
+									<Button htmlType='submit' size='medium'>
 										<p className='text text_type_main-medium'>Сохранить</p>
 									</Button>
 								</div>
-							</div>
+							</form>
 						</div>
 					</Loader>
 				</main>

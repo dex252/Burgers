@@ -19,6 +19,11 @@ export function ForgotPasswordPage() {
 		setEmail(e.target.value);
 	};
 
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		await onRestore();
+	};
+
 	const onRestore = async () => {
 		if (!emailValue) {
 			return;
@@ -39,7 +44,7 @@ export function ForgotPasswordPage() {
 	return (
 		<section className={styles.content}>
 			<Loader loading={loading}>
-				<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<form onSubmit={handleSubmit} className={styles.content_form}>
 					<h1 className={`${styles.title} text text_type_main-medium pb-6`}>
 						Восстановление пароля
 					</h1>
@@ -52,10 +57,9 @@ export function ForgotPasswordPage() {
 						extraClass='pb-6'
 					/>
 					<Button
-						htmlType='button'
+						htmlType='submit'
 						type='primary'
 						size='large'
-						onClick={onRestore}
 						extraClass={`${styles.restore_button} mb-20`}>
 						Восстановить
 					</Button>
@@ -71,7 +75,7 @@ export function ForgotPasswordPage() {
 							Войти
 						</Button>
 					</div>
-				</div>
+				</form>
 			</Loader>
 		</section>
 	);

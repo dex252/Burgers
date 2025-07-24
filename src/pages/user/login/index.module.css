@@ -23,3 +23,8 @@
 	align-items: center;
 	max-height: 1rem;
 }
+
+.content_form {
+	display: flex;
+	flex-direction: column;
+}
