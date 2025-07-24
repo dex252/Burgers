@@ -252,7 +252,7 @@ const userLogout = () => async (dispatch) => {
 		});
 };
 
-const isAuthorization = () => async (dispatch) => {
+const isAuthorization = () => (dispatch) => {
 	const isTokenExist = localStorage.getItem('accessToken');
 	if (isTokenExist) {
 		dispatch(authSlice.actions.setAuthorization(true));

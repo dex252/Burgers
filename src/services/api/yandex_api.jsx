@@ -125,6 +125,8 @@ const refreshToken = async () => {
 				throw e;
 			}
 
+			localStorage.clear('accessToken');
+			localStorage.clear('refreshToken');
 			if (e.response && e.response.data && e.response.data.message) {
 				throw new Error(e.response.data.message);
 			}

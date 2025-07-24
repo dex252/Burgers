@@ -6,18 +6,20 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Modal } from '../../modals/shared/modal.jsx';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CreateOrder } from '../../modals/create-order/create-order.jsx';
 import { Loader } from '../../loader/loader.jsx';
-import { getOrder } from '../../../services/store/slices/order-detail-slice.jsx';
+import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useAuthActions } from '../../../services/store/slices/auth-slice.jsx';
 
 export const OrderInfo = ({ price }) => {
-	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { setAuthorization } = useAuthActions();
 	const ingredients = useSelector(
 		(state) => state.IngredientsReducer.ingredients
 	);
+	const { getOrder } = useOrderActions();
 	const { orderId, loading } = useSelector((state) => state.OrderReducer);
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -71,10 +73,10 @@ export const OrderInfo = ({ price }) => {
 		};
 	}, [loading, orderId]);
 
-	const createOrder = () => {
+	const createOrder = async () => {
 		setModalContent({
 			header: '',
-			content: <Loader loading={{ isSpinner: true }} />,
+			content: <Loader loading={{ isSpinner: true, isError: false }} />,
 			isOpen: true,
 			canClose: false,
 		});
@@ -87,7 +89,12 @@ export const OrderInfo = ({ price }) => {
 				}
 			}
 		});
-		dispatch(getOrder(basketContent, navigate));
+
+		let isSuccess = await getOrder(basketContent);
+		setAuthorization();
+		if (!isSuccess) {
+			navigate('/login');
+		}
 	};
 
 	return (
