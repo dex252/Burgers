@@ -27,37 +27,31 @@ export const App = () => {
 				<AppHeader />
 				<div className={styles.content}>
 					<Routes>
-						<Route
-							path='/'
-							element={<Protected>{<HomePage></HomePage>}</Protected>}>
+						<Route path='/' element={<Protected>{<HomePage />}</Protected>}>
 							<Route path='ingredient/:id' element={<IngedientsPage />} />
 						</Route>
 						<Route
 							path='/login'
-							element={<Protected onlyUnAuth={true}>{<LoginPage />}</Protected>}
+							element={<Protected onlyUnAuth>{<LoginPage />}</Protected>}
 						/>
 						<Route
 							path='/forgot-password'
 							element={
-								<Protected onlyUnAuth={true}>
-									{<ForgotPasswordPage />}
-								</Protected>
+								<Protected onlyUnAuth>{<ForgotPasswordPage />}</Protected>
 							}
 						/>
 						<Route
 							path='/profile'
-							element={<Protected onlyAuth={true}>{<ProfilePage />}</Protected>}
+							element={<Protected onlyAuth>{<ProfilePage />}</Protected>}
 						/>
 						<Route
 							path='/register'
-							element={
-								<Protected onlyUnAuth={true}>{<RegisterPage />}</Protected>
-							}
+							element={<Protected onlyUnAuth>{<RegisterPage />}</Protected>}
 						/>
 						<Route
 							path='/reset-password'
 							element={
-								<Protected onlyUnAuth={true}>{<ResetPasswordPage />}</Protected>
+								<Protected onlyUnAuth>{<ResetPasswordPage />}</Protected>
 							}
 						/>
 						<Route path='*' element={<ErrorPage404 />} />
