@@ -87,11 +87,8 @@ export const request = async (
 	try {
 		return await executeRequest();
 	} catch (error) {
-		//В reject 200 может попасть только при успешной проверке токена
-		if (
-			(error.status && error.status == 200) ||
-			error.message === 'jwt expired'
-		) {
+		//В reject 200 может попасть только при успешной проверке токена вне зависимости от ошибки
+		if (error.status && error.status == 200) {
 			return await executeRequest();
 		}
 
