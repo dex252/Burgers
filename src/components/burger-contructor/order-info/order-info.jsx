@@ -21,7 +21,7 @@ export const OrderInfo = ({ price }) => {
 	const ingredients = useSelector(
 		(state) => state.IngredientsReducer.ingredients
 	);
-	const { getOrder } = useOrderActions();
+	const { getOrder, handleCloseModal } = useOrderActions();
 	const { orderId, loading } = useSelector((state) => state.OrderReducer);
 	const [modalContent, setModalContent] = useState({
 		header: null,
@@ -31,6 +31,7 @@ export const OrderInfo = ({ price }) => {
 	});
 
 	const closeModal = () => {
+		handleCloseModal();
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
 
@@ -59,6 +60,10 @@ export const OrderInfo = ({ price }) => {
 				canClose: true,
 			});
 
+			return;
+		}
+
+		if (!modalContent.isOpen) {
 			return;
 		}
 

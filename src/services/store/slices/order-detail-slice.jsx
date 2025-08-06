@@ -30,6 +30,9 @@ const orderSlice = createSlice({
 			state.name = action.payload.name;
 			state.orderId = action.payload.order.number;
 		},
+		handleCloseModal(state) {
+			state.loading.isError = false;
+		},
 		[_LOGOUT]: (state) => {
 			state.loading.isError = false;
 			state.loading.isRequested = true;
@@ -61,6 +64,8 @@ export const useOrderActions = () => {
 	return {
 		setOrder: (payload) => dispatch(orderSlice.actions.setOrder(payload)),
 		getOrder: (basketContent) => dispatch(getOrder(basketContent)),
+		handleCloseModal: (payload) =>
+			dispatch(orderSlice.actions.handleCloseModal(payload)),
 	};
 };
 
