@@ -1,8 +1,10 @@
-import { React, useState } from 'react';
-import styles from './burger-ingredients.module.css';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
+import { Tab } from '@krgaa/react-developer-burger-ui-components';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
+
+import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
+
+import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = () => {
 	const [activeTab, setActiveTab] = useState('bun');
@@ -15,13 +17,13 @@ export const BurgerIngredients = () => {
 		<section className={styles.burger_ingredients}>
 			<nav className='mb-10'>
 				<ul className={styles.menu}>
-					<Tab value='bun' active={activeTab === 'bun'} onClick={() => {}}>
+					<Tab value='bun' active={activeTab === 'bun'}>
 						Булки
 					</Tab>
-					<Tab value='sauce' active={activeTab === 'sauce'} onClick={() => {}}>
+					<Tab value='sauce' active={activeTab === 'sauce'}>
 						Соусы
 					</Tab>
-					<Tab value='main' active={activeTab === 'main'} onClick={() => {}}>
+					<Tab value='main' active={activeTab === 'main'}>
 						Начинки
 					</Tab>
 				</ul>

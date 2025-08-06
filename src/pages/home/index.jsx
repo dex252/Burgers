@@ -1,13 +1,15 @@
-import { React, useEffect } from 'react';
-import styles from './index.module.css';
-import { Loader } from '../../components/loader/loader.jsx';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
+import { useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
+
+import { Loader } from '../../components/loader/loader.jsx';
+import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
+import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
+import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
+
+import styles from './index.module.css';
 
 export function HomePage() {
 	const dispatch = useDispatch();
@@ -28,6 +30,7 @@ export function HomePage() {
 		return () => {
 			//console.info('UNMOUNT App');
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	//Страница не является дефолтной и не является модальным окном

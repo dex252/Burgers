@@ -1,9 +1,10 @@
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { IngredientDetails } from '@components/modals/ingredient-details/ingredient-details';
-import styles from './index.module.css';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modals/shared/modal.jsx';
+import { IngredientDetails } from '@components/modals/ingredient-details/ingredient-details';
+
+import styles from './index.module.css';
 
 export function IngedientsPage() {
 	const { id } = useParams();

@@ -1,13 +1,15 @@
-import { useDetailsActions } from '../../../../../services/store/slices/ingredient-details-slice';
-import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	CurrencyIcon,
 	Counter,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './ingredient-card.module.css';
+} from '@krgaa/react-developer-burger-ui-components';
 import * as PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useDetailsActions } from '../../../../../services/store/slices/ingredient-details-slice';
+import { ingredientPropType } from '@utils/prop-types.js';
+
+import styles from './ingredient-card.module.css';
 
 export const IngredientCard = ({ ingredient }) => {
 	const { setIngredient } = useDetailsActions();
@@ -26,7 +28,6 @@ export const IngredientCard = ({ ingredient }) => {
 	}
 
 	return (
-		// eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
 		<section
 			ref={dragRef}
 			className={styles.ingredient_card}

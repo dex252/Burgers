@@ -1,7 +1,8 @@
-import React from 'react';
 import { MoonLoader } from 'react-spinners';
-import styles from './loader.module.css';
+
 import { loadingPropType } from '@utils/prop-types.js';
+
+import styles from './loader.module.css';
 
 const SPINNER_COLOR = '#8585AD';
 const SPINNER_SIZE = 120;

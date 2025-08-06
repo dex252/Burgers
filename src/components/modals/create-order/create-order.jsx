@@ -1,6 +1,6 @@
-import { React } from 'react';
+import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
+
 import styles from '../create-order/create-order.module.css';
-import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const CreateOrder = ({ orderNumber }) => {
 	return (

@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo } from 'react';
-import styles from './burger-constructor.module.css';
+import { useEffect, useMemo } from 'react';
+import { useDrop } from 'react-dnd';
+import { useSelector } from 'react-redux';
+
+import { useAuthActions } from '../../services/store/slices/auth-slice';
+import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
+import { useIngredientsActions } from '../../services/store/slices/ingredients-slice';
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from './order-info/order-info';
-import { useSelector } from 'react-redux';
-import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
-import { useDrop } from 'react-dnd';
-import { useIngredientsActions } from '../../services/store/slices/ingredients-slice';
-import { useAuthActions } from '../../services/store/slices/auth-slice';
+
+import styles from './burger-constructor.module.css';
 
 export const BurgerConstructor = () => {
 	const bun = useSelector((state) => state.BasketReducer.bun);
@@ -58,6 +60,7 @@ export const BurgerConstructor = () => {
 
 		clearBasket();
 		clearCounts();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isChange]);
 
 	const totalPrice = useMemo(() => {

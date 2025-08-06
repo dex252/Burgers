@@ -1,7 +1,9 @@
-import { React, useEffect, useRef } from 'react';
 import * as PropTypes from 'prop-types';
-import { ingredientPropType } from '@utils/prop-types.js';
+import { useEffect, useRef } from 'react';
+
 import { IngredientCategory } from './ingredient-category/ingredient-category.jsx';
+import { ingredientPropType } from '@utils/prop-types.js';
+
 import styles from './ingredients-section.module.css';
 
 export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
@@ -66,6 +68,7 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 			}
 			//console.info('UNMOUNT ingredients-section');
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

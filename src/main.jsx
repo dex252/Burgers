@@ -1,8 +1,10 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from '@components/app/app.jsx';
 import { Provider } from 'react-redux';
+
 import { store } from './services/store/index';
+import { App } from '@components/app/app.jsx';
+
 import './index.css';
 
 createRoot(document.getElementById('root')).render(

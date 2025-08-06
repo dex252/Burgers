@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import styles from './order-info.module.css';
-import * as PropTypes from 'prop-types';
 import {
 	CurrencyIcon,
 	Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { Modal } from '../../modals/shared/modal.jsx';
+} from '@krgaa/react-developer-burger-ui-components';
+import * as PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { CreateOrder } from '../../modals/create-order/create-order.jsx';
-import { Loader } from '../../loader/loader.jsx';
-import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
 import { useNavigate } from 'react-router-dom';
+
 import { useAuthActions } from '../../../services/store/slices/auth-slice.jsx';
+import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
+import { Loader } from '../../loader/loader.jsx';
+import { CreateOrder } from '../../modals/create-order/create-order.jsx';
+import { Modal } from '../../modals/shared/modal.jsx';
+
+import styles from './order-info.module.css';
 
 export const OrderInfo = ({ price }) => {
 	const navigate = useNavigate();

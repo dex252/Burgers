@@ -1,16 +1,17 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import React, { useEffect } from 'react';
+
+import { ErrorPage404 } from '../../pages/errors/404/index.jsx';
 import { HomePage } from '../../pages/home/index.jsx';
-import { LoginPage } from '../../pages/user/login/index.jsx';
+import { IngedientsPage } from '../../pages/ingredients/index.jsx';
 import { ForgotPasswordPage } from '../../pages/user/forgot-password/index.jsx';
+import { LoginPage } from '../../pages/user/login/index.jsx';
 import { ProfilePage } from '../../pages/user/profile/index.jsx';
 import { RegisterPage } from '../../pages/user/register/index.jsx';
 import { ResetPasswordPage } from '../../pages/user/reset-password/index.jsx';
-import { IngedientsPage } from '../../pages/ingredients/index.jsx';
-import { ErrorPage404 } from '../../pages/errors/404/index.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
-import { Protected } from '../router/protected-router.jsx';
 import { useAuthActions } from '../../services/store/slices/auth-slice.jsx';
+import { Protected } from '../router/protected-router.jsx';
+import { AppHeader } from '@components/app-header/app-header.jsx';
 
 import styles from './app.module.css';
 
@@ -19,6 +20,7 @@ export const App = () => {
 
 	useEffect(() => {
 		setAuthorization();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

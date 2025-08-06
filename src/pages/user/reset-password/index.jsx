@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import styles from './index.module.css';
 import {
 	Input,
 	PasswordInput,
 	Button,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+} from '@krgaa/react-developer-burger-ui-components';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
+
+import styles from './index.module.css';
 
 export function ResetPasswordPage() {
 	const navigate = useNavigate();
@@ -24,6 +26,7 @@ export function ResetPasswordPage() {
 		if (!isAccess) {
 			navigate('/');
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onChangeCode = (e) => {

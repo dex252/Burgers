@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom';
-import styles from './app-header.module.css';
 import {
 	BurgerIcon,
 	ListIcon,
 	ProfileIcon,
 	Logo,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+} from '@krgaa/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import styles from './app-header.module.css';
 
 export const AppHeader = () => {
 	const user = useSelector((state) => state.AuthReducer.user);

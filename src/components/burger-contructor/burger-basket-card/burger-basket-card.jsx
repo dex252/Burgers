@@ -1,14 +1,15 @@
-import React from 'react';
-import styles from './burger-basket-card.module.css';
-import { ingredientPropType } from '@utils/prop-types.js';
 import {
 	ConstructorElement,
 	DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+} from '@krgaa/react-developer-burger-ui-components';
 import * as PropTypes from 'prop-types';
-import { useBasketActions } from '../../../services/store/slices/basket-constructor-slice';
 import { useDrag, useDrop } from 'react-dnd';
+
+import { useBasketActions } from '../../../services/store/slices/basket-constructor-slice';
 import { useIngredientsActions } from '../../../services/store/slices/ingredients-slice';
+import { ingredientPropType } from '@utils/prop-types.js';
+
+import styles from './burger-basket-card.module.css';
 
 export const BurgerBasketCard = ({ ingredient, type }) => {
 	const isBun = ingredient?.type === 'bun';

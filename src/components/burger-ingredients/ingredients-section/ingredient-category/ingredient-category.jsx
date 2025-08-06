@@ -1,7 +1,9 @@
-import { React, forwardRef } from 'react';
-import { IngredientCard } from './ingredient-card/ingredient-card';
 import * as PropTypes from 'prop-types';
+import { forwardRef } from 'react';
+
+import { IngredientCard } from './ingredient-card/ingredient-card';
 import { ingredientPropType } from '@utils/prop-types.js';
+
 import styles from './ingredient-category.module.css';
 
 export const IngredientCategory = forwardRef(
@@ -25,6 +27,7 @@ export const IngredientCategory = forwardRef(
 	}
 );
 
+IngredientCategory.displayName = 'IngredientCategory';
 IngredientCategory.propTypes = {
 	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
 };

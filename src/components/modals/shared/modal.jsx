@@ -1,9 +1,11 @@
+import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
+import * as PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './modal.module.css';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import ModalOverlay from './modal-overlay.jsx';
-import * as PropTypes from 'prop-types';
+
+import styles from './modal.module.css';
 
 export const REACT_MODAL_COMPONENT = 'react-modals';
 const ESCAPE_BUTTON = 'Escape';
@@ -35,6 +37,7 @@ export const Modal = ({ children, header, onClose, canCloseModal = true }) => {
 		return () => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [canCloseModal]);
 
 	return createPortal(
