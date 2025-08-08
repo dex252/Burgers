@@ -2,16 +2,22 @@ import {
 	CurrencyIcon,
 	Counter,
 } from '@krgaa/react-developer-burger-ui-components';
-import * as PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useDetailsActions } from '../../../../../services/store/slices/ingredient-details-slice';
-import { ingredientPropType } from '@utils/prop-types.js';
+
+import type React from 'react';
+
+import type { Ingredient } from '@utils/prop-types-ts.ts';
 
 import styles from './ingredient-card.module.css';
 
-export const IngredientCard = ({ ingredient }) => {
+export const IngredientCard = ({
+	ingredient,
+}: {
+	ingredient: Ingredient;
+}): React.ReactElement => {
 	const { setIngredient } = useDetailsActions();
 	const navigate = useNavigate();
 	const location = useLocation();
@@ -20,7 +26,7 @@ export const IngredientCard = ({ ingredient }) => {
 		item: ingredient,
 	});
 
-	function handleClick() {
+	function handleClick(): void {
 		setIngredient(ingredient);
 		navigate(`/ingredient/${ingredient._id}`, {
 			state: { backgroundLocation: location },
@@ -29,9 +35,9 @@ export const IngredientCard = ({ ingredient }) => {
 
 	return (
 		<section
-			ref={dragRef}
+			ref={dragRef as unknown as React.Ref<HTMLElement>}
 			className={styles.ingredient_card}
-			onClick={(ingredient) => handleClick(ingredient)}>
+			onClick={() => handleClick()}>
 			{ingredient.count > 0 && (
 				<Counter
 					count={ingredient.count}
@@ -51,9 +57,4 @@ export const IngredientCard = ({ ingredient }) => {
 			<p className={styles.ingredient_name}>{ingredient.name}</p>
 		</section>
 	);
-};
-
-IngredientCard.propTypes = {
-	ingredient: ingredientPropType.isRequired,
-	openModal: PropTypes.func,
 };

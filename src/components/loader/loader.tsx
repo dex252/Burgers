@@ -1,13 +1,21 @@
 import { MoonLoader } from 'react-spinners';
 
-import { loadingPropType } from '@utils/prop-types.js';
+import type React from 'react';
+
+import type { LoadingPropType } from '@utils/prop-types-ts.ts';
 
 import styles from './loader.module.css';
 
 const SPINNER_COLOR = '#8585AD';
 const SPINNER_SIZE = 120;
 
-export const Loader = ({ loading, children }) => {
+export const Loader = ({
+	loading,
+	children,
+}: {
+	loading: LoadingPropType;
+	children: React.ReactElement;
+}): React.ReactElement => {
 	if (loading.isSpinner) {
 		return (
 			<div className={styles.loader_container}>
@@ -39,6 +47,6 @@ export const Loader = ({ loading, children }) => {
 	return children;
 };
 
-Loader.propTypes = {
-	loading: loadingPropType.isRequired,
-};
+// Loader.propTypes = {
+// 	loading: loadingPropType.isRequired,
+// };

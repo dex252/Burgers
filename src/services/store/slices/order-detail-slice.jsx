@@ -17,9 +17,9 @@ const initialState = {
 		isError: false,
 		isErrorMessage: undefined,
 		isRequested: true,
+		isLogout: false,
 	},
 	isChange: false,
-	isLogout: false,
 };
 
 const orderSlice = createSlice({

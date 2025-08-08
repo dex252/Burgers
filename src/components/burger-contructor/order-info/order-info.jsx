@@ -77,6 +77,7 @@ export const OrderInfo = ({ price }) => {
 		return () => {
 			//console.info('UNMOUNT OrderInfo');
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loading, orderId]);
 
 	const createOrder = async () => {
