@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-const initialState = {
+import type { Ingredient } from '@/utils/prop-types-ts';
+import type { AppDispatch, BasketConstructorState } from '@/utils/store-types';
+
+const initialState: BasketConstructorState = {
 	bun: null,
 	ingredients: [],
 };
@@ -11,10 +14,13 @@ const basketSlice = createSlice({
 	initialState,
 	reducers: {
 		addInBasket(state, action) {
-			const { ingredient, guid, index } = action.payload;
 			state.ingredients = [
 				...state.ingredients,
-				{ ...ingredient, guid: guid, index: index },
+				{
+					...action.payload.ingredient,
+					guid: action.payload.guid,
+					index: action.payload.index,
+				},
 			];
 		},
 		removeFromBasket(state, action) {
@@ -29,15 +35,18 @@ const basketSlice = createSlice({
 		setBun(state, action) {
 			state.bun = action.payload;
 		},
-		unSetBun(state, action) {
-			state.bun = action.payload;
+		unSetBun(state) {
+			state.bun = null;
 		},
 		sortIngredient(state, action) {
-			const { draggedGuid, targetGuid } = action.payload;
 			const сopy = [...state.ingredients];
 
-			const draggedIndex = сopy.findIndex((item) => item.guid === draggedGuid);
-			const targetIndex = сopy.findIndex((item) => item.guid === targetGuid);
+			const draggedIndex = сopy.findIndex(
+				(item) => item.guid === action.payload.draggedGuid
+			);
+			const targetIndex = сopy.findIndex(
+				(item) => item.guid === action.payload.targetGuid
+			);
 
 			const [movedItem] = сopy.splice(draggedIndex, 1);
 			const updated = [
@@ -54,19 +63,32 @@ const basketSlice = createSlice({
 	},
 });
 
-export const useBasketActions = () => {
-	const dispatch = useDispatch();
+export const useBasketActions = (): {
+	addInBasket: (payload: {
+		ingredient: Ingredient;
+		guid: string;
+		index: number;
+	}) => void;
+	removeFromBasket: (payload: { guid: string }) => void;
+	setBun: (payload: Ingredient) => void;
+	unSetBun: () => void;
+	sortIngredient: (payload: {
+		draggedGuid: string;
+		targetGuid: string;
+	}) => void;
+	clearBasket: () => void;
+} => {
+	const dispatch = useDispatch<AppDispatch>();
 	return {
 		addInBasket: (payload) =>
 			dispatch(basketSlice.actions.addInBasket(payload)),
 		removeFromBasket: (payload) =>
 			dispatch(basketSlice.actions.removeFromBasket(payload)),
 		setBun: (payload) => dispatch(basketSlice.actions.setBun(payload)),
-		unSetBun: (payload) => dispatch(basketSlice.actions.unSetBun(payload)),
+		unSetBun: () => dispatch(basketSlice.actions.unSetBun()),
 		sortIngredient: (payload) =>
 			dispatch(basketSlice.actions.sortIngredient(payload)),
-		clearBasket: (payload) =>
-			dispatch(basketSlice.actions.clearBasket(payload)),
+		clearBasket: () => dispatch(basketSlice.actions.clearBasket()),
 	};
 };
 

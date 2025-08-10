@@ -1,11 +1,16 @@
 import type { Action } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import type { Ingredient, LoadingPropType } from './prop-types-ts';
+import type {
+	Ingredient,
+	IngredientType,
+	LoadingPropType,
+} from './prop-types-ts';
 
 export type RootState = {
 	IngredientsReducer: IngredientsReducerStates;
 	DetailsReducer: DetailsReducerStates;
+	BasketReducer: BasketReducerStates;
 };
 
 export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
@@ -35,5 +40,16 @@ export type DetailsState = {
 
 export type DetailsReducerStates = {
 	DetailsReducer: DetailsState;
+};
+//#endregion
+
+//#region basket-constructor-slice.tsx
+export type BasketConstructorState = {
+	ingredients: Ingredient[];
+	bun: IngredientType | null;
+};
+
+export type BasketReducerStates = {
+	BasketReducer: BasketConstructorState;
 };
 //#endregion
