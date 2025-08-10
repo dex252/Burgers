@@ -1,8 +1,16 @@
 import { CheckMarkIcon } from '@krgaa/react-developer-burger-ui-components';
 
-import styles from '../create-order/create-order.module.css';
+import type { ReactElement } from 'react';
 
-export const CreateOrder = ({ orderNumber }) => {
+import styles from './create-order.module.css';
+
+type CreateOrderProps = {
+	orderNumber: number;
+};
+
+export const CreateOrder = ({
+	orderNumber,
+}: CreateOrderProps): ReactElement => {
 	return (
 		<section>
 			<p className={`pb-8 ${styles.order_number} text text_type_digits-large`}>

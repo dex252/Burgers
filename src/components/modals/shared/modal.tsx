@@ -1,24 +1,42 @@
 import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
-import * as PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import ModalOverlay from './modal-overlay.jsx';
+
+import type { FC, ReactNode } from 'react';
 
 import styles from './modal.module.css';
 
 export const REACT_MODAL_COMPONENT = 'react-modals';
 const ESCAPE_BUTTON = 'Escape';
 
-export const Modal = ({ children, header, onClose, canCloseModal = true }) => {
+type IModalProps = {
+	header: boolean;
+	canCloseModal?: boolean;
+	children: ReactNode;
+	onClose: (e?: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export const Modal: FC<IModalProps> = ({
+	children = false,
+	header = false,
+	onClose,
+	canCloseModal = true,
+}) => {
 	const modalRoot = document.getElementById(REACT_MODAL_COMPONENT);
-	const hideModal = (e) => {
+	if (!modalRoot) {
+		throw new Error(
+			`Элемент с идентификатором '${REACT_MODAL_COMPONENT}' н найден`
+		);
+	}
+	const hideModal = (e: React.MouseEvent<HTMLElement>): void => {
 		if (!canCloseModal) {
 			return;
 		}
 
 		e.preventDefault();
-		onClose(e);
+		onClose();
 	};
 
 	useEffect(() => {
@@ -26,15 +44,15 @@ export const Modal = ({ children, header, onClose, canCloseModal = true }) => {
 			return;
 		}
 
-		const handleKeyDown = (e) => {
+		const handleKeyDown = (e: KeyboardEvent): void => {
 			if (e.key === ESCAPE_BUTTON) {
-				onClose(e);
+				onClose();
 			}
 		};
 
 		window.addEventListener('keydown', handleKeyDown);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener('keydown', handleKeyDown);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,10 +78,4 @@ export const Modal = ({ children, header, onClose, canCloseModal = true }) => {
 		</section>,
 		modalRoot
 	);
-};
-
-Modal.propTypes = {
-	header: PropTypes.string,
-	onClose: PropTypes.func.isRequired,
-	children: PropTypes.node,
 };

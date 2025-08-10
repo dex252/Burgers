@@ -11,7 +11,7 @@ import { useAuthActions } from '../../../services/store/slices/auth-slice.jsx';
 import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
 import { Loader } from '../../loader/loader.jsx';
 import { CreateOrder } from '../../modals/create-order/create-order.jsx';
-import { Modal } from '../../modals/shared/modal.jsx';
+import { Modal } from '../../modals/shared/modal.tsx';
 
 import styles from './order-info.module.css';
 

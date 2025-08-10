@@ -1,6 +1,13 @@
-import styles from '../state-card/state-card.module.css';
+import type { FC } from 'react';
 
-export const StateCard = ({ name, count }) => {
+import styles from './state-card.module.css';
+
+type IStateCardProps = {
+	name: string;
+	count: number;
+};
+
+export const StateCard: FC<IStateCardProps> = ({ name, count }) => {
 	return (
 		<section className={`mr-5 ${styles.content}`}>
 			<p className='text text_type_main-default text_color_inactive'>{name}</p>

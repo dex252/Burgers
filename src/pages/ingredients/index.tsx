@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
-import { Modal } from '../../components/modals/shared/modal.jsx';
+import { Modal } from '../../components/modals/shared/modal.tsx';
 import { IngredientDetails } from '@components/modals/ingredient-details/ingredient-details';
 
 import type { FC } from 'react';
