@@ -1,14 +1,23 @@
 import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 
-const ProtectedRouteElement = ({
+import type { AuthReducerStates } from '@/utils/store-types';
+import type { FC, ReactNode } from 'react';
+
+type IProtectedProps = {
+	onlyAuth?: boolean;
+	onlyUnAuth?: boolean;
+	children: ReactNode;
+};
+
+const ProtectedRouteElement: FC<IProtectedProps> = ({
 	onlyAuth = false,
 	onlyUnAuth = false,
 	children,
 }) => {
 	const location = useLocation();
 	const isAuthorization = useSelector(
-		(state) => state.AuthReducer.isAuthorization
+		(state: AuthReducerStates) => state.AuthReducer.isAuthorization
 	);
 
 	// console.log('Защищенный маршрут:', {

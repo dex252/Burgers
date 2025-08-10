@@ -7,10 +7,15 @@ import {
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import type { AuthReducerStates } from '@/utils/store-types';
+import type { FC } from 'react';
+
 import styles from './app-header.module.css';
 
-export const AppHeader = () => {
-	const user = useSelector((state) => state.AuthReducer.user);
+export const AppHeader: FC = () => {
+	const user = useSelector(
+		(state: AuthReducerStates) => state.AuthReducer.user
+	);
 
 	return (
 		<header className={styles.header}>

@@ -1,21 +1,23 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { ErrorPage404 } from '../../pages/errors/404/index.jsx';
-import { HomePage } from '../../pages/home/index.jsx';
-import { IngedientsPage } from '../../pages/ingredients/index.jsx';
-import { ForgotPasswordPage } from '../../pages/user/forgot-password/index.jsx';
-import { LoginPage } from '../../pages/user/login/index.jsx';
-import { ProfilePage } from '../../pages/user/profile/index.jsx';
-import { RegisterPage } from '../../pages/user/register/index.jsx';
-import { ResetPasswordPage } from '../../pages/user/reset-password/index.jsx';
-import { useAuthActions } from '../../services/store/slices/auth-slice.jsx';
+import { ErrorPage404 } from '../../pages/errors/404/index';
+import { HomePage } from '../../pages/home/index';
+import { IngedientsPage } from '../../pages/ingredients/index';
+import { ForgotPasswordPage } from '../../pages/user/forgot-password/index';
+import { LoginPage } from '../../pages/user/login/index';
+import { ProfilePage } from '../../pages/user/profile/index';
+import { RegisterPage } from '../../pages/user/register/index';
+import { ResetPasswordPage } from '../../pages/user/reset-password/index';
+import { useAuthActions } from '../../services/store/slices/auth-slice';
 import { Protected } from '../router/protected-router.jsx';
 import { AppHeader } from '@components/app-header/app-header.jsx';
 
+import type { FC } from 'react';
+
 import styles from './app.module.css';
 
-export const App = () => {
+export const App: FC = () => {
 	const { setAuthorization } = useAuthActions();
 
 	useEffect(() => {
