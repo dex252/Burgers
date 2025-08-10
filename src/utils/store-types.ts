@@ -5,6 +5,7 @@ import type {
 	Ingredient,
 	IngredientType,
 	LoadingPropType,
+	User,
 } from './prop-types-ts';
 
 export type RootState = {
@@ -12,6 +13,7 @@ export type RootState = {
 	DetailsReducer: DetailsReducerStates;
 	BasketReducer: BasketReducerStates;
 	OrderReducer: OrderReducerStates;
+	AuthReducer: AuthReducerStates;
 };
 
 export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
@@ -65,5 +67,18 @@ export type OrderDetailsState = {
 
 export type OrderReducerStates = {
 	OrderReducer: OrderDetailsState;
+};
+//#endregion
+
+//#region auth-slice.tsx
+export type AuthState = {
+	isAuthorization: boolean;
+	isLogout: boolean;
+	user?: User | undefined;
+	loading: LoadingPropType;
+};
+
+export type AuthReducerStates = {
+	AuthReducer: AuthState;
 };
 //#endregion
