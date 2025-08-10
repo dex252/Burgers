@@ -13,7 +13,7 @@ export enum IngredientType {
 	Sauce,
 }
 
-export type Ingredient = {
+export type BaseIngredient = {
 	_id: string;
 	name: string;
 	type: IngredientType;
@@ -26,9 +26,12 @@ export type Ingredient = {
 	image_large: string;
 	image_mobile: string;
 	__v: number;
-	count: number;
+};
+
+export type Ingredient = BaseIngredient & {
 	guid: string | undefined;
-	index: number | undefined;
+	index?: number | undefined;
+	count: number;
 };
 
 export type Token = {

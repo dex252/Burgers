@@ -9,7 +9,16 @@ import {
 	GET_INGREDIENTS,
 } from '../../api/yandex_api';
 
-const initialState = {
+import type { BaseIngredient, Ingredient } from '@/utils/prop-types-ts';
+import type { PayloadAction } from '@reduxjs/toolkit';
+
+import type {
+	AppDispatch,
+	AppThunk,
+	IngredientsState,
+} from '../../../utils/store-types';
+
+const initialState: IngredientsState = {
 	ingredients: [],
 	loading: {
 		isError: false,
@@ -22,7 +31,7 @@ const ingredientsSlice = createSlice({
 	name: 'ingredients-store',
 	initialState,
 	reducers: {
-		updateCount(state, action) {
+		updateCount(state, action: PayloadAction<{ id: string; delta: number }>) {
 			const { id, delta } = action.payload;
 			return {
 				...state,
@@ -41,11 +50,11 @@ const ingredientsSlice = createSlice({
 			state.loading.isSpinner = true;
 			state.loading.isError = false;
 		},
-		[_SUCCESS]: (state, action) => {
+		[_SUCCESS]: (state, action: PayloadAction<Ingredient[]>) => {
 			state.loading.isSpinner = false;
 			state.ingredients = action.payload;
 		},
-		[_ERROR]: (state, action) => {
+		[_ERROR]: (state, action: PayloadAction<string>) => {
 			state.loading.isSpinner = false;
 			state.loading.isErrorMessage = action.payload;
 			state.loading.isError = true;
@@ -53,20 +62,28 @@ const ingredientsSlice = createSlice({
 	},
 });
 
-export const setIngredients = () => (dispatch) => {
+export const setIngredients = (): AppThunk => (dispatch) => {
 	dispatch(ingredientsSlice.actions[_REQUEST]());
 
-	return request(GET_INGREDIENTS)
+	return request<{ success: boolean; data: BaseIngredient[] }, void>(
+		GET_INGREDIENTS
+	)
 		.then((response) => {
 			if (!response.success) {
-				dispatch(ingredientsSlice.actions[_ERROR](response.data));
+				dispatch(
+					ingredientsSlice.actions[_ERROR](
+						'Ошибка при загрузке списка ингредиентов'
+					)
+				);
 				return;
 			}
-			const ingredients = response.data.map((ingredient) => ({
-				...ingredient,
-				count: 0,
-				guid: '',
-			}));
+			const ingredients = response.data.map(
+				(ingredient: BaseIngredient): Ingredient => ({
+					...ingredient,
+					count: 0,
+					guid: '',
+				})
+			);
 			dispatch(ingredientsSlice.actions[_SUCCESS](ingredients));
 		})
 		.catch((error) => {
@@ -74,13 +91,16 @@ export const setIngredients = () => (dispatch) => {
 		});
 };
 
-export const useIngredientsActions = () => {
-	const dispatch = useDispatch();
+export const useIngredientsActions = (): {
+	updateCount: (payload: { id: string; delta: number }) => void;
+	clearCounts: () => void;
+} => {
+	const dispatch = useDispatch<AppDispatch>();
+
 	return {
 		updateCount: (payload) =>
 			dispatch(ingredientsSlice.actions.updateCount(payload)),
-		clearCounts: (payload) =>
-			dispatch(ingredientsSlice.actions.clearCounts(payload)),
+		clearCounts: () => dispatch(ingredientsSlice.actions.clearCounts()),
 	};
 };
 

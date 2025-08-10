@@ -4,21 +4,28 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { Loader } from '../../components/loader/loader.jsx';
+import { Loader } from '../../components/loader/loader';
 import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
 import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
 import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
 
+import type { FC } from 'react';
+
+import type {
+	AppDispatch,
+	IngredientsReducerStates,
+} from '../../utils/store-types';
+
 import styles from './index.module.css';
 
-export function HomePage() {
-	const dispatch = useDispatch();
+export const HomePage: FC = () => {
+	const dispatch = useDispatch<AppDispatch>();
 	const location = useLocation();
 	const isDefault = location.pathname == '/';
 	const backgroundLocation = location.state?.backgroundLocation;
 
 	const { loading, ingredients } = useSelector(
-		(state) => state.IngredientsReducer
+		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 
 	useEffect(() => {
@@ -27,9 +34,6 @@ export function HomePage() {
 		}
 
 		dispatch(setIngredients());
-		return () => {
-			//console.info('UNMOUNT App');
-		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -57,4 +61,4 @@ export function HomePage() {
 			<Outlet />
 		</div>
 	);
-}
+};
