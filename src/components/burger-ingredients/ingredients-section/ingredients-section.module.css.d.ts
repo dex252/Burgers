@@ -1,4 +1,4 @@
 declare const classNames: {
-  readonly ingredients_section: "ingredients_section";
+	readonly ingredients_section: 'ingredients_section';
 };
 export default classNames;
