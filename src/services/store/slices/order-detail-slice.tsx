@@ -1,0 +1,135 @@
+import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+
+import {
+	_REQUEST,
+	_SUCCESS,
+	_ERROR,
+	_LOGOUT,
+	request,
+	GET_ORDER,
+} from '../../api/yandex_api';
+
+import type { OrderCreateResponse } from '@/utils/api-types';
+import type { OrderCreate } from '@/utils/prop-types-ts';
+import type {
+	AppDispatch,
+	AppThunk,
+	OrderDetailsState,
+} from '@/utils/store-types';
+
+const initialState: OrderDetailsState = {
+	name: null,
+	orderId: 0,
+	loading: {
+		isError: false,
+		isErrorMessage: undefined,
+		isRequested: true,
+		isLogout: false,
+	},
+	isChange: false,
+};
+
+const orderSlice = createSlice({
+	name: 'order-store',
+	initialState,
+	reducers: {
+		setOrder(state, action) {
+			state.name = action.payload.name;
+			state.orderId = action.payload.order.number;
+		},
+		handleCloseModal(state) {
+			state.loading.isError = false;
+		},
+		[_LOGOUT]: (state) => {
+			state.loading.isError = false;
+			state.loading.isRequested = true;
+			state.loading.isLogout = true;
+		},
+		[_REQUEST]: (state) => {
+			state.loading.isError = false;
+			state.loading.isRequested = true;
+			state.loading.isLogout = false;
+		},
+		[_SUCCESS]: (state, action) => {
+			state.name = action.payload.name;
+			state.orderId = action.payload.order.number;
+			state.loading.isRequested = false;
+			state.loading.isLogout = false;
+			state.isChange = !state.isChange;
+		},
+		[_ERROR]: (state, action) => {
+			state.loading.isErrorMessage = action.payload;
+			state.loading.isError = true;
+			state.loading.isRequested = false;
+			state.loading.isLogout = false;
+		},
+	},
+});
+
+export const useOrderActions = (): {
+	setOrder: (payload: OrderCreate) => void;
+	getOrder: (basketContent: string[]) => Promise<boolean>;
+	handleCloseModal: () => void;
+} => {
+	const dispatch = useDispatch<AppDispatch>();
+	return {
+		setOrder: (payload: OrderCreate) =>
+			dispatch(orderSlice.actions.setOrder(payload)),
+		getOrder: (basketContent: string[]) => dispatch(getOrder(basketContent)),
+		handleCloseModal: () => dispatch(orderSlice.actions.handleCloseModal()),
+	};
+};
+
+/**
+ * @param {*} basketContent
+ * @returns true - не требуется редирект на login, false- требуется
+ */
+const getOrder =
+	(basketContent: string[]): AppThunk<Promise<boolean>> =>
+	async (dispatch) => {
+		dispatch(orderSlice.actions[_REQUEST]());
+		return await request<OrderCreateResponse, { ingredients: string[] }>(
+			GET_ORDER,
+			'post',
+			{
+				ingredients: basketContent,
+			},
+			true
+		)
+			.then((response) => {
+				// if (!response.success) {
+				// 	dispatch(orderSlice.actions[_ERROR](response.data));
+				// 	return true;
+				// }
+				dispatch(orderSlice.actions[_SUCCESS](response));
+				return true;
+			})
+			.catch((error) => {
+				if (
+					error.message === 'Token is invalid' ||
+					error.message === 'invalid token' ||
+					error.message === 'jwt malformed'
+				) {
+					//Здесь могут приходить разные ошибки авторизации, например, когда токен скомпроментирован
+					localStorage.removeItem('accessToken');
+					localStorage.removeItem('refreshToken');
+					dispatch(orderSlice.actions[_LOGOUT](error.message));
+					return false;
+				}
+
+				if (
+					error.response &&
+					error.response.data &&
+					error.response.data.message
+				) {
+					dispatch(orderSlice.actions[_ERROR](error.response.data.message));
+					return true;
+				}
+
+				dispatch(orderSlice.actions[_ERROR](error.message));
+				return true;
+			});
+	};
+
+export default orderSlice.reducer;

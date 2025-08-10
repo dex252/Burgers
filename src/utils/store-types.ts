@@ -11,6 +11,7 @@ export type RootState = {
 	IngredientsReducer: IngredientsReducerStates;
 	DetailsReducer: DetailsReducerStates;
 	BasketReducer: BasketReducerStates;
+	OrderReducer: OrderReducerStates;
 };
 
 export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
@@ -51,5 +52,18 @@ export type BasketConstructorState = {
 
 export type BasketReducerStates = {
 	BasketReducer: BasketConstructorState;
+};
+//#endregion
+
+//#region order-detail-slice.tsx
+export type OrderDetailsState = {
+	name: string | null;
+	orderId: number;
+	loading: LoadingPropType;
+	isChange: boolean;
+};
+
+export type OrderReducerStates = {
+	OrderReducer: OrderDetailsState;
 };
 //#endregion

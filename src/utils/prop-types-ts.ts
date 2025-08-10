@@ -1,10 +1,12 @@
 export type PositionType = 'top' | 'bottom';
 
 export type LoadingPropType = {
-	isSpinner: boolean;
+	isSpinner?: boolean;
 	isError: boolean;
 	withContent?: boolean;
 	isErrorMessage?: string;
+	isRequested?: boolean;
+	isLogout?: boolean;
 };
 
 export enum IngredientType {
@@ -42,4 +44,14 @@ export type Token = {
 export type User = {
 	email: string;
 	name: string;
+};
+
+export type Order = {
+	number: number;
+	price?: number;
+};
+
+export type OrderCreate = {
+	name: string;
+	order?: Order;
 };

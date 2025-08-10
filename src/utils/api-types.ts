@@ -1,6 +1,6 @@
 import type { InternalAxiosRequestConfig } from 'axios';
 
-import type { Token, User } from './prop-types-ts';
+import type { OrderCreate, Token, User } from './prop-types-ts';
 
 export type BaseResponse = {
 	success: boolean;
@@ -22,6 +22,8 @@ export type UserDataResponse = Omit<
 	},
 	'message'
 >;
+
+export type OrderCreateResponse = BaseResponse & OrderCreate;
 
 export type CustomAxiosRequestConfig = InternalAxiosRequestConfig & {
 	isToken?: boolean;
