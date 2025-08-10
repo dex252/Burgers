@@ -30,3 +30,13 @@ export type Ingredient = {
 	guid: string | undefined;
 	index: number | undefined;
 };
+
+export type Token = {
+	accessToken: string;
+	refreshToken: string;
+};
+
+export type User = {
+	email: string;
+	name: string;
+};

@@ -98,8 +98,8 @@ const getOrder = (basketContent) => async (dispatch) => {
 				error.message === 'jwt malformed'
 			) {
 				//Здесь могут приходить разные ошибки авторизации, например, когда токен скомпроментирован
-				localStorage.clear('accessToken');
-				localStorage.clear('refreshToken');
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
 				dispatch(orderSlice.actions[_LOGOUT](error.message));
 				return false;
 			}

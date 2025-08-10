@@ -68,8 +68,8 @@ const login = (email, password) => async (dispatch) => {
 			const { accessToken, refreshToken, success, user } = data;
 
 			if (success !== true) {
-				localStorage.clear('accessToken');
-				localStorage.clear('refreshToken');
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
@@ -84,8 +84,8 @@ const login = (email, password) => async (dispatch) => {
 			return true;
 		})
 		.catch((e) => {
-			localStorage.clear('accessToken');
-			localStorage.clear('refreshToken');
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
 			dispatch(authSlice.actions[_ERROR](e.message));
 			return false;
 		});
@@ -98,8 +98,8 @@ const register = (email, password, name) => async (dispatch) => {
 			const { accessToken, refreshToken, success, user } = data;
 
 			if (success !== true) {
-				localStorage.clear('accessToken');
-				localStorage.clear('refreshToken');
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
 				dispatch(authSlice.actions[_ERROR](data));
 				return false;
 			}
@@ -115,8 +115,8 @@ const register = (email, password, name) => async (dispatch) => {
 			return true;
 		})
 		.catch((e) => {
-			localStorage.clear('accessToken');
-			localStorage.clear('refreshToken');
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
 			dispatch(authSlice.actions[_ERROR](e.message));
 
 			return false;
@@ -234,8 +234,8 @@ const userLogout = () => async (dispatch) => {
 			}
 
 			//Удачный выход - обновляем токены
-			localStorage.clear('accessToken');
-			localStorage.clear('refreshToken');
+			localStorage.removeItem('accessToken');
+			localStorage.removeItem('refreshToken');
 			//Выключаем спиннер
 			dispatch(authSlice.actions[_SUCCESS]());
 			//Убираем авторизацию с пользователя
