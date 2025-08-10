@@ -4,14 +4,20 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Modal } from '../../components/modals/shared/modal.jsx';
 import { IngredientDetails } from '@components/modals/ingredient-details/ingredient-details';
 
+import type { FC } from 'react';
+
+import type { IngredientsReducerStates } from '../../utils/store-types';
+
 import styles from './index.module.css';
 
-export function IngedientsPage() {
+export const IngedientsPage: FC = () => {
 	const { id } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const { ingredients } = useSelector((state) => state.IngredientsReducer);
+	const { ingredients } = useSelector(
+		(state: IngredientsReducerStates) => state.IngredientsReducer
+	);
 	const ingredient = ingredients.find((item) => item._id === id);
 
 	const backgroundLocation = location.state?.backgroundLocation;
@@ -34,13 +40,13 @@ export function IngedientsPage() {
 		);
 	}
 
-	const closeModal = () => {
+	const closeModal = (): void => {
 		navigate(-1);
 	};
 
 	return (
-		<Modal header='Детали ингредиента' onClose={(e) => closeModal(e)}>
+		<Modal header='Детали ингредиента' onClose={() => closeModal()}>
 			{<IngredientDetails ingredient={ingredient} />}
 		</Modal>
 	);
-}
+};
