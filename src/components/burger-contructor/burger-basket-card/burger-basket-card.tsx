@@ -6,7 +6,6 @@ import { useDrag, useDrop } from 'react-dnd';
 
 import { useBasketActions } from '../../../services/store/slices/basket-constructor-slice';
 import { useIngredientsActions } from '../../../services/store/slices/ingredients-slice';
-import { IngredientType } from '@utils/prop-types-ts.ts';
 
 import type { Ingredient, PositionType } from '@utils/prop-types-ts.ts';
 
@@ -19,7 +18,7 @@ export const BurgerBasketCard = ({
 	ingredient: Ingredient;
 	type: PositionType;
 }): React.ReactElement => {
-	const isBun = ingredient?.type === IngredientType.Bun;
+	const isBun = ingredient?.type === 'bun';
 	const { removeFromBasket, sortIngredient } = useBasketActions();
 	const { updateCount } = useIngredientsActions();
 
@@ -64,9 +63,7 @@ export const BurgerBasketCard = ({
 	};
 
 	const onHover =
-		isHover &&
-		dragItem?.type !== IngredientType.Bun &&
-		dragItem?.guid !== ingredient?.guid
+		isHover && dragItem?.type !== 'bun' && dragItem?.guid !== ingredient?.guid
 			? `${styles.hovered}`
 			: '';
 

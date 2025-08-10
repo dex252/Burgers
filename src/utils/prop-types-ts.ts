@@ -9,11 +9,7 @@ export type LoadingPropType = {
 	isLogout?: boolean;
 };
 
-export enum IngredientType {
-	Bun,
-	Main,
-	Sauce,
-}
+export type IngredientType = 'bun' | 'sauce' | 'main';
 
 export type BaseIngredient = {
 	_id: string;
@@ -32,7 +28,7 @@ export type BaseIngredient = {
 
 export type Ingredient = BaseIngredient & {
 	guid: string | undefined;
-	index?: number | undefined;
+	index: number | undefined;
 	count: number;
 };
 

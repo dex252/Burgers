@@ -69,12 +69,12 @@ export const useBasketActions = (): {
 		guid: string;
 		index: number;
 	}) => void;
-	removeFromBasket: (payload: { guid: string }) => void;
+	removeFromBasket: (payload: { guid: string | undefined }) => void;
 	setBun: (payload: Ingredient) => void;
 	unSetBun: () => void;
 	sortIngredient: (payload: {
-		draggedGuid: string;
-		targetGuid: string;
+		draggedGuid: string | undefined;
+		targetGuid: string | undefined;
 	}) => void;
 	clearBasket: () => void;
 } => {
