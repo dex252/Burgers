@@ -10,32 +10,37 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
+import type { AuthReducerStates } from '@/utils/store-types';
+import type { FC, FormEvent } from 'react';
+
 import styles from './index.module.css';
 
-export function LoginPage() {
+export const LoginPage: FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	const { login } = useAuthActions();
-	const { loading } = useSelector((state) => state.AuthReducer);
+	const { loading } = useSelector(
+		(state: AuthReducerStates) => state.AuthReducer
+	);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 
-	const onChangeEmail = (e) => {
+	const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setEmail(e.target.value);
 	};
 
-	const onChangePassword = (e) => {
+	const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setPassword(e.target.value);
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		await onEnter();
 	};
 
-	const onEnter = async () => {
-		let isSuccess = await login(emailValue, passwordValue);
+	const onEnter = async (): Promise<void> => {
+		const isSuccess = await login(emailValue, passwordValue);
 		if (!isSuccess) {
 			return;
 		}
@@ -45,11 +50,11 @@ export function LoginPage() {
 		navigate(from, { replace: true });
 	};
 
-	const onRegistration = () => {
+	const onRegistration = (): void => {
 		navigate('/register');
 	};
 
-	const onForgotPassword = () => {
+	const onForgotPassword = (): void => {
 		navigate('/forgot-password');
 	};
 
@@ -109,4 +114,4 @@ export function LoginPage() {
 			</Loader>
 		</section>
 	);
-}
+};

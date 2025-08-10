@@ -10,13 +10,18 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
+import type { AuthReducerStates } from '@/utils/store-types';
+import type { FC, FormEvent } from 'react';
+
 import styles from './index.module.css';
 
-export function ResetPasswordPage() {
+export const ResetPasswordPage: FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { resetPassword } = useAuthActions();
-	const { loading } = useSelector((state) => state.AuthReducer);
+	const { loading } = useSelector(
+		(state: AuthReducerStates) => state.AuthReducer
+	);
 	const [codeValue, setCode] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	//Доступ осуществляется со страницы forgot-password через передачу состояния в navigate
@@ -29,21 +34,21 @@ export function ResetPasswordPage() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onChangeCode = (e) => {
+	const onChangeCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setCode(e.target.value);
 	};
 
-	const onChangePassword = (e) => {
+	const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setPassword(e.target.value);
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		await onSave();
 	};
 
-	const onSave = async () => {
-		let isSuccess = await resetPassword(passwordValue, codeValue);
+	const onSave = async (): Promise<void> => {
+		const isSuccess = await resetPassword(passwordValue, codeValue);
 		if (!isSuccess) {
 			return;
 		}
@@ -51,7 +56,7 @@ export function ResetPasswordPage() {
 		navigate('/profile');
 	};
 
-	const onEnter = () => {
+	const onEnter = (): void => {
 		navigate('/login');
 	};
 
@@ -101,4 +106,4 @@ export function ResetPasswordPage() {
 			</Loader>
 		</section>
 	);
-}
+};

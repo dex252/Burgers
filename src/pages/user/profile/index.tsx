@@ -10,32 +10,37 @@ import { useSelector } from 'react-redux';
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
 
+import type { AuthReducerStates } from '@/utils/store-types';
+import type { FC, FormEvent, SyntheticEvent } from 'react';
+
 import styles from './index.module.css';
 
-export function ProfilePage() {
+export const ProfilePage: FC = () => {
 	const navButtons = {
 		profile: 'profile',
 		history: 'ordersHistory',
 		exit: 'exit',
 	};
 	const { changeUserData, getUserData, userLogout } = useAuthActions();
-	const { loading, user } = useSelector((state) => state.AuthReducer);
+	const { loading, user } = useSelector(
+		(state: AuthReducerStates) => state.AuthReducer
+	);
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	const [nameValue, setName] = useState('');
 	const [activeButton] = useState('profile');
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		await onSave();
 	};
 
-	const onSave = async () => {
+	const onSave = async (): Promise<void> => {
 		await changeUserData(nameValue, emailValue, passwordValue);
 	};
 
 	useEffect(() => {
-		const fetchUserData = async () => {
+		const fetchUserData = async (): Promise<void> => {
 			try {
 				const user = await getUserData(); // Ждем завершения запроса
 
@@ -53,17 +58,17 @@ export function ProfilePage() {
 
 		fetchUserData();
 
-		return () => {
-			//console.info('UNMOUNT Profile');
-		};
+		// return () => {
+		// 	console.info('UNMOUNT Profile');
+		// };
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onUserLogout = async () => {
+	const onUserLogout = async (): Promise<void> => {
 		await userLogout();
 	};
 
-	const onCancel = () => {
+	const onCancel = (): void => {
 		if (user?.email) {
 			setEmail(user.email);
 		}
@@ -72,19 +77,19 @@ export function ProfilePage() {
 		}
 	};
 
-	const onNavButtonClick = (e) => {
+	const onNavButtonClick = (e: SyntheticEvent): void => {
 		console.info(e);
 	};
 
-	const onChangeEmail = (e) => {
+	const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setEmail(e.target.value);
 	};
 
-	const onChangePassword = (e) => {
+	const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setPassword(e.target.value);
 	};
 
-	const onChangeName = (e) => {
+	const onChangeName = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setName(e.target.value);
 	};
 
@@ -157,7 +162,7 @@ export function ProfilePage() {
 										size='medium'
 										type='secondary'
 										extraClass='mr-8'
-										onClick={(e) => onCancel(e)}>
+										onClick={() => onCancel()}>
 										<p className='text text_type_main-medium'>Отмена</p>
 									</Button>
 									<Button htmlType='submit' size='medium'>
@@ -171,4 +176,4 @@ export function ProfilePage() {
 			</div>
 		</div>
 	);
-}
+};
