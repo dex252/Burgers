@@ -31,12 +31,13 @@ const ingredientsSlice = createSlice({
 	name: 'ingredients-store',
 	initialState,
 	reducers: {
-		updateCount(state, action: PayloadAction<{ id: string; delta: number }>) {
-			const { id, delta } = action.payload;
+		updateCount(state, action) {
 			return {
 				...state,
 				ingredients: state.ingredients.map((item) =>
-					item._id === id ? { ...item, count: item.count + delta } : item
+					item._id === action.payload.id
+						? { ...item, count: item.count + action.payload.delta }
+						: item
 				),
 			};
 		},

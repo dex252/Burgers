@@ -5,6 +5,7 @@ import type { Ingredient, LoadingPropType } from './prop-types-ts';
 
 export type RootState = {
 	IngredientsReducer: IngredientsReducerStates;
+	DetailsReducer: DetailsReducerStates;
 };
 
 export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
@@ -16,7 +17,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 	Action<string>
 >;
 
-//#region inggredient-slice.tsx
+//#region ingredients-slice.tsx
 export type IngredientsState = {
 	ingredients: Ingredient[];
 	loading: LoadingPropType;
@@ -24,5 +25,15 @@ export type IngredientsState = {
 
 export type IngredientsReducerStates = {
 	IngredientsReducer: IngredientsState;
+};
+//#endregion
+
+//#region ingredient-details-slice.tsx
+export type DetailsState = {
+	ingredient?: Ingredient | null;
+};
+
+export type DetailsReducerStates = {
+	DetailsReducer: DetailsState;
 };
 //#endregion
