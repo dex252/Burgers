@@ -1,9 +1,18 @@
 import { StateCard } from './state-card/state-card.jsx';
-import { ingredientPropType } from '@utils/prop-types.js';
 
-import styles from '../ingredient-details/ingredient-details.module.css';
+import type { FC } from 'react';
 
-export const IngredientDetails = ({ ingredient }) => {
+import type { Ingredient } from '@utils/prop-types-ts';
+
+import styles from './ingredient-details.module.css';
+
+type IngredientDetailsProps = {
+	ingredient: Ingredient | null;
+};
+
+export const IngredientDetails: FC<IngredientDetailsProps> = ({
+	ingredient,
+}) => {
 	if (!ingredient) {
 		return null;
 	}
@@ -29,8 +38,4 @@ export const IngredientDetails = ({ ingredient }) => {
 			</div>
 		</section>
 	);
-};
-
-IngredientDetails.propTypes = {
-	ingredient: ingredientPropType.isRequired,
 };
