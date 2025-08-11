@@ -15,6 +15,7 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
+		"allowJs": true,
 
 		/* Linting */
 		"strict": true,
@@ -33,6 +34,7 @@
 	},
 	"plugins": [{ "name": "typescript-plugin-css-modules" }],
 	"include": ["src"],
+	"exclude": ["cypress"],
 	"references": [{ "path": "./tsconfig.node.json" }],
 	"types": ["@testing-library/jest-dom"]
 }
