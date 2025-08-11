@@ -1,25 +1,45 @@
-import * as PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
 
 import { IngredientCategory } from './ingredient-category/ingredient-category.jsx';
-import { ingredientPropType } from '@utils/prop-types.js';
+
+import type { Ingredient, IngredientType } from '@/utils/prop-types-ts.js';
+import type { ReactElement, RefObject } from 'react';
 
 import styles from './ingredients-section.module.css';
 
-export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
-	const sectionRef = useRef(null);
-	const categoryRefs = {
-		bun: useRef(null),
-		sauce: useRef(null),
-		main: useRef(null),
+type IngredientsSectionProps = {
+	ingredients: Ingredient[];
+	setActiveCategory(ingredientType: IngredientType): void;
+};
+
+type CategoryRefs = {
+	bun: RefObject<HTMLDivElement | null>;
+	sauce: RefObject<HTMLDivElement | null>;
+	main: RefObject<HTMLDivElement | null>;
+};
+
+type GroupedIngredients = {
+	bun: Ingredient[];
+	sauce: Ingredient[];
+	main: Ingredient[];
+};
+
+export const IngredientsSection = ({
+	ingredients,
+	setActiveCategory,
+}: IngredientsSectionProps): ReactElement => {
+	const sectionRef = useRef<HTMLDivElement>(null);
+	const categoryRefs: CategoryRefs = {
+		bun: useRef<HTMLDivElement>(null),
+		sauce: useRef<HTMLDivElement>(null),
+		main: useRef<HTMLDivElement>(null),
 	};
-	const groupedIngredients = ingredients.reduce(
-		(acc, ingredient) => {
-			acc[ingredient.type].push(ingredient);
-			return acc;
-		},
-		{ bun: [], sauce: [], main: [] }
-	);
+
+	const groupedIngredients: GroupedIngredients = {
+		bun: ingredients.filter((e) => e.type === 'bun'),
+		sauce: ingredients.filter((e) => e.type === 'sauce'),
+		main: ingredients.filter((e) => e.type === 'main'),
+	};
 
 	useEffect(() => {
 		const section = sectionRef.current;
@@ -27,20 +47,27 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 			return;
 		}
 
-		let lastActiveCategory = 'bun';
-		let animationFrame = null;
+		let lastActiveCategory: IngredientType = 'bun';
+		let animationFrame: number | null = null;
 
-		const handleScroll = () => {
+		const handleScroll = (): void => {
 			if (animationFrame) {
 				cancelAnimationFrame(animationFrame);
 			}
 
 			animationFrame = requestAnimationFrame(() => {
 				const topSection = section.getBoundingClientRect().top;
-				let activeCategory = null;
+				let activeCategory: IngredientType | null = null;
 				let minDistance = Infinity;
 
-				for (const [type, ref] of Object.entries(categoryRefs)) {
+				(
+					Object.entries(categoryRefs) as [
+						IngredientType,
+						RefObject<HTMLDivElement>,
+					][]
+				).forEach(([type, ref]) => {
+					if (!ref.current) return;
+
 					const topCategory = ref.current.getBoundingClientRect().top;
 					const distance = Math.abs(topCategory - topSection);
 
@@ -48,7 +75,7 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 						minDistance = distance;
 						activeCategory = type;
 					}
-				}
+				});
 
 				if (activeCategory && activeCategory !== lastActiveCategory) {
 					lastActiveCategory = activeCategory;
@@ -61,7 +88,7 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 
 		handleScroll();
 
-		return () => {
+		return (): void => {
 			section.removeEventListener('scroll', handleScroll);
 			if (animationFrame) {
 				cancelAnimationFrame(animationFrame);
@@ -93,9 +120,4 @@ export const IngredientsSection = ({ ingredients, setActiveCategory }) => {
 			/>
 		</section>
 	);
-};
-
-IngredientsSection.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientPropType.isRequired).isRequired,
-	setActiveCategory: PropTypes.func.isRequired,
 };
