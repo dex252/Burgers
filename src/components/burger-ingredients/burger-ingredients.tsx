@@ -2,7 +2,7 @@ import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { IngredientsSection } from './ingredients-section/ingredients-section.jsx';
+import { IngredientsSection } from './ingredients-section/ingredients-section';
 
 import type { IngredientType } from '@/utils/prop-types-ts';
 import type { IngredientsReducerStates } from '@/utils/store-types.js';

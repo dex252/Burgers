@@ -1,4 +1,4 @@
-import { StateCard } from './state-card/state-card.jsx';
+import { StateCard } from './state-card/state-card';
 
 import type { FC } from 'react';
 

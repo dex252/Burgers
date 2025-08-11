@@ -1,11 +1,11 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
-import apiMiddleware from '../middlewares/api-middleware.jsx';
-import AuthReducer from './slices/auth-slice.jsx';
-import BasketReducer from './slices/basket-constructor-slice.jsx';
-import DetailsReducer from './slices/ingredient-details-slice.jsx';
-import IngredientsReducer from './slices/ingredients-slice.jsx';
-import OrderReducer from './slices/order-detail-slice.jsx';
+import apiMiddleware from '../middlewares/api-middleware';
+import AuthReducer from './slices/auth-slice';
+import BasketReducer from './slices/basket-constructor-slice';
+import DetailsReducer from './slices/ingredient-details-slice';
+import IngredientsReducer from './slices/ingredients-slice';
+import OrderReducer from './slices/order-detail-slice';
 
 const rootReducer = combineSlices({
 	IngredientsReducer,

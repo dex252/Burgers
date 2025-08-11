@@ -15,8 +15,8 @@ export const BurgerBasketCard = ({
 	ingredient,
 	type,
 }: {
-	ingredient: Ingredient;
-	type: PositionType;
+	ingredient: Ingredient | null;
+	type?: PositionType;
 }): React.ReactElement => {
 	const isBun = ingredient?.type === 'bun';
 	const { removeFromBasket, sortIngredient } = useBasketActions();
@@ -41,7 +41,7 @@ export const BurgerBasketCard = ({
 		drop(item) {
 			sortIngredient({
 				draggedGuid: item.guid,
-				targetGuid: ingredient.guid,
+				targetGuid: ingredient?.guid,
 			});
 		},
 	});
@@ -58,6 +58,10 @@ export const BurgerBasketCard = ({
 	const hideDragIcon = !standardType ? `${styles.hide_drag_icon}` : '';
 
 	const handleRemove = (): void => {
+		if (ingredient == null) {
+			return;
+		}
+
 		updateCount({ id: ingredient._id, delta: -1 });
 		removeFromBasket(ingredient);
 	};

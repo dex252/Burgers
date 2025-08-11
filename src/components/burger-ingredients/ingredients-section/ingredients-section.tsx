@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { IngredientCategory } from './ingredient-category/ingredient-category.jsx';
+import { IngredientCategory } from './ingredient-category/ingredient-category';
 
 import type { Ingredient, IngredientType } from '@/utils/prop-types-ts.js';
 import type { ReactElement, RefObject } from 'react';

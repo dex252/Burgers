@@ -2,35 +2,49 @@ import {
 	CurrencyIcon,
 	Button,
 } from '@krgaa/react-developer-burger-ui-components';
-import * as PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuthActions } from '../../../services/store/slices/auth-slice.jsx';
-import { useOrderActions } from '../../../services/store/slices/order-detail-slice.jsx';
-import { Loader } from '../../loader/loader.jsx';
-import { CreateOrder } from '../../modals/create-order/create-order.jsx';
+import { useAuthActions } from '../../../services/store/slices/auth-slice';
+import { useOrderActions } from '../../../services/store/slices/order-detail-slice';
+import { Loader } from '../../loader/loader.js';
+import { CreateOrder } from '../../modals/create-order/create-order';
 import { Modal } from '../../modals/shared/modal.tsx';
+
+import type {
+	IngredientsReducerStates,
+	OrderReducerStates,
+} from '@/utils/store-types.ts';
+import type { ReactElement, ReactNode } from 'react';
 
 import styles from './order-info.module.css';
 
-export const OrderInfo = ({ price }) => {
+type ModalContentState = {
+	header: string | null;
+	content: ReactNode | null;
+	isOpen: boolean;
+	canClose: boolean;
+};
+
+export const OrderInfo = ({ price }: { price: number }): ReactElement => {
 	const navigate = useNavigate();
 	const { setAuthorization } = useAuthActions();
 	const ingredients = useSelector(
-		(state) => state.IngredientsReducer.ingredients
+		(state: IngredientsReducerStates) => state.IngredientsReducer.ingredients
 	);
 	const { getOrder, handleCloseModal } = useOrderActions();
-	const { orderId, loading } = useSelector((state) => state.OrderReducer);
-	const [modalContent, setModalContent] = useState({
+	const { orderId, loading } = useSelector(
+		(state: OrderReducerStates) => state.OrderReducer
+	);
+	const [modalContent, setModalContent] = useState<ModalContentState>({
 		header: null,
 		content: null,
 		isOpen: false,
 		canClose: false,
 	});
 
-	const closeModal = () => {
+	const closeModal = (): void => {
 		handleCloseModal();
 		setModalContent((prev) => ({ ...prev, isOpen: false }));
 	};
@@ -74,13 +88,13 @@ export const OrderInfo = ({ price }) => {
 			canClose: true,
 		});
 
-		return () => {
-			//console.info('UNMOUNT OrderInfo');
-		};
+		// return () => {
+		// 	console.info('UNMOUNT OrderInfo');
+		// };
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [loading, orderId]);
 
-	const createOrder = async () => {
+	const createOrder = async (): Promise<void> => {
 		setModalContent({
 			header: '',
 			content: <Loader loading={{ isSpinner: true, isError: false }} />,
@@ -88,7 +102,7 @@ export const OrderInfo = ({ price }) => {
 			canClose: false,
 		});
 
-		const basketContent = [];
+		const basketContent: string[] = [];
 		ingredients.forEach((item) => {
 			if (item?.count > 0) {
 				for (let i = 0; i < item.count; i++) {
@@ -97,7 +111,7 @@ export const OrderInfo = ({ price }) => {
 			}
 		});
 
-		let isSuccess = await getOrder(basketContent);
+		const isSuccess = await getOrder(basketContent);
 		setAuthorization();
 		if (!isSuccess) {
 			navigate('/login');
@@ -109,7 +123,7 @@ export const OrderInfo = ({ price }) => {
 			{modalContent.isOpen ? (
 				<Modal
 					header={modalContent.header}
-					onClose={(e) => closeModal(e)}
+					onClose={closeModal}
 					canCloseModal={modalContent.canClose}>
 					{modalContent.content}
 				</Modal>
@@ -135,8 +149,4 @@ export const OrderInfo = ({ price }) => {
 			)}
 		</section>
 	);
-};
-
-OrderInfo.propTypes = {
-	price: PropTypes.number.isRequired,
 };

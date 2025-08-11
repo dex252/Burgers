@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { Loader } from '../../components/loader/loader';
-import { setIngredients } from '../../services/store/slices/ingredients-slice.jsx';
-import { BurgerConstructor } from '@components/burger-contructor/burger-constructor.jsx';
-import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients.jsx';
+import { setIngredients } from '../../services/store/slices/ingredients-slice';
+import { BurgerConstructor } from '@components/burger-contructor/burger-constructor';
+import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredients';
 
 import type { FC } from 'react';
 

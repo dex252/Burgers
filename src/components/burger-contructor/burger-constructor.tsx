@@ -8,25 +8,50 @@ import { useIngredientsActions } from '../../services/store/slices/ingredients-s
 import { BurgerBasketCard } from './burger-basket-card/burger-basket-card';
 import { OrderInfo } from './order-info/order-info';
 
+import type { Ingredient } from '@/utils/prop-types-ts';
+import type {
+	AuthReducerStates,
+	BasketReducerStates,
+	OrderReducerStates,
+} from '@/utils/store-types';
+import type { ReactElement } from 'react';
+
 import styles from './burger-constructor.module.css';
 
-export const BurgerConstructor = () => {
-	const bun = useSelector((state) => state.BasketReducer.bun);
-	const ingredients = useSelector((state) => state.BasketReducer.ingredients);
-	const isChange = useSelector((state) => state.OrderReducer.isChange);
-	const isLogout = useSelector((state) => state.AuthReducer.isLogout);
+type DropCollectedProps = {
+	isHover: boolean;
+	dragItem: Ingredient | null;
+};
+
+export const BurgerConstructor = (): ReactElement => {
+	const bun = useSelector(
+		(state: BasketReducerStates) => state.BasketReducer.bun
+	);
+	const ingredients = useSelector(
+		(state: BasketReducerStates) => state.BasketReducer.ingredients
+	);
+	const isChange = useSelector(
+		(state: OrderReducerStates) => state.OrderReducer.isChange
+	);
+	const isLogout = useSelector(
+		(state: AuthReducerStates) => state.AuthReducer.isLogout
+	);
 
 	const { addInBasket, setBun, clearBasket } = useBasketActions();
 	const { updateCount, clearCounts } = useIngredientsActions();
 	const { setLogout } = useAuthActions();
 
-	const [{ isHover, dragItem }, dropTarget] = useDrop({
+	const [{ isHover, dragItem }, dropTarget] = useDrop<
+		Ingredient,
+		unknown,
+		DropCollectedProps
+	>({
 		accept: 'ingredient',
 		collect: (monitor) => ({
 			isHover: monitor.isOver(),
-			dragItem: monitor.getItem(),
+			dragItem: monitor.getItem<Ingredient | null>(),
 		}),
-		drop(ingredient) {
+		drop(ingredient: Ingredient) {
 			if (ingredient.type !== 'bun') {
 				updateCount({ id: ingredient._id, delta: 1 });
 				const guid =
@@ -69,15 +94,16 @@ export const BurgerConstructor = () => {
 			ingredients.reduce((sum, i) => sum + (Number(i.price) || 0), 0)
 		);
 	}, [bun, ingredients]);
-	var isEmpty = ingredients.length === 0;
+	const isEmpty = ingredients.length === 0;
 
-	const onHoverBun =
-		isHover & (dragItem?.type === 'bun') ? `${styles.hovered}` : '';
+	const onHoverBun = isHover && dragItem?.type === 'bun' ? styles.hovered : '';
 	const onHoverOther =
-		isHover & (dragItem?.type !== 'bun') ? `${styles.hovered}` : '';
+		isHover && dragItem?.type !== 'bun' ? styles.hovered : '';
 
 	return (
-		<section className={`${styles.burger_constructor} ml-4`} ref={dropTarget}>
+		<section
+			className={`${styles.burger_constructor} ml-4`}
+			ref={dropTarget as unknown as React.Ref<HTMLElement>}>
 			<div className={`${styles.basket_content} mb-10`}>
 				<div className={onHoverBun}>
 					<BurgerBasketCard ingredient={bun} type='top' />

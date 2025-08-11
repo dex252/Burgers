@@ -10,8 +10,8 @@ import { ProfilePage } from '../../pages/user/profile/index';
 import { RegisterPage } from '../../pages/user/register/index';
 import { ResetPasswordPage } from '../../pages/user/reset-password/index';
 import { useAuthActions } from '../../services/store/slices/auth-slice';
-import { Protected } from '../router/protected-router.jsx';
-import { AppHeader } from '@components/app-header/app-header.jsx';
+import { Protected } from '../router/protected-router';
+import { AppHeader } from '@components/app-header/app-header';
 
 import type { FC } from 'react';
 

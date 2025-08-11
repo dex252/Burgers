@@ -14,7 +14,7 @@ export const Loader = ({
 	children,
 }: {
 	loading: LoadingPropType;
-	children: React.ReactElement;
+	children?: React.ReactElement;
 }): React.ReactElement => {
 	if (loading.isSpinner) {
 		return (
@@ -42,6 +42,10 @@ export const Loader = ({
 				<h3>{loading.isErrorMessage}</h3>
 			</div>
 		);
+	}
+
+	if (children === undefined) {
+		return <div></div>;
 	}
 
 	return children;

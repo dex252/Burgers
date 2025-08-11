@@ -2,7 +2,7 @@ import { CloseIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
-import ModalOverlay from './modal-overlay.jsx';
+import ModalOverlay from './modal-overlay';
 
 import type { FC, ReactNode } from 'react';
 
@@ -12,7 +12,7 @@ export const REACT_MODAL_COMPONENT = 'react-modals';
 const ESCAPE_BUTTON = 'Escape';
 
 type IModalProps = {
-	header: boolean;
+	header: string | null;
 	canCloseModal?: boolean;
 	children: ReactNode;
 	onClose: (e?: React.ChangeEvent<HTMLInputElement>) => void;
@@ -20,7 +20,7 @@ type IModalProps = {
 
 export const Modal: FC<IModalProps> = ({
 	children = false,
-	header = false,
+	header,
 	onClose,
 	canCloseModal = true,
 }) => {
