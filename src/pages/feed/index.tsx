@@ -1,6 +1,6 @@
-//import { useOrdersFeedActions } from '@/services/store/slices/orders-feed-slice';
+import { FeedDetails } from '@/components/feed/feed-details/feed-details';
+import { FeedList } from '@/components/feed/feed-list/feed-container';
 import { useEffect, type FC } from 'react';
-//import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Loader } from '../../components/loader/loader';
@@ -14,7 +14,7 @@ export const FeedPage: FC = () => {
 	const GET_ALL_ORDERS = 'wss://norma.nomoreparties.space/orders/all';
 	const dispatch = useDispatch();
 
-	const { orders, loading } = useSelector(
+	const { orders, loading, total, totalToday } = useSelector(
 		(state: OrdersFeedReducerStates) => state.OrdersFeedReducer
 	);
 
@@ -26,20 +26,15 @@ export const FeedPage: FC = () => {
 	}, []);
 
 	return (
-		<section className={styles.content}>
+		<section className={styles.container}>
 			<Loader loading={loading}>
-				<div>
-					{orders.length > 0 ? (
-						<ul>
-							{orders.map((order) => (
-								<li key={order._id}>
-									Order ID: {order._id} | Number: {order.number} | Status:{' '}
-									{order.status}
-								</li>
-							))}
-						</ul>
-					) : null}
-				</div>
+				<main className={`${styles.main} pl-5 pr-5`}>
+					<FeedList orders={orders}></FeedList>
+					<FeedDetails
+						orders={orders}
+						total={total}
+						totalToday={totalToday}></FeedDetails>
+				</main>
 			</Loader>
 		</section>
 	);

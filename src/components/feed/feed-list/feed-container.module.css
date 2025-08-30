@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 60%;
+	min-width: 500px;
+	max-width: 800px;
+	color: var(--text-primary-color);
+	font-family: 'Jet Brains Mono', serif;
+}
+
+.title {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+}
+
+.content_wrapper {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.feed_section {
+	max-height: 85%;
+	overflow-y: auto;
+}

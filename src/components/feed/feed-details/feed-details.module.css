@@ -1,0 +1,51 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 35%;
+	min-width: 400px;
+	max-width: 580px;
+	color: var(--text-primary-color);
+	font-family: 'Jet Brains Mono', serif;
+}
+
+.title {
+	align-self: center;
+	width: 100%;
+	max-width: 1260px;
+}
+
+.grid_container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	width: 100%;
+	margin-top: 40px;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	height: 300px;
+	padding: 16px;
+	overflow: hidden;
+	background: var(--background-alt);
+	border-radius: 8px;
+}
+
+.order_number_done {
+	color: #4ae5e2;
+}
+
+.scroll_container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-right: 8px;
+	overflow-y: auto;
+}
+
+.total_number {
+	text-align: start;
+	text-shadow:
+		0 0 5px #00b4ff,
+		0 0 10px #0062ff;
+}

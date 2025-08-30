@@ -6,6 +6,8 @@ import type { OrdersFeedState, TWsActions } from '@/utils/store-types';
 
 const initialState: OrdersFeedState = {
 	orders: [],
+	total: 0,
+	totalToday: 0,
 	loading: {
 		isError: false,
 		isErrorMessage: undefined,
@@ -31,6 +33,8 @@ const ordersFeedSlice = createSlice({
 			})
 			.addCase(wsOnMessage, (state, action) => {
 				state.orders = action.payload.orders || [];
+				state.total = action.payload.total || 0;
+				state.totalToday = action.payload.totalToday || 0;
 				state.loading.isSpinner = false;
 			})
 			.addCase(wsOnError, (state, action) => {

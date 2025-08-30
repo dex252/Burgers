@@ -5,6 +5,8 @@ import type { OrdersHistoryState, TWsActions } from '@/utils/store-types';
 
 const initialState: OrdersHistoryState = {
 	orders: [],
+	total: 0,
+	totalToday: 0,
 	loading: {
 		isError: false,
 		isErrorMessage: undefined,
@@ -30,6 +32,8 @@ const ordersHistorySlice = createSlice({
 			})
 			.addCase(wsOnMessage, (state, action) => {
 				state.orders = action.payload.orders || [];
+				state.total = action.payload.total || 0;
+				state.totalToday = action.payload.totalToday || 0;
 				state.loading.isSpinner = false;
 			})
 			.addCase(wsOnError, (state, action) => {

@@ -93,6 +93,8 @@ export type AuthReducerStates = {
 
 export type OrdersFeedState = {
 	orders: HistoryOrder[];
+	total: number;
+	totalToday: number;
 	loading: LoadingPropType;
 };
 
