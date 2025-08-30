@@ -1,9 +1,8 @@
 import { _ERROR, _REQUEST, _SUCCESS } from '@/services/api/yandex_api';
-import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 
-import type { History, HistoryOrder } from '@/utils/prop-types-ts';
-import type { OrdersFeedState, AppDispatch } from '@/utils/store-types';
+import type { History } from '@/utils/prop-types-ts';
+import type { OrdersFeedState, TWsActions } from '@/utils/store-types';
 
 const initialState: OrdersFeedState = {
 	orders: [],
@@ -18,50 +17,41 @@ const initialState: OrdersFeedState = {
 const ordersFeedSlice = createSlice({
 	name: 'orders-feed-store',
 	initialState,
-	reducers: {
-		init(state, action) {
-			state.orders = action.payload.orders;
-		},
-		add(state, action) {
-			state.orders = [
-				...state.orders,
-				{
-					...action.payload,
-				},
-			];
-		},
-		clear(state) {
-			state.orders = [];
-		},
-		[_REQUEST]: (state) => {
-			state.loading.isError = false;
-			state.loading.isRequested = true;
-			state.loading.isLogout = false;
-		},
-		[_SUCCESS]: (state, action) => {
-			state.orders = action.payload.orders;
-			state.loading.isRequested = false;
-		},
-		[_ERROR]: (state, action) => {
-			state.loading.isErrorMessage = action.payload;
-			state.loading.isError = true;
-			state.loading.isRequested = false;
-			state.loading.isLogout = false;
-		},
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(wsConnect, (state) => {
+				state.loading.isSpinner = true;
+				state.loading.isError = false;
+			})
+			.addCase(wsDisconnect, (state) => {
+				state.loading.isSpinner = false;
+				state.loading.isError = false;
+				state.orders = [];
+			})
+			.addCase(wsOnMessage, (state, action) => {
+				state.orders = action.payload.orders || [];
+				state.loading.isSpinner = false;
+			})
+			.addCase(wsOnError, (state, action) => {
+				state.loading.isErrorMessage = action.payload;
+				state.loading.isError = true;
+				state.loading.isRequested = false;
+				state.loading.isSpinner = false;
+			});
 	},
 });
 
-export const useOrdersFeedActions = (): {
-	init: (payload: History) => void;
-	add: (payload: HistoryOrder) => void;
-	clear: () => void;
-} => {
-	const dispatch = useDispatch<AppDispatch>();
-	return {
-		init: (payload) => dispatch(ordersFeedSlice.actions.init(payload)),
-		add: (payload) => dispatch(ordersFeedSlice.actions.add(payload)),
-		clear: () => dispatch(ordersFeedSlice.actions.clear()),
-	};
+export const wsConnect = createAction<string>('ordersFeed/wsConnect');
+export const wsDisconnect = createAction('ordersFeed/wsDisconnect');
+export const wsOnMessage = createAction<History>('ordersFeed/wsOnMessage');
+export const wsOnError = createAction<string>('ordersFeed/wsOnError');
+
+export const ordersFeedWsActions: TWsActions<History, undefined> = {
+	connect: wsConnect,
+	disconnect: wsDisconnect,
+	onMessage: wsOnMessage,
+	onError: wsOnError,
 };
 
 export default ordersFeedSlice.reducer;

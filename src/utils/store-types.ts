@@ -1,3 +1,7 @@
+import type {
+	ActionCreatorWithPayload,
+	ActionCreatorWithoutPayload,
+} from '@reduxjs/toolkit';
 import type { Action } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
@@ -103,3 +107,11 @@ export type OrdersHistoryReducerStates = {
 	OrdersHistoryReducer: OrdersHistoryState;
 };
 //#endregion
+
+export type TWsActions<R, S> = {
+	connect: ActionCreatorWithPayload<string>;
+	disconnect: ActionCreatorWithoutPayload;
+	onError: ActionCreatorWithPayload<string>;
+	sendMessage?: ActionCreatorWithPayload<S>;
+	onMessage: ActionCreatorWithPayload<R>;
+};
