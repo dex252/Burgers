@@ -1,7 +1,12 @@
 import type { Action } from 'redux';
 import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import type { Ingredient, LoadingPropType, User } from './prop-types-ts';
+import type {
+	Ingredient,
+	LoadingPropType,
+	User,
+	HistoryOrder,
+} from './prop-types-ts';
 
 export type RootState = {
 	IngredientsReducer: IngredientsReducerStates;
@@ -9,6 +14,8 @@ export type RootState = {
 	BasketReducer: BasketReducerStates;
 	OrderReducer: OrderReducerStates;
 	AuthReducer: AuthReducerStates;
+	OrdersFeedReducer: OrdersFeedReducerStates;
+	OrdersHistoryReducer: OrdersHistoryReducerStates;
 };
 
 export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
@@ -75,5 +82,24 @@ export type AuthState = {
 
 export type AuthReducerStates = {
 	AuthReducer: AuthState;
+};
+//#endregion
+
+//#region orders-feed.tsx
+
+export type OrdersFeedState = {
+	orders: HistoryOrder[];
+	loading: LoadingPropType;
+};
+
+export type OrdersFeedReducerStates = {
+	OrdersFeedReducer: OrdersFeedState;
+};
+//#endregion
+
+//#region orders-history.tsx
+export type OrdersHistoryState = OrdersFeedState;
+export type OrdersHistoryReducerStates = {
+	OrdersHistoryReducer: OrdersHistoryState;
 };
 //#endregion

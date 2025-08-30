@@ -51,3 +51,18 @@ export type OrderCreate = {
 	name: string;
 	order?: Order;
 };
+
+export type HistoryOrder = {
+	ingredients: Ingredient[];
+	_id: string;
+	status: string;
+	number: number;
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type History = {
+	orders: HistoryOrder[];
+	total: number;
+	totalToday: number;
+};

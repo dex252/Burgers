@@ -6,6 +6,8 @@ import BasketReducer from './slices/basket-constructor-slice';
 import DetailsReducer from './slices/ingredient-details-slice';
 import IngredientsReducer from './slices/ingredients-slice';
 import OrderReducer from './slices/order-detail-slice';
+import OrdersFeedReducer from './slices/orders-feed-slice';
+import OrdersHistoryReducer from './slices/orders-history-slice';
 
 const rootReducer = combineSlices({
 	IngredientsReducer,
@@ -13,6 +15,8 @@ const rootReducer = combineSlices({
 	DetailsReducer,
 	OrderReducer,
 	AuthReducer,
+	OrdersFeedReducer,
+	OrdersHistoryReducer,
 });
 
 export const store = configureStore({

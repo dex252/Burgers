@@ -83,6 +83,7 @@ export const setIngredients = (): AppThunk => (dispatch) => {
 					...ingredient,
 					count: 0,
 					guid: '',
+					index: undefined,
 				})
 			);
 			dispatch(ingredientsSlice.actions[_SUCCESS](ingredients));
