@@ -2,6 +2,7 @@ import type { HistoryOrder } from '@/utils/prop-types-ts';
 import type { ReactElement } from 'react';
 
 import styles from './feed-details.module.css';
+
 export const FeedDetails = ({
 	orders,
 	total,
@@ -18,6 +19,21 @@ export const FeedDetails = ({
 	const formattedTotal = total.toLocaleString('ru-RU');
 	const formattedTotalToday = totalToday.toLocaleString('ru-RU');
 
+	// Функция для разбивки заказов на колонки
+	const splitIntoColumns = (
+		orders: HistoryOrder[],
+		maxPerColumn = 10
+	): HistoryOrder[][] => {
+		const columns = [];
+		for (let i = 0; i < orders.length; i += maxPerColumn) {
+			columns.push(orders.slice(i, i + maxPerColumn));
+		}
+		return columns;
+	};
+
+	const doneColumns = splitIntoColumns(doneOrders);
+	const pendingColumns = splitIntoColumns(pendingOrders);
+
 	return (
 		<section className={styles.container}>
 			<div className={styles.grid_container}>
@@ -25,13 +41,18 @@ export const FeedDetails = ({
 					<h1 className={`${styles.title} text text_type_main-medium mb-6`}>
 						Готовы:
 					</h1>
-					<div className={styles.scroll_container}>
-						{doneOrders.map((order) => (
-							<p
-								className={`text text_type_digits-default ${styles.order_number_done}`}
-								key={order._id}>
-								{order.number}
-							</p>
+
+					<div className={styles.columns_container}>
+						{doneColumns.map((column, columnIndex) => (
+							<div key={columnIndex} className={styles.column_inner}>
+								{column.map((order) => (
+									<p
+										className={`text text_type_digits-default ${styles.order_number_done}`}
+										key={order._id}>
+										{order.number}
+									</p>
+								))}
+							</div>
 						))}
 					</div>
 				</div>
@@ -39,11 +60,16 @@ export const FeedDetails = ({
 					<h1 className={`${styles.title} text text_type_main-medium mb-6`}>
 						В работе:
 					</h1>
-					<div className={styles.scroll_container}>
-						{pendingOrders.map((order) => (
-							<p className='text text_type_digits-default' key={order._id}>
-								{order.number}
-							</p>
+
+					<div className={styles.columns_container}>
+						{pendingColumns.map((column, columnIndex) => (
+							<div key={columnIndex} className={styles.column_inner}>
+								{column.map((order) => (
+									<p className='text text_type_digits-default' key={order._id}>
+										{order.number}
+									</p>
+								))}
+							</div>
 						))}
 					</div>
 				</div>
