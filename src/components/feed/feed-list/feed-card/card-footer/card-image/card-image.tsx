@@ -26,6 +26,7 @@ export const CardImage = ({
 					{src && (
 						<img
 							className={`${styles.avatar_image} ${darkened ? styles.darkened : ''}`}
+							title={alt}
 							src={src}
 							alt={alt}
 							style={{ width: `${size - 8}px`, height: `${size - 8}px` }}
