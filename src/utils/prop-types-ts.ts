@@ -52,10 +52,12 @@ export type OrderCreate = {
 	order?: Order;
 };
 
+export type OrderStatus = 'created' | 'pending' | 'done';
+
 export type HistoryOrder = {
 	ingredients: Ingredient[];
 	_id: string;
-	status: string;
+	status: OrderStatus;
 	number: number;
 	createdAt: string;
 	updatedAt: string;

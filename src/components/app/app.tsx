@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { ErrorPage404 } from '../../pages/errors/404/index';
+import { FeedPage } from '../../pages/feed/index';
 import { HomePage } from '../../pages/home/index';
 import { IngedientsPage } from '../../pages/ingredients/index';
 import { ForgotPasswordPage } from '../../pages/user/forgot-password/index';
@@ -34,6 +35,10 @@ export const App: FC = () => {
 						<Route path='/' element={<Protected>{<HomePage />}</Protected>}>
 							<Route path='ingredient/:id' element={<IngedientsPage />} />
 						</Route>
+						<Route
+							path='/feed'
+							element={<Protected>{<FeedPage />}</Protected>}
+						/>
 						<Route
 							path='/login'
 							element={<Protected onlyUnAuth>{<LoginPage />}</Protected>}

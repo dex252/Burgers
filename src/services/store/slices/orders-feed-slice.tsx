@@ -1,3 +1,4 @@
+import { _ERROR, _REQUEST, _SUCCESS } from '@/services/api/yandex_api';
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
@@ -31,6 +32,21 @@ const ordersFeedSlice = createSlice({
 		},
 		clear(state) {
 			state.orders = [];
+		},
+		[_REQUEST]: (state) => {
+			state.loading.isError = false;
+			state.loading.isRequested = true;
+			state.loading.isLogout = false;
+		},
+		[_SUCCESS]: (state, action) => {
+			state.orders = action.payload.orders;
+			state.loading.isRequested = false;
+		},
+		[_ERROR]: (state, action) => {
+			state.loading.isErrorMessage = action.payload;
+			state.loading.isError = true;
+			state.loading.isRequested = false;
+			state.loading.isLogout = false;
 		},
 	},
 });
