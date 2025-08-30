@@ -19,3 +19,11 @@
 	align-items: center;
 	width: 90%;
 }
+
+.card_order_created {
+	color: rgb(30 197 61);
+}
+
+.card_order_pending {
+	color: rgb(223 238 6);
+}
