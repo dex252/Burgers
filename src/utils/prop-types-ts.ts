@@ -55,12 +55,13 @@ export type OrderCreate = {
 export type OrderStatus = 'created' | 'pending' | 'done';
 
 export type HistoryOrder = {
-	ingredients: Ingredient[];
+	ingredients: string[];
 	_id: string;
 	status: OrderStatus;
 	number: number;
 	createdAt: string;
 	updatedAt: string;
+	name: string;
 };
 
 export type History = {
