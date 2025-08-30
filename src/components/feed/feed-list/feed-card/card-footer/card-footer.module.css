@@ -1,6 +1,14 @@
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
 .container {
 	position: relative;
 	display: flex;
+	flex: 1;
 	flex-direction: row;
 	align-items: center;
 }
@@ -39,4 +47,23 @@
 .container > *:hover {
 	z-index: 10 !important;
 	transform: translateY(-2px);
+}
+
+.right_content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+	min-width: max-content;
+}
+
+.currency_icon {
+	flex-shrink: 0;
+	transform: scale(2);
+}
+
+.card_price {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
