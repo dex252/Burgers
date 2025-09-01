@@ -1,3 +1,4 @@
+import { OrderDetailsPage } from '@/pages/order-details';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -35,10 +36,9 @@ export const App: FC = () => {
 						<Route path='/' element={<Protected>{<HomePage />}</Protected>}>
 							<Route path='ingredient/:id' element={<IngedientsPage />} />
 						</Route>
-						<Route
-							path='/feed'
-							element={<Protected>{<FeedPage />}</Protected>}
-						/>
+						<Route path='/feed' element={<Protected>{<FeedPage />}</Protected>}>
+							<Route path=':number' element={<OrderDetailsPage />} />
+						</Route>
 						<Route
 							path='/login'
 							element={<Protected onlyUnAuth>{<LoginPage />}</Protected>}

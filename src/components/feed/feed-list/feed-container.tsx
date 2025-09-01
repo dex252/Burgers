@@ -1,3 +1,5 @@
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { FeedCard } from './feed-card/feed-card';
 
 import type { HistoryOrder } from '@/utils/prop-types-ts';
@@ -10,6 +12,15 @@ export const FeedList = ({
 }: {
 	orders: HistoryOrder[];
 }): ReactElement => {
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	function handleClick(number: number): void {
+		navigate(`${location.pathname}/${number}`, {
+			state: { backgroundLocation: location },
+		});
+	}
+
 	return (
 		<section className={styles.container}>
 			<h1
@@ -18,11 +29,13 @@ export const FeedList = ({
 			</h1>
 			<div className={styles.content_wrapper}>
 				<div className={`${styles.feed_section} pl-5 pr-5`}>
-					{orders.map((order) => (
-						<div key={order._id}>
-							<FeedCard order={order}></FeedCard>
-						</div>
-					))}
+					{orders.map((order) =>
+						order._id === null ? null : (
+							<div key={order._id} onClick={() => handleClick(order.number)}>
+								<FeedCard order={order}></FeedCard>
+							</div>
+						)
+					)}
 				</div>
 			</div>
 		</section>

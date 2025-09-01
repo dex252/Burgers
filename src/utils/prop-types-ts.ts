@@ -68,4 +68,5 @@ export type History = {
 	orders: HistoryOrder[];
 	total: number;
 	totalToday: number;
+	success?: boolean;
 };

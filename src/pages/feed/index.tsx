@@ -3,6 +3,7 @@ import { FeedList } from '@/components/feed/feed-list/feed-container';
 import { setIngredients } from '@/services/store/slices/ingredients-slice';
 import { useEffect, type FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import { Loader } from '../../components/loader/loader';
 import { ordersFeedWsActions } from '../../services/store/slices/orders-feed-slice';
@@ -19,6 +20,9 @@ export const FeedPage: FC = () => {
 	const GET_ALL_ORDERS = 'wss://norma.nomoreparties.space/orders/all';
 	const dispatch = useDispatch();
 	const appDispatch = useDispatch<AppDispatch>();
+	const location = useLocation();
+	const isDefault = location.pathname === '/feed';
+	const backgroundLocation = location.state?.backgroundLocation;
 
 	const { orders, loading, total, totalToday } = useSelector(
 		(state: OrdersFeedReducerStates) => state.OrdersFeedReducer
@@ -39,6 +43,10 @@ export const FeedPage: FC = () => {
 		};
 	}, []);
 
+	if (!isDefault && !backgroundLocation) {
+		return <Outlet />;
+	}
+
 	return (
 		<section className={styles.container}>
 			<Loader loading={loading}>
@@ -50,6 +58,7 @@ export const FeedPage: FC = () => {
 						totalToday={totalToday}></FeedDetails>
 				</main>
 			</Loader>
+			<Outlet />
 		</section>
 	);
 };

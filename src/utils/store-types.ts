@@ -96,6 +96,8 @@ export type OrdersFeedState = {
 	total: number;
 	totalToday: number;
 	loading: LoadingPropType;
+	loadingModal: LoadingPropType;
+	order?: HistoryOrder;
 };
 
 export type OrdersFeedReducerStates = {

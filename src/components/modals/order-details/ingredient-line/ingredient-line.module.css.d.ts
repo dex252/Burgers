@@ -1,8 +1,7 @@
 declare const classNames: {
-	readonly wrapper: 'wrapper';
 	readonly container: 'container';
+	readonly ingredient_name: 'ingredient_name';
+	readonly left_content: 'left_content';
 	readonly right_content: 'right_content';
-	readonly currency_icon: 'currency_icon';
-	readonly card_price: 'card_price';
 };
 export default classNames;
