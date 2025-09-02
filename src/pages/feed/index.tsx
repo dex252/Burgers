@@ -41,7 +41,6 @@ export const FeedPage: FC = () => {
 		return (): void => {
 			dispatch(ordersFeedWsActions.disconnect());
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	if (!isDefault && !backgroundLocation) {

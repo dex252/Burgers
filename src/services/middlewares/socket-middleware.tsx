@@ -1,15 +1,19 @@
+import { refreshToken } from '../api/yandex_api';
+
 import type { TWsActions } from '@/utils/store-types';
 import type { Middleware } from '@reduxjs/toolkit';
 
 import type { RootState } from '../store';
 
 export const socketMiddleware = <R, S>(
-	wsActions: TWsActions<R, S>
+	wsActions: TWsActions<R, S>,
+	withTokenRefresh = false
 ): Middleware<object, RootState> => {
 	return (store) => {
 		let socket: WebSocket | null = null;
 		const { connect, sendMessage, onError, onMessage, disconnect } = wsActions;
 		const { dispatch } = store;
+		let url = '';
 
 		return (next) => (action) => {
 			if (connect.match(action)) {
@@ -20,8 +24,10 @@ export const socketMiddleware = <R, S>(
 					return;
 				}
 
-				const url = action.payload;
-				socket = new WebSocket(url);
+				url = action.payload;
+				const wssUrl = getUrlWithToken();
+
+				socket = new WebSocket(wssUrl);
 
 				socket.onerror = (): void => {
 					dispatch(onError('Ошибка при работе с соединением'));
@@ -32,6 +38,23 @@ export const socketMiddleware = <R, S>(
 					try {
 						const parsedData = JSON.parse(data);
 						console.info(parsedData);
+						if (
+							withTokenRefresh &&
+							parsedData.message === 'Invalid or missing token'
+						) {
+							refreshToken()
+								.then(() => {
+									const wssUrl = getUrlWithToken();
+									dispatch(connect(wssUrl));
+								})
+								.catch((error) => {
+									dispatch(onError((error as Error).message));
+								});
+
+							dispatch(disconnect());
+							return;
+						}
+
 						dispatch(onMessage(parsedData));
 					} catch (error) {
 						dispatch(onError((error as Error).message));
@@ -61,6 +84,17 @@ export const socketMiddleware = <R, S>(
 			}
 
 			next(action);
+
+			function getUrlWithToken(): string {
+				let wslUrl = url;
+				if (withTokenRefresh) {
+					const accessTokenWithBearer = localStorage.getItem('accessToken');
+					const token = accessTokenWithBearer?.replace(/^\s*Bearer\s*/i, '');
+					wslUrl = `${wslUrl}?token=${token}`;
+				}
+
+				return wslUrl;
+			}
 		};
 	};
 };

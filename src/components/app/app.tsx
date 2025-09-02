@@ -1,4 +1,5 @@
 import { OrderDetailsPage } from '@/pages/order-details';
+import { OrdersHistoryPage } from '@/pages/user/profile/orders-history';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -53,6 +54,11 @@ export const App: FC = () => {
 							path='/profile'
 							element={<Protected onlyAuth>{<ProfilePage />}</Protected>}
 						/>
+						<Route
+							path='/profile/orders'
+							element={
+								<Protected onlyAuth>{<OrdersHistoryPage />}</Protected>
+							}></Route>
 						<Route
 							path='/register'
 							element={<Protected onlyUnAuth>{<RegisterPage />}</Protected>}

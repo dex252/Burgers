@@ -34,7 +34,7 @@ export const ProfileNavigation = (): ReactElement => {
 			return;
 		}
 
-		navigate(`${location.pathname}/orders`, {
+		navigate(`${navButtons.profile}`, {
 			state: { backgroundLocation: location },
 		});
 	};
@@ -44,7 +44,7 @@ export const ProfileNavigation = (): ReactElement => {
 			return;
 		}
 
-		navigate(`${location.pathname}/orders`, {
+		navigate(`${navButtons.profile}/orders`, {
 			state: { backgroundLocation: location },
 		});
 	};

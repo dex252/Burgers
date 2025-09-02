@@ -25,7 +25,7 @@ const rootReducer = combineSlices({
 });
 
 const feedMiddleware = socketMiddleware(ordersFeedWsActions);
-const historyMiddleware = socketMiddleware(ordersHistoryWsActions);
+const historyMiddleware = socketMiddleware(ordersHistoryWsActions, true);
 
 export const store = configureStore({
 	reducer: rootReducer,
