@@ -39,9 +39,6 @@ const ordersFeedSlice = createSlice({
 	name: 'orders-feed-store',
 	initialState,
 	reducers: {
-		handleCloseModal(state) {
-			state.loading.isError = false;
-		},
 		setOrder(state, action) {
 			state.order = action.payload;
 		},
@@ -105,15 +102,12 @@ export const ordersFeedWsActions: TWsActions<History, undefined> = {
 export const useOrdersFeedActions = (): {
 	getOrder: (orderNumber: number) => Promise<boolean>;
 	setOrder: (historyOrder: HistoryOrder) => void;
-	handleCloseModal: () => void;
 } => {
 	const dispatch = useDispatch<AppDispatch>();
 	return {
 		getOrder: (orderNumber: number) => dispatch(getOrder(orderNumber)),
 		setOrder: (historyOrder: HistoryOrder) =>
 			dispatch(ordersFeedSlice.actions.setOrder(historyOrder)),
-		handleCloseModal: () =>
-			dispatch(ordersFeedSlice.actions.handleCloseModal()),
 	};
 };
 

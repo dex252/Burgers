@@ -1,7 +1,20 @@
+import {
+	_ERROR,
+	_REQUEST,
+	_SUCCESS,
+	GET_ORDER,
+	request,
+} from '@/services/api/yandex_api';
 import { createAction, createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
-import type { History } from '@/utils/prop-types-ts';
-import type { OrdersHistoryState, TWsActions } from '@/utils/store-types';
+import type { History, HistoryOrder } from '@/utils/prop-types-ts';
+import type {
+	AppDispatch,
+	AppThunk,
+	OrdersHistoryState,
+	TWsActions,
+} from '@/utils/store-types';
 
 const initialState: OrdersHistoryState = {
 	orders: [],
@@ -13,12 +26,40 @@ const initialState: OrdersHistoryState = {
 		isRequested: true,
 		isSpinner: true,
 	},
+	loadingModal: {
+		isError: false,
+		isErrorMessage: undefined,
+		isRequested: true,
+		isSpinner: true,
+	},
+	order: undefined,
 };
 
 const ordersHistorySlice = createSlice({
 	name: 'orders-history-store',
 	initialState,
-	reducers: {},
+	reducers: {
+		setOrder(state, action) {
+			state.order = action.payload;
+		},
+		[_REQUEST]: (state) => {
+			state.order = undefined;
+			state.loadingModal.isError = false;
+			state.loadingModal.isRequested = true;
+			state.loadingModal.isSpinner = true;
+		},
+		[_SUCCESS]: (state, action) => {
+			state.order = action.payload;
+			state.loadingModal.isRequested = false;
+			state.loadingModal.isSpinner = false;
+		},
+		[_ERROR]: (state, action) => {
+			state.loadingModal.isErrorMessage = action.payload;
+			state.order = undefined;
+			state.loadingModal.isError = true;
+			state.loadingModal.isSpinner = false;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(wsConnect, (state) => {
@@ -35,6 +76,7 @@ const ordersHistorySlice = createSlice({
 				state.total = action.payload.total || 0;
 				state.totalToday = action.payload.totalToday || 0;
 				state.loading.isSpinner = false;
+				state.loading.isError = false;
 			})
 			.addCase(wsOnError, (state, action) => {
 				state.loading.isErrorMessage = action.payload;
@@ -56,5 +98,60 @@ export const ordersHistoryWsActions: TWsActions<History, undefined> = {
 	onMessage: wsOnMessage,
 	onError: wsOnError,
 };
+
+export const useOrdersFeedActions = (): {
+	getOrder: (orderNumber: number) => Promise<boolean>;
+	setOrder: (historyOrder: HistoryOrder) => void;
+} => {
+	const dispatch = useDispatch<AppDispatch>();
+	return {
+		getOrder: (orderNumber: number) => dispatch(getOrder(orderNumber)),
+		setOrder: (historyOrder: HistoryOrder) =>
+			dispatch(ordersHistorySlice.actions.setOrder(historyOrder)),
+	};
+};
+
+const getOrder =
+	(orderNumber: number): AppThunk<Promise<boolean>> =>
+	async (dispatch) => {
+		dispatch(ordersHistorySlice.actions[_REQUEST]());
+		return await request<History, { orderNumber: number }>(
+			`${GET_ORDER}/${orderNumber}`
+		)
+			.then((response) => {
+				if (
+					response.success === true &&
+					response?.orders &&
+					response.orders?.length > 0
+				) {
+					dispatch(ordersHistorySlice.actions[_SUCCESS](response.orders[0]));
+					return true;
+				}
+
+				if (response.success === true) {
+					dispatch(ordersHistorySlice.actions[_ERROR]('Заказ не найден'));
+					return true;
+				}
+				dispatch(
+					ordersHistorySlice.actions[_ERROR]('Ошибка при получении заказа')
+				);
+				return true;
+			})
+			.catch((error) => {
+				if (
+					error.response &&
+					error.response.data &&
+					error.response.data.message
+				) {
+					dispatch(
+						ordersHistorySlice.actions[_ERROR](error.response.data.message)
+					);
+					return true;
+				}
+
+				dispatch(ordersHistorySlice.actions[_ERROR](error.message));
+				return true;
+			});
+	};
 
 export default ordersHistorySlice.reducer;
