@@ -47,18 +47,19 @@ export const FeedPage: FC = () => {
 	if (!isDefault && !backgroundLocation) {
 		return <Outlet />;
 	}
-
 	return (
 		<section className={styles.container}>
-			<Loader loading={loading}>
-				<main className={`${styles.main} pl-5 pr-5`}>
-					<FeedList orders={orders}></FeedList>
-					<FeedDetails
-						orders={orders}
-						total={total}
-						totalToday={totalToday}></FeedDetails>
-				</main>
-			</Loader>
+			<div className={styles.loader_container}>
+				<Loader loading={loading}>
+					<main className={`${styles.main} pl-5 pr-5`}>
+						<FeedList orders={orders}></FeedList>
+						<FeedDetails
+							orders={orders}
+							total={total}
+							totalToday={totalToday}></FeedDetails>
+					</main>
+				</Loader>
+			</div>
 			<Outlet />
 		</section>
 	);

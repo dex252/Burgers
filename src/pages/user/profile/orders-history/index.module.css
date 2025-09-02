@@ -27,13 +27,13 @@
 	overflow: hidden;
 }
 
-.feedListContainer {
+.feed_container {
 	display: flex;
 	flex: 1;
 	overflow: hidden;
 }
 
-.feedListContainer > * {
+.feed_container > * {
 	flex: 1;
 	min-width: 600px;
 }

@@ -56,7 +56,7 @@ export const OrdersHistoryPage: FC = () => {
 					<Loader loading={loading}>
 						<div className={`${styles.content} pt-30`}>
 							<ProfileNavigation />
-							<div className={styles.feedListContainer}>
+							<div className={styles.feed_container}>
 								{/* Покажем обратный порядок заказов, чтобы самые новые были вверху */}
 								<FeedList orders={orders?.slice()?.reverse()} />
 							</div>

@@ -13,3 +13,11 @@
 	margin: 0 auto;
 	overflow: auto;
 }
+
+.loader_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	min-height: 100vh;
+}
