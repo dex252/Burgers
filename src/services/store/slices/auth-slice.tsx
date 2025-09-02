@@ -8,6 +8,7 @@ import type { AppDispatch, AppThunk, AuthState } from '@/utils/store-types';
 
 const initialState: AuthState = {
 	isAuthorization: false,
+	isLoadingAuthorization: true,
 	/**
 	 * Сообщает о том, что пользователь вынужденно разлогинился
 	 * Управляет отображением модального окна с заказом при возникновении ошибки, чтобы не очищать состав заказа
@@ -33,6 +34,9 @@ const authSlice = createSlice({
 		 */
 		setAuthorization(state, action) {
 			state.isAuthorization = action.payload;
+		},
+		setLoading: (state, action) => {
+			state.isLoadingAuthorization = action.payload;
 		},
 		setLogout(state, action) {
 			//Не управляет состоянием авторизации пользователя
@@ -225,17 +229,43 @@ const getUserData = (): AppThunk<Promise<User | null>> => async (dispatch) => {
 	return userData;
 };
 
-const setAuthorization = (): AppThunk<Promise<boolean>> => async (dispatch) => {
-	const isTokenExist = localStorage.getItem('accessToken');
-	if (isTokenExist) {
-		dispatch(authSlice.actions.setAuthorization(true));
-		return true;
-	}
+const setAuthorization =
+	(): AppThunk<Promise<User | null>> => async (dispatch) => {
+		dispatch(authSlice.actions.setAuthorization(false));
+		const isTokenExist = localStorage.getItem('accessToken');
+		if (isTokenExist) {
+			const userData = await Auth.getUserData()
+				.then((data) => {
+					const { success, user } = data;
 
-	dispatch(authSlice.actions.setAuthorization(false));
-	dispatch(authSlice.actions.setUser(undefined));
-	return false;
-};
+					if (success !== true) {
+						dispatch(authSlice.actions[_ERROR](data));
+						dispatch(authSlice.actions.setAuthorization(false));
+						dispatch(authSlice.actions.setLoading(false));
+						return null;
+					}
+
+					dispatch(authSlice.actions.setUser(user));
+					dispatch(authSlice.actions[_SUCCESS]());
+					dispatch(authSlice.actions.setAuthorization(true));
+					dispatch(authSlice.actions.setLoading(false));
+					return user;
+				})
+				.catch((e) => {
+					dispatch(authSlice.actions[_ERROR](e.message));
+					dispatch(authSlice.actions.setAuthorization(false));
+					dispatch(authSlice.actions.setLoading(false));
+					return null;
+				});
+
+			return userData;
+		}
+
+		dispatch(authSlice.actions.setAuthorization(false));
+		dispatch(authSlice.actions.setUser(undefined));
+		dispatch(authSlice.actions.setLoading(false));
+		return null;
+	};
 
 const userLogout = (): AppThunk<Promise<void>> => async (dispatch) => {
 	dispatch(authSlice.actions[_REQUEST]());
@@ -263,17 +293,6 @@ const userLogout = (): AppThunk<Promise<void>> => async (dispatch) => {
 		});
 };
 
-const isAuthorization = (): AppThunk<boolean> => (dispatch) => {
-	const isTokenExist = localStorage.getItem('accessToken');
-	if (isTokenExist) {
-		dispatch(authSlice.actions.setAuthorization(true));
-		return true;
-	}
-
-	dispatch(authSlice.actions.setAuthorization(false));
-	return false;
-};
-
 export const useAuthActions = (): {
 	login: (email: string, password: string) => Promise<boolean>;
 	register: (email: string, password: string, name: string) => Promise<boolean>;
@@ -286,9 +305,8 @@ export const useAuthActions = (): {
 	) => Promise<boolean>;
 	getUserData: () => Promise<User | null>;
 	setLogout: (payload: boolean) => void;
-	setAuthorization: () => Promise<boolean>;
+	setAuthorization: () => Promise<User | null>;
 	userLogout: () => Promise<void>;
-	isAuthorization: () => boolean;
 } => {
 	const dispatch = useDispatch<AppDispatch>();
 	return {
@@ -303,7 +321,6 @@ export const useAuthActions = (): {
 		setLogout: (payload) => dispatch(authSlice.actions.setLogout(payload)),
 		setAuthorization: () => dispatch(setAuthorization()),
 		userLogout: () => dispatch(userLogout()),
-		isAuthorization: () => dispatch(isAuthorization()),
 	};
 };
 

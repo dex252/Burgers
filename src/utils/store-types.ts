@@ -79,6 +79,7 @@ export type OrderReducerStates = {
 //#region auth-slice.tsx
 export type AuthState = {
 	isAuthorization: boolean;
+	isLoadingAuthorization: boolean;
 	isLogout: boolean;
 	user?: User | undefined;
 	loading: LoadingPropType;

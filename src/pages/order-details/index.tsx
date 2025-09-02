@@ -54,11 +54,9 @@ export const OrderDetailsPage = ({
 		}
 
 		const selectedOrder = orders?.find((order) => order.number === orderNumber);
-		console.warn('FIND_ORDER:', selectedOrder);
 		if (selectedOrder) {
 			setOrder(selectedOrder);
 		} else {
-			console.warn('UNFIND_ORDER:', order);
 			getOrder(orderNumber);
 		}
 
@@ -71,7 +69,7 @@ export const OrderDetailsPage = ({
 			<h1> Загрузка...</h1>
 		</Loader>
 	);
-	console.info('DETAILS', order);
+
 	const backgroundLocation = location.state?.backgroundLocation;
 	if (!backgroundLocation) {
 		// Прямой переход по URL - показываем полную страницу

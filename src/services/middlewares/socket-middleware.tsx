@@ -37,7 +37,7 @@ export const socketMiddleware = <R, S>(
 					const { data } = event;
 					try {
 						const parsedData = JSON.parse(data);
-						console.info(parsedData);
+						//console.info(parsedData);
 						if (
 							withTokenRefresh &&
 							parsedData.message === 'Invalid or missing token'
