@@ -1,35 +1,43 @@
 import { Loader } from '@/components/loader/loader.tsx';
 import { OrderDetails } from '@/components/modals/order-details/order-details.tsx';
-import { useOrdersFeedActions } from '@/services/store/slices/orders-feed-slice.tsx';
-import { useEffect, type FC } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modals/shared/modal.tsx';
 
-import type { LoadingPropType } from '@/utils/prop-types-ts.ts';
+import type { HistoryOrder, LoadingPropType } from '@/utils/prop-types-ts.ts';
+import type { ReactElement } from 'react';
 
 import type {
 	IngredientsReducerStates,
-	OrdersFeedReducerStates,
+	OrdersDetailsActions,
 } from '../../utils/store-types.ts';
 
 import styles from './index.module.css';
 
-export const OrderDetailsPage: FC = () => {
+export const OrderDetailsPage = ({
+	orders,
+	order,
+	loading,
+	loadingModal,
+	orderDetailsActions,
+}: {
+	orders: HistoryOrder[];
+	order: HistoryOrder | undefined;
+	loading: LoadingPropType;
+	loadingModal: LoadingPropType;
+	orderDetailsActions: OrdersDetailsActions;
+}): ReactElement => {
 	const { number } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
-
-	const { orders, order, loading, loadingModal } = useSelector(
-		(state: OrdersFeedReducerStates) => state.OrdersFeedReducer
-	);
 
 	const { ingredients } = useSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 
-	const { getOrder, setOrder } = useOrdersFeedActions();
+	const { getOrder, setOrder } = orderDetailsActions;
 
 	useEffect(() => {
 		if (!number) {
@@ -63,7 +71,7 @@ export const OrderDetailsPage: FC = () => {
 			<h1> Загрузка...</h1>
 		</Loader>
 	);
-
+	console.info('DETAILS', order);
 	const backgroundLocation = location.state?.backgroundLocation;
 	if (!backgroundLocation) {
 		// Прямой переход по URL - показываем полную страницу

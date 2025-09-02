@@ -1,4 +1,5 @@
-import { OrderDetailsPage } from '@/pages/order-details';
+import { OrderDetailsFeedPage } from '@/pages/order-details/factory/order-details-feed';
+import { OrderDetailsHistoryPage } from '@/pages/order-details/factory/order-details-history';
 import { OrdersHistoryPage } from '@/pages/user/profile/orders-history';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -38,7 +39,7 @@ export const App: FC = () => {
 							<Route path='ingredient/:id' element={<IngedientsPage />} />
 						</Route>
 						<Route path='/feed' element={<Protected>{<FeedPage />}</Protected>}>
-							<Route path=':number' element={<OrderDetailsPage />} />
+							<Route path=':number' element={<OrderDetailsFeedPage />} />
 						</Route>
 						<Route
 							path='/login'
@@ -56,9 +57,14 @@ export const App: FC = () => {
 						/>
 						<Route
 							path='/profile/orders'
-							element={
-								<Protected onlyAuth>{<OrdersHistoryPage />}</Protected>
-							}></Route>
+							element={<Protected onlyAuth>{<OrdersHistoryPage />}</Protected>}>
+							<Route
+								path=':number'
+								element={
+									<Protected onlyAuth>{<OrderDetailsHistoryPage />}</Protected>
+								}
+							/>
+						</Route>
 						<Route
 							path='/register'
 							element={<Protected onlyUnAuth>{<RegisterPage />}</Protected>}

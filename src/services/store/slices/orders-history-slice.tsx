@@ -12,6 +12,7 @@ import type { History, HistoryOrder } from '@/utils/prop-types-ts';
 import type {
 	AppDispatch,
 	AppThunk,
+	OrdersDetailsActions,
 	OrdersHistoryState,
 	TWsActions,
 } from '@/utils/store-types';
@@ -99,10 +100,7 @@ export const ordersHistoryWsActions: TWsActions<History, undefined> = {
 	onError: wsOnError,
 };
 
-export const useOrdersFeedActions = (): {
-	getOrder: (orderNumber: number) => Promise<boolean>;
-	setOrder: (historyOrder: HistoryOrder) => void;
-} => {
+export const useOrdersHistoryActions = (): OrdersDetailsActions => {
 	const dispatch = useDispatch<AppDispatch>();
 	return {
 		getOrder: (orderNumber: number) => dispatch(getOrder(orderNumber)),

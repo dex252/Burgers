@@ -119,3 +119,8 @@ export type TWsActions<R, S> = {
 	sendMessage?: ActionCreatorWithPayload<S>;
 	onMessage: ActionCreatorWithPayload<R>;
 };
+
+export type OrdersDetailsActions = {
+	getOrder: (orderNumber: number) => Promise<boolean>;
+	setOrder: (historyOrder: HistoryOrder) => void;
+};

@@ -5,6 +5,7 @@ import { setIngredients } from '@/services/store/slices/ingredients-slice';
 import { ordersHistoryWsActions } from '@/services/store/slices/orders-history-slice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Outlet, useLocation } from 'react-router-dom';
 
 import type {
 	AppDispatch,
@@ -19,6 +20,10 @@ export const OrdersHistoryPage: FC = () => {
 	const GET_ALL_HISTORY_ORDERS = 'wss://norma.nomoreparties.space/orders';
 	const dispatch = useDispatch();
 	const appDispatch = useDispatch<AppDispatch>();
+
+	const location = useLocation();
+	const isDefault = location.pathname === '/profile/orders';
+	const backgroundLocation = location.state?.backgroundLocation;
 
 	const { orders, loading } = useSelector(
 		(state: OrdersHistoryReducerStates) => state.OrdersHistoryReducer
@@ -40,8 +45,12 @@ export const OrdersHistoryPage: FC = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	if (!isDefault && !backgroundLocation) {
+		return <Outlet />;
+	}
+
 	return (
-		<div className={styles.container}>
+		<section className={styles.container}>
 			<div className={styles.content_wrapper}>
 				<main className={`${styles.main} pl-5 pr-5`}>
 					<Loader loading={loading}>
@@ -55,6 +64,7 @@ export const OrdersHistoryPage: FC = () => {
 					</Loader>
 				</main>
 			</div>
-		</div>
+			<Outlet />
+		</section>
 	);
 };
