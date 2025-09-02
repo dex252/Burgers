@@ -48,10 +48,6 @@
 	transition: color 0.3s ease-in-out;
 }
 
-.content_button_active {
-	color: aliceblue;
-}
-
 .content_button p {
 	width: 100%;
 	margin: 0;
