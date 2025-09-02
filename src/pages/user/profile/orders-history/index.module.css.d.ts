@@ -3,6 +3,6 @@ declare const classNames: {
 	readonly content_wrapper: 'content_wrapper';
 	readonly main: 'main';
 	readonly content: 'content';
-	readonly content_column: 'content_column';
+	readonly feedListContainer: 'feedListContainer';
 };
 export default classNames;

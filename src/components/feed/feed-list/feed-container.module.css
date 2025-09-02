@@ -23,5 +23,5 @@
 
 .feed_section {
 	max-height: 85%;
-	overflow-y: auto;
+	overflow: hidden auto;
 }
