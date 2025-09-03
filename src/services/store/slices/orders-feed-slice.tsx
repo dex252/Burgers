@@ -5,13 +5,12 @@ import {
 	GET_ORDER,
 	request,
 } from '@/services/api/yandex_api';
+import { useAppDispatch } from '@/utils/hooks';
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
+import type { AppThunk } from '@/utils/hooks';
 import type { History, HistoryOrder } from '@/utils/prop-types-ts';
 import type {
-	AppDispatch,
-	AppThunk,
 	OrdersDetailsActions,
 	OrdersFeedState,
 	TWsActions,
@@ -101,7 +100,7 @@ export const ordersFeedWsActions: TWsActions<History, undefined> = {
 };
 
 export const useOrdersFeedActions = (): OrdersDetailsActions => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	return {
 		getOrder: (orderNumber: number) => dispatch(getOrder(orderNumber)),
 		setOrder: (historyOrder: HistoryOrder) =>

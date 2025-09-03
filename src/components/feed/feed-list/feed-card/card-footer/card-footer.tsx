@@ -1,6 +1,6 @@
+import { useAppSelector } from '@/utils/hooks';
 import { CurrencyIcon } from '@krgaa/react-developer-burger-ui-components';
 import { useMemo, type ReactElement } from 'react';
-import { useSelector } from 'react-redux';
 
 import { CardImage } from './card-image/card-image';
 
@@ -15,7 +15,7 @@ export const CardFooter = ({
 	ingredients: string[];
 	id: string;
 }): ReactElement => {
-	const { ingredients: allIngredients } = useSelector(
+	const { ingredients: allIngredients } = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 

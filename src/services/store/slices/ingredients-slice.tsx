@@ -1,5 +1,5 @@
+import { useAppDispatch } from '@/utils/hooks';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
 import {
 	_REQUEST,
@@ -9,14 +9,11 @@ import {
 	GET_INGREDIENTS,
 } from '../../api/yandex_api';
 
+import type { AppThunk } from '@/utils/hooks';
 import type { BaseIngredient, Ingredient } from '@/utils/prop-types-ts';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-import type {
-	AppDispatch,
-	AppThunk,
-	IngredientsState,
-} from '../../../utils/store-types';
+import type { IngredientsState } from '../../../utils/store-types';
 
 const initialState: IngredientsState = {
 	ingredients: [],
@@ -97,7 +94,7 @@ export const useIngredientsActions = (): {
 	updateCount: (payload: { id: string; delta: number }) => void;
 	clearCounts: () => void;
 } => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 
 	return {
 		updateCount: (payload) =>

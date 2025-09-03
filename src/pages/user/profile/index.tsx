@@ -1,4 +1,5 @@
 import { ProfileNavigation } from '@/components/profile/profile-navigation/profile-navigation';
+import { useAppSelector } from '@/utils/hooks';
 import {
 	Input,
 	EmailInput,
@@ -6,7 +7,6 @@ import {
 	PasswordInput,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import { Loader } from '../../../components/loader/loader';
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
@@ -18,7 +18,7 @@ import styles from './index.module.css';
 
 export const ProfilePage: FC = () => {
 	const { changeUserData, getUserData } = useAuthActions();
-	const { loading, user } = useSelector(
+	const { loading, user } = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer
 	);
 	const [emailValue, setEmail] = useState('');

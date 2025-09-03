@@ -1,9 +1,9 @@
+import { useAppSelector } from '@/utils/hooks.tsx';
 import {
 	CurrencyIcon,
 	Button,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuthActions } from '../../../services/store/slices/auth-slice';
@@ -30,11 +30,11 @@ type ModalContentState = {
 export const OrderInfo = ({ price }: { price: number }): ReactElement => {
 	const navigate = useNavigate();
 	const { setAuthorization } = useAuthActions();
-	const ingredients = useSelector(
+	const ingredients = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer.ingredients
 	);
 	const { getOrder, handleCloseModal } = useOrderActions();
-	const { orderId, loading } = useSelector(
+	const { orderId, loading } = useAppSelector(
 		(state: OrderReducerStates) => state.OrderReducer
 	);
 	const [modalContent, setModalContent] = useState<ModalContentState>({

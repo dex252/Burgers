@@ -1,7 +1,7 @@
 import { Loader } from '@/components/loader/loader.tsx';
 import { OrderDetails } from '@/components/modals/order-details/order-details.tsx';
+import { useAppSelector } from '@/utils/hooks.tsx';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modals/shared/modal.tsx';
@@ -33,7 +33,7 @@ export const OrderDetailsPage = ({
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const { ingredients } = useSelector(
+	const { ingredients } = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 

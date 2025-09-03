@@ -1,5 +1,5 @@
+import { useAppDispatch, type AppThunk } from '@/utils/hooks';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
 import {
 	_REQUEST,
@@ -12,11 +12,7 @@ import {
 
 import type { OrderCreateResponse } from '@/utils/api-types';
 import type { OrderCreate } from '@/utils/prop-types-ts';
-import type {
-	AppDispatch,
-	AppThunk,
-	OrderDetailsState,
-} from '@/utils/store-types';
+import type { OrderDetailsState } from '@/utils/store-types';
 
 const initialState: OrderDetailsState = {
 	name: null,
@@ -72,7 +68,7 @@ export const useOrderActions = (): {
 	getOrder: (basketContent: string[]) => Promise<boolean>;
 	handleCloseModal: () => void;
 } => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	return {
 		setOrder: (payload: OrderCreate) =>
 			dispatch(orderSlice.actions.setOrder(payload)),

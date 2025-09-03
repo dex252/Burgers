@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/utils/hooks';
 import {
 	EmailInput,
 	PasswordInput,
@@ -5,7 +6,6 @@ import {
 	Input,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Loader } from '../../../components/loader/loader';
@@ -22,7 +22,7 @@ export const RegisterPage: FC = () => {
 	const [emailValue, setEmail] = useState('');
 	const [passwordValue, setPassword] = useState('');
 	const [nameValue, setName] = useState('');
-	const { loading } = useSelector(
+	const { loading } = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer
 	);
 

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/utils/hooks.tsx';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Modal } from '../../components/modals/shared/modal.tsx';
@@ -15,7 +15,7 @@ export const IngedientsPage: FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const { ingredients } = useSelector(
+	const { ingredients } = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 	const ingredient = ingredients.find((item) => item._id === id);

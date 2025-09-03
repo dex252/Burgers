@@ -1,6 +1,6 @@
+import { useAppSelector } from '@/utils/hooks';
 import { useEffect, useMemo } from 'react';
 import { useDrop } from 'react-dnd';
-import { useSelector } from 'react-redux';
 
 import { useAuthActions } from '../../services/store/slices/auth-slice';
 import { useBasketActions } from '../../services/store/slices/basket-constructor-slice';
@@ -24,16 +24,16 @@ type DropCollectedProps = {
 };
 
 export const BurgerConstructor = (): ReactElement => {
-	const bun = useSelector(
+	const bun = useAppSelector(
 		(state: BasketReducerStates) => state.BasketReducer.bun
 	);
-	const ingredients = useSelector(
+	const ingredients = useAppSelector(
 		(state: BasketReducerStates) => state.BasketReducer.ingredients
 	);
-	const isChange = useSelector(
+	const isChange = useAppSelector(
 		(state: OrderReducerStates) => state.OrderReducer.isChange
 	);
-	const isLogout = useSelector(
+	const isLogout = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer.isLogout
 	);
 

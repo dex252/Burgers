@@ -1,10 +1,10 @@
+import { useAppSelector } from '@/utils/hooks';
 import {
 	EmailInput,
 	PasswordInput,
 	Button,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Loader } from '../../../components/loader/loader';
@@ -20,7 +20,7 @@ export const LoginPage: FC = () => {
 	const location = useLocation();
 
 	const { login } = useAuthActions();
-	const { loading } = useSelector(
+	const { loading } = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer
 	);
 	const [emailValue, setEmail] = useState('');

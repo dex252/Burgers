@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/utils/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
 import { MoonLoader } from 'react-spinners';
 
@@ -17,7 +17,7 @@ const ProtectedRouteElement: FC<IProtectedProps> = ({
 	children,
 }) => {
 	const location = useLocation();
-	const { isAuthorization, isLoadingAuthorization } = useSelector(
+	const { isAuthorization, isLoadingAuthorization } = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer
 	);
 

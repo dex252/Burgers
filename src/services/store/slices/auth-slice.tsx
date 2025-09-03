@@ -1,10 +1,11 @@
+import { useAppDispatch } from '@/utils/hooks';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
 import { _SUCCESS, _ERROR, _REQUEST, Auth } from '../../api/yandex_api';
 
+import type { AppThunk } from '@/utils/hooks';
 import type { User } from '@/utils/prop-types-ts';
-import type { AppDispatch, AppThunk, AuthState } from '@/utils/store-types';
+import type { AuthState } from '@/utils/store-types';
 
 const initialState: AuthState = {
 	isAuthorization: false,
@@ -308,7 +309,7 @@ export const useAuthActions = (): {
 	setAuthorization: () => Promise<User | null>;
 	userLogout: () => Promise<void>;
 } => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	return {
 		login: (email, password) => dispatch(login(email, password)),
 		register: (email, password, name) =>

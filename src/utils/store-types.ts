@@ -2,8 +2,6 @@ import type {
 	ActionCreatorWithPayload,
 	ActionCreatorWithoutPayload,
 } from '@reduxjs/toolkit';
-import type { Action } from 'redux';
-import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import type {
 	Ingredient,
@@ -11,25 +9,6 @@ import type {
 	User,
 	HistoryOrder,
 } from './prop-types-ts';
-
-export type RootState = {
-	IngredientsReducer: IngredientsReducerStates;
-	DetailsReducer: DetailsReducerStates;
-	BasketReducer: BasketReducerStates;
-	OrderReducer: OrderReducerStates;
-	AuthReducer: AuthReducerStates;
-	OrdersFeedReducer: OrdersFeedReducerStates;
-	OrdersHistoryReducer: OrdersHistoryReducerStates;
-};
-
-export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
-
-export type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	RootState,
-	unknown,
-	Action<string>
->;
 
 //#region ingredients-slice.tsx
 export type IngredientsState = {

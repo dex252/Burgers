@@ -1,8 +1,8 @@
+import { useAppDispatch } from '@/utils/hooks';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
 import type { Ingredient } from '@/utils/prop-types-ts';
-import type { AppDispatch, BasketConstructorState } from '@/utils/store-types';
+import type { BasketConstructorState } from '@/utils/store-types';
 
 const initialState: BasketConstructorState = {
 	bun: null,
@@ -78,7 +78,7 @@ export const useBasketActions = (): {
 	}) => void;
 	clearBasket: () => void;
 } => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	return {
 		addInBasket: (payload) =>
 			dispatch(basketSlice.actions.addInBasket(payload)),
