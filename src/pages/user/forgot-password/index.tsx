@@ -1,9 +1,9 @@
+import { useAppSelector } from '@/utils/hooks';
 import {
 	EmailInput,
 	Button,
 } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Loader } from '../../../components/loader/loader';
@@ -18,7 +18,7 @@ export const ForgotPasswordPage: FC = () => {
 	const navigate = useNavigate();
 	const { forgotPassword } = useAuthActions();
 	const [emailValue, setEmail] = useState('');
-	const { loading } = useSelector(
+	const { loading } = useAppSelector(
 		(state: AuthReducerStates) => state.AuthReducer
 	);
 

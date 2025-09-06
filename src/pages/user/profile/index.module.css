@@ -15,7 +15,7 @@
 
 .main {
 	display: flex;
-	width: 1240px;
+	width: 1440px;
 	height: 100%;
 	margin: 0 auto;
 	overflow: auto;
@@ -46,10 +46,6 @@
 .content_button:hover {
 	color: rgb(240 248 255 / 80%);
 	transition: color 0.3s ease-in-out;
-}
-
-.content_button_active {
-	color: aliceblue;
 }
 
 .content_button p {

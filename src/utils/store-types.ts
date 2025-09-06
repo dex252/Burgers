@@ -1,24 +1,14 @@
-import type { Action } from 'redux';
-import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import type {
+	ActionCreatorWithPayload,
+	ActionCreatorWithoutPayload,
+} from '@reduxjs/toolkit';
 
-import type { Ingredient, LoadingPropType, User } from './prop-types-ts';
-
-export type RootState = {
-	IngredientsReducer: IngredientsReducerStates;
-	DetailsReducer: DetailsReducerStates;
-	BasketReducer: BasketReducerStates;
-	OrderReducer: OrderReducerStates;
-	AuthReducer: AuthReducerStates;
-};
-
-export type AppDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
-
-export type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	RootState,
-	unknown,
-	Action<string>
->;
+import type {
+	Ingredient,
+	LoadingPropType,
+	User,
+	HistoryOrder,
+} from './prop-types-ts';
 
 //#region ingredients-slice.tsx
 export type IngredientsState = {
@@ -68,6 +58,7 @@ export type OrderReducerStates = {
 //#region auth-slice.tsx
 export type AuthState = {
 	isAuthorization: boolean;
+	isLoadingAuthorization: boolean;
 	isLogout: boolean;
 	user?: User | undefined;
 	loading: LoadingPropType;
@@ -77,3 +68,39 @@ export type AuthReducerStates = {
 	AuthReducer: AuthState;
 };
 //#endregion
+
+//#region orders-feed.tsx
+
+export type OrdersFeedState = {
+	orders: HistoryOrder[];
+	total: number;
+	totalToday: number;
+	loading: LoadingPropType;
+	loadingModal: LoadingPropType;
+	order?: HistoryOrder;
+};
+
+export type OrdersFeedReducerStates = {
+	OrdersFeedReducer: OrdersFeedState;
+};
+//#endregion
+
+//#region orders-history.tsx
+export type OrdersHistoryState = OrdersFeedState;
+export type OrdersHistoryReducerStates = {
+	OrdersHistoryReducer: OrdersHistoryState;
+};
+//#endregion
+
+export type TWsActions<R, S> = {
+	connect: ActionCreatorWithPayload<string>;
+	disconnect: ActionCreatorWithoutPayload;
+	onError: ActionCreatorWithPayload<string>;
+	sendMessage?: ActionCreatorWithPayload<S>;
+	onMessage: ActionCreatorWithPayload<R>;
+};
+
+export type OrdersDetailsActions = {
+	getOrder: (orderNumber: number) => Promise<boolean>;
+	setOrder: (historyOrder: HistoryOrder) => void;
+};

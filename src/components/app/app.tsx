@@ -1,7 +1,11 @@
+import { OrderDetailsFeedPage } from '@/pages/order-details/factory/order-details-feed';
+import { OrderDetailsHistoryPage } from '@/pages/order-details/factory/order-details-history';
+import { OrdersHistoryPage } from '@/pages/user/profile/orders-history';
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { ErrorPage404 } from '../../pages/errors/404/index';
+import { FeedPage } from '../../pages/feed/index';
 import { HomePage } from '../../pages/home/index';
 import { IngedientsPage } from '../../pages/ingredients/index';
 import { ForgotPasswordPage } from '../../pages/user/forgot-password/index';
@@ -34,6 +38,9 @@ export const App: FC = () => {
 						<Route path='/' element={<Protected>{<HomePage />}</Protected>}>
 							<Route path='ingredient/:id' element={<IngedientsPage />} />
 						</Route>
+						<Route path='/feed' element={<Protected>{<FeedPage />}</Protected>}>
+							<Route path=':number' element={<OrderDetailsFeedPage />} />
+						</Route>
 						<Route
 							path='/login'
 							element={<Protected onlyUnAuth>{<LoginPage />}</Protected>}
@@ -48,6 +55,16 @@ export const App: FC = () => {
 							path='/profile'
 							element={<Protected onlyAuth>{<ProfilePage />}</Protected>}
 						/>
+						<Route
+							path='/profile/orders'
+							element={<Protected onlyAuth>{<OrdersHistoryPage />}</Protected>}>
+							<Route
+								path=':number'
+								element={
+									<Protected onlyAuth>{<OrderDetailsHistoryPage />}</Protected>
+								}
+							/>
+						</Route>
 						<Route
 							path='/register'
 							element={<Protected onlyUnAuth>{<RegisterPage />}</Protected>}

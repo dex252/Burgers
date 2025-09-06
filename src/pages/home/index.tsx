@@ -1,7 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/utils/hooks';
 import { useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router-dom';
 
 import { Loader } from '../../components/loader/loader';
@@ -11,20 +11,17 @@ import { BurgerIngredients } from '@components/burger-ingredients/burger-ingredi
 
 import type { FC } from 'react';
 
-import type {
-	AppDispatch,
-	IngredientsReducerStates,
-} from '../../utils/store-types';
+import type { IngredientsReducerStates } from '../../utils/store-types';
 
 import styles from './index.module.css';
 
 export const HomePage: FC = () => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	const location = useLocation();
 	const isDefault = location.pathname == '/';
 	const backgroundLocation = location.state?.backgroundLocation;
 
-	const { loading, ingredients } = useSelector(
+	const { loading, ingredients } = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 

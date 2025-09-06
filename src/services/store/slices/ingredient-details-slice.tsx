@@ -1,8 +1,8 @@
+import { useAppDispatch } from '@/utils/hooks';
 import { createSlice } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 
 import type { Ingredient } from '@/utils/prop-types-ts';
-import type { AppDispatch, DetailsState } from '@/utils/store-types';
+import type { DetailsState } from '@/utils/store-types';
 
 const initialState: DetailsState = {
 	ingredient: null,
@@ -21,7 +21,7 @@ const detailSlice = createSlice({
 export const useDetailsActions = (): {
 	setIngredient: (payload: Ingredient) => void;
 } => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useAppDispatch();
 	return {
 		setIngredient: (payload) =>
 			dispatch(detailSlice.actions.setIngredient(payload)),

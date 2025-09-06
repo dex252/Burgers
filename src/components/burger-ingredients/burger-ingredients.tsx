@@ -1,6 +1,6 @@
+import { useAppSelector } from '@/utils/hooks';
 import { Tab } from '@krgaa/react-developer-burger-ui-components';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { IngredientsSection } from './ingredients-section/ingredients-section';
 
@@ -12,7 +12,7 @@ import styles from './burger-ingredients.module.css';
 
 export const BurgerIngredients = (): ReactElement => {
 	const [activeTab, setActiveTab] = useState('bun');
-	const { ingredients } = useSelector(
+	const { ingredients } = useAppSelector(
 		(state: IngredientsReducerStates) => state.IngredientsReducer
 	);
 	const setActiveCategory = (type: IngredientType): void => {

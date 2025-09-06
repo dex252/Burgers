@@ -51,3 +51,22 @@ export type OrderCreate = {
 	name: string;
 	order?: Order;
 };
+
+export type OrderStatus = 'created' | 'pending' | 'done';
+
+export type HistoryOrder = {
+	ingredients: string[];
+	_id: string;
+	status: OrderStatus;
+	number: number;
+	createdAt: string;
+	updatedAt: string;
+	name: string;
+};
+
+export type History = {
+	orders: HistoryOrder[];
+	total: number;
+	totalToday: number;
+	success?: boolean;
+};

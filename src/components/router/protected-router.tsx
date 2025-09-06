@@ -1,5 +1,6 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/utils/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
+import { MoonLoader } from 'react-spinners';
 
 import type { AuthReducerStates } from '@/utils/store-types';
 import type { FC, ReactNode } from 'react';
@@ -16,9 +17,25 @@ const ProtectedRouteElement: FC<IProtectedProps> = ({
 	children,
 }) => {
 	const location = useLocation();
-	const isAuthorization = useSelector(
-		(state: AuthReducerStates) => state.AuthReducer.isAuthorization
+	const { isAuthorization, isLoadingAuthorization } = useAppSelector(
+		(state: AuthReducerStates) => state.AuthReducer
 	);
+
+	if (isLoadingAuthorization) {
+		return (
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					height: '100vh',
+					gap: '20px',
+				}}>
+				<MoonLoader color='#8585AD' size={120} />
+			</div>
+		);
+	}
 
 	// console.log('Защищенный маршрут:', {
 	// 	path: location.pathname,

@@ -73,7 +73,7 @@ api.interceptors.response.use(
 			error.response.data &&
 			error.response.data.message === 'jwt expired'
 		) {
-			return await refreshToken();
+			return await refreshToken(false);
 		}
 
 		return Promise.reject(error);
@@ -124,7 +124,9 @@ export const request = async <Response, Data>(
 	}
 };
 
-const refreshToken = async (): Promise<RefreshTokenResponse> => {
+export const refreshToken = async (
+	isRejected = false
+): Promise<RefreshTokenResponse> => {
 	return await api
 		.request<RefreshTokenResponse>({
 			method: 'post',
@@ -141,7 +143,12 @@ const refreshToken = async (): Promise<RefreshTokenResponse> => {
 
 			localStorage.setItem('accessToken', accessToken);
 			localStorage.setItem('refreshToken', refreshToken);
-			return Promise.reject(response);
+
+			if (isRejected) {
+				return Promise.reject(response);
+			}
+
+			return Promise.resolve(response.data);
 		})
 		.catch((e) => {
 			//Не проверяем текст ошибки, нам и так известно, что это проверка токена

@@ -1,0 +1,39 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.content_wrapper {
+	display: flex;
+	flex: 1;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.main {
+	display: flex;
+	width: 1440px;
+	height: 100%;
+	overflow: hidden;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	gap: 60px;
+	padding-top: 120px;
+	overflow: hidden;
+}
+
+.feed_container {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+.feed_container > * {
+	flex: 1;
+	min-width: 600px;
+}

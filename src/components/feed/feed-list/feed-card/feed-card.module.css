@@ -1,0 +1,29 @@
+.constructor_element {
+	display: inline-block;
+	flex-grow: 1;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 80px;
+	margin-bottom: 24px;
+	padding: 8px;
+	color: #f2f2f3;
+	font-size: 16px;
+	line-height: 24;
+	background: var(--background-element);
+	border-radius: var(--common-border-radius-s);
+}
+
+.card_header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 90%;
+}
+
+.card_order_created {
+	color: rgb(30 197 61);
+}
+
+.card_order_pending {
+	color: rgb(223 238 6);
+}
