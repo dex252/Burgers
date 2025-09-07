@@ -7,7 +7,7 @@ import type { AppThunk } from '@/utils/hooks';
 import type { User } from '@/utils/prop-types-ts';
 import type { AuthState } from '@/utils/store-types';
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
 	isAuthorization: false,
 	isLoadingAuthorization: true,
 	/**
