@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { Ingredient } from '@/utils/prop-types-ts';
 import type { BasketConstructorState } from '@/utils/store-types';
 
-const initialState: BasketConstructorState = {
+export const initialState: BasketConstructorState = {
 	bun: null,
 	ingredients: [],
 };
