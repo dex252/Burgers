@@ -15,7 +15,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import type { IngredientsState } from '../../../utils/store-types';
 
-const initialState: IngredientsState = {
+export const initialState: IngredientsState = {
 	ingredients: [],
 	loading: {
 		isError: false,
