@@ -16,7 +16,7 @@ import type {
 	TWsActions,
 } from '@/utils/store-types';
 
-const initialState: OrdersHistoryState = {
+export const initialState: OrdersHistoryState = {
 	orders: [],
 	total: 0,
 	totalToday: 0,
