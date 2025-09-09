@@ -19,7 +19,7 @@ export const FeedPage: FC = () => {
 	const GET_ALL_ORDERS = 'wss://norma.nomoreparties.space/orders/all';
 	const dispatch = useAppDispatch();
 	const location = useLocation();
-	const isDefault = location.pathname === '/feed';
+	const isDefault = location.pathname === `/feed`;
 	const backgroundLocation = location.state?.backgroundLocation;
 
 	const { orders, loading, total, totalToday } = useAppSelector(
