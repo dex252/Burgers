@@ -76,6 +76,7 @@ export const BurgerBasketCard = ({
 			ref={isBun ? null : (dragRef as unknown as React.Ref<HTMLElement>)}>
 			<div
 				className={`${styles.card} mt-4 mb-4 ${onHover}`}
+				data-test='ingredient-card-in-basket'
 				ref={
 					isBun ? null : (dropTarget as unknown as React.Ref<HTMLDivElement>)
 				}>

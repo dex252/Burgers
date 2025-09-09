@@ -13,7 +13,9 @@ export const CreateOrder = ({
 }: CreateOrderProps): ReactElement => {
 	return (
 		<section>
-			<p className={`pb-8 ${styles.order_number} text text_type_digits-large`}>
+			<p
+				className={`pb-8 ${styles.order_number} text text_type_digits-large`}
+				data-test='create-order-info'>
 				{orderNumber}
 			</p>
 			<p className={`pb-15 ${styles.identifier} text text_type_main-medium`}>

@@ -142,6 +142,7 @@ export const OrderInfo = ({ price }: { price: number }): ReactElement => {
 						htmlType='button'
 						type='primary'
 						size='medium'
+						data-test='order-create-button'
 						onClick={createOrder}>
 						Оформить заказ
 					</Button>

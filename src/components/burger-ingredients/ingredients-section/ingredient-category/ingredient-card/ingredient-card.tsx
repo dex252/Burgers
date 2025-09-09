@@ -44,7 +44,9 @@ export const IngredientCard = ({
 					size='default'
 					extraClass={`${styles.counter} mr-1`}></Counter>
 			)}
-			<div className={styles.ingredient_card_content}>
+			<div
+				className={styles.ingredient_card_content}
+				data-test='ingredient-card'>
 				<img
 					className='ml-4'
 					src={ingredient.image}

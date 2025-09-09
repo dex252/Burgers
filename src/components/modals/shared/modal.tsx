@@ -66,6 +66,7 @@ export const Modal: FC<IModalProps> = ({
 					<button
 						className={styles.close}
 						onClick={hideModal}
+						data-test='modal-close-button'
 						disabled={!canCloseModal}>
 						<CloseIcon
 							type={canCloseModal ? 'primary' : 'secondary'}></CloseIcon>
