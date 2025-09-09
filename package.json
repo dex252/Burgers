@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"homepage": "./",
 	"scripts": {
 		"prepare": "husky",
 		"dev": "vite",
@@ -17,7 +18,9 @@
 		"cypress:open": "cypress open",
 		"cypress": "cypress run",
 		"test": "vitest",
-		"test:ui": "vitest --ui"
+		"test:ui": "vitest --ui",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.27.6",
