@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { Ingredient } from '@/utils/prop-types-ts';
 import type { DetailsState } from '@/utils/store-types';
 
-const initialState: DetailsState = {
+export const initialState: DetailsState = {
 	ingredient: null,
 };
 

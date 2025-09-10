@@ -23,10 +23,12 @@ export const IngredientDetails: FC<IngredientDetailsProps> = ({
 				className={`pb-4 ${styles.img}`}
 				src={ingredient.image_large}
 				alt={ingredient.name}></img>
-			<p className={`pb-8 ${styles.name} text text_type_main-medium`}>
+			<p
+				className={`pb-8 ${styles.name} text text_type_main-medium`}
+				data-test='ingredient-details-name'>
 				{ingredient.name}
 			</p>
-			<div className={`pb-15 ${styles.states}`}>
+			<div className={`pb-15 ${styles.states}`} data-test='ingredient-details'>
 				<StateCard
 					name='Каллории, ккал'
 					count={ingredient.calories}></StateCard>

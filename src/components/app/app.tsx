@@ -21,6 +21,8 @@ import type { FC } from 'react';
 
 import styles from './app.module.css';
 
+export const basename = import.meta.env.PROD ? '/Burgers' : '';
+
 export const App: FC = () => {
 	const { setAuthorization } = useAuthActions();
 
@@ -30,7 +32,7 @@ export const App: FC = () => {
 	}, []);
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename={basename}>
 			<div className={styles.app}>
 				<AppHeader />
 				<div className={styles.content}>

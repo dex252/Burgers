@@ -14,7 +14,7 @@ import type { OrderCreateResponse } from '@/utils/api-types';
 import type { OrderCreate } from '@/utils/prop-types-ts';
 import type { OrderDetailsState } from '@/utils/store-types';
 
-const initialState: OrderDetailsState = {
+export const initialState: OrderDetailsState = {
 	name: null,
 	orderId: 0,
 	loading: {

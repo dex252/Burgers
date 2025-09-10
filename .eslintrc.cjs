@@ -13,6 +13,7 @@ module.exports = {
 		'plugin:jsx-a11y/recommended',
 		'plugin:eslint-comments/recommended',
 		'plugin:postcss-modules/recommended',
+		'plugin:cypress/recommended',
 	],
 	ignorePatterns: ['dist', '.eslintrc.cjs'],
 	parser: '@typescript-eslint/parser',

@@ -104,7 +104,7 @@ export const BurgerConstructor = (): ReactElement => {
 		<section
 			className={`${styles.burger_constructor} ml-4`}
 			ref={dropTarget as unknown as React.Ref<HTMLElement>}>
-			<div className={`${styles.basket_content} mb-10`}>
+			<div className={`${styles.basket_content} mb-10`} data-test='basket'>
 				<div className={onHoverBun}>
 					<BurgerBasketCard ingredient={bun} type='top' />
 				</div>
